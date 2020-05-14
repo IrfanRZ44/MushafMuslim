@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.exomatik.baseapplication.ui.auth.register.RegisterFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.exomatik.baseapplication.ui.auth.register.RegisterViewModel"
+            />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/CustomStyle"
+        >
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            snackbar="@{viewModel.message}"
+            android:orientation="vertical"
+            >
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/imgBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/h4"
+                android:layout_marginTop="@dimen/_30"
+                android:background="@drawable/btn_circle_gray"
+                android:onClick="@{()-> viewModel.onClickBack()}"
+                android:src="@drawable/ic_back_black" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/img"
+                android:layout_width="@dimen/_100"
+                android:layout_height="@dimen/_100"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/h2"
+                android:background="@drawable/ic_launcher_background"
+                android:padding="@dimen/h2"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_launcher_foreground" />
+
+            <include layout="@layout/progress_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progress"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal"
+                visible="@{viewModel.isShowLoading}"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/textStandardWhite"
+                android:textSize="@dimen/text_h3"
+                android:textColor="@color/gray2"
+                android:layout_marginTop="@dimen/text_h3"
+                android:layout_marginBottom="@dimen/h3"
+                android:layout_marginLeft="@dimen/_30"
+                android:layout_marginRight="@dimen/_30"
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center"
+                showTextStatus="@{viewModel.message}"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/customEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/h5"
+                android:layout_marginTop="@dimen/h3"
+                android:layout_marginRight="@dimen/h5"
+                android:hint="@string/username"
+                android:textColorHint="@color/gray2"
+                app:errorEnabled="true"
+                errorText="@{viewModel.userName}"
+                app:errorTextAppearance="@style/error_appearance">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/textStandardWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_username_gray"
+                    android:drawablePadding="@dimen/h2"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    android:text="@={viewModel.userName}"
+                    android:digits="asdfghjklqwertyuiopzxcvbnmASDFGHJKLQWERTYUIOPZXCVBNM_1234567890"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etPhone"
+                style="@style/customEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/h5"
+                android:layout_marginTop="@dimen/h3"
+                android:layout_marginRight="@dimen/h5"
+                android:hint="@string/no_handphone"
+                android:textColorHint="@color/gray2"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/error_appearance"
+                app:counterEnabled="true"
+                app:counterMaxLength="15"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="@style/textStandardWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_phone_gray"
+                    android:drawablePadding="@dimen/h2"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    android:text="@={viewModel.noHp}"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSignUp"
+                style="@style/buttonStandardBlue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/h5"
+                android:layout_marginTop="@dimen/_40"
+                android:layout_marginRight="@dimen/h5"
+                android:padding="@dimen/h3"
+                android:textSize="@dimen/text_h2"
+                android:text="@string/sign_up"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:onClick="@{()-> viewModel.onClickRegister()}"
+                disableButton="@{viewModel.isShowLoading}"
+                android:textAlignment="center"
+                />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/viewNoAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/h5"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/textStandardWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btnLogin"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/have_account"
+                    android:textColor="@color/gray3"
+                    android:textSize="@dimen/text_h2" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textSignUp"
+                    style="@style/textStandardWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btnLogin"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/h1"
+                    android:text="@string/login"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_h2"
+                    android:textStyle="bold"
+                    android:onClick="@{()-> viewModel.onClickLogin()}"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

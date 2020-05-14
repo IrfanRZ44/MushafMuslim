@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="design_navigation_icon_size" tools:override="true">
+        @dimen/_25
+    </dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="nav_header_height_pengaturan">200dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="lebar_logo">160dp</dimen>
+
+    <dimen name="text_super_large">50sp</dimen>
+    <dimen name="text_very_big">25sp</dimen>
+    <dimen name="text_h7">30sp</dimen>
+    <dimen name="text_h6">24sp</dimen>
+    <dimen name="text_h5">20sp</dimen>
+    <dimen name="text_h4">18sp</dimen>
+    <dimen name="text_h3">16sp</dimen>
+    <dimen name="text_h2">14sp</dimen>
+    <dimen name="text_h1">12sp</dimen>
+    <dimen name="text_h0">8sp</dimen>
+
+    <dimen name="rating_min_height">25dp</dimen>
+    <dimen name="rating_min_width">25dp</dimen>
+    <dimen name="roundedBottomSheetCornerRadiusLeftPadding">0dp</dimen>
+    <dimen name="roundedBottomSheetCornerRadiusRightPadding">0dp</dimen>
+
+    <dimen name="__header">350dp</dimen>
+    <dimen name="__mines_header">0dp</dimen>
+
+    <dimen name="_300">300dp</dimen>
+    <dimen name="_270">270dp</dimen>
+    <dimen name="_240">240dp</dimen>
+    <dimen name="_220">220dp</dimen>
+    <dimen name="_120">120dp</dimen>
+    <dimen name="_100">100dp</dimen>
+    <dimen name="_150">150dp</dimen>
+    <dimen name="_160">160dp</dimen>
+    <dimen name="_170">170dp</dimen>
+    <dimen name="_180">180dp</dimen>
+    <dimen name="_200">200dp</dimen>
+    <dimen name="_225">225dp</dimen>
+    <dimen name="_250">250dp</dimen>
+    <dimen name="_130">130dp</dimen>
+    <dimen name="_115">115dp</dimen>
+    <dimen name="_90">90dp</dimen>
+    <dimen name="_80">80dp</dimen>
+    <dimen name="_75">75dp</dimen>
+    <dimen name="_70">70dp</dimen>
+    <dimen name="_60">60dp</dimen>
+    <dimen name="_40">40dp</dimen>
+    <dimen name="_45">45dp</dimen>
+    <dimen name="_30">30dp</dimen>
+    <dimen name="_25">25dp</dimen>
+
+    <dimen name="margin_large">50dp</dimen>
+    <dimen name="_35">35dp</dimen>
+    <dimen name="h6">30dp</dimen>
+    <dimen name="h5">20dp</dimen>
+    <dimen name="h4">16dp</dimen>
+    <dimen name="h3">12dp</dimen>
+    <dimen name="h2">8dp</dimen>
+    <dimen name="h1">4dp</dimen>
+    <dimen name="margin_very_small">1dp</dimen>
+
+    <dimen name="margin_mines_30">-30dp</dimen>
+    <dimen name="margin_mines_standard_big">-15dp</dimen>
+    <dimen name="margin_mines_standard">-10dp</dimen>
+    <dimen name="margin_mines_small">-5dp</dimen>
+    <dimen name="margin_mines_very_small">-2dp</dimen>
+
+    <dimen name="__max">320dp</dimen>
+
+    <dimen name="height_standard">55dp</dimen>
+</resources>

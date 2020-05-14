@@ -1,0 +1,107 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="CustomStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/gray5</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
+        <item name="textAppearanceBody1">@color/black</item>
+        <item name="android:textColorPrimary">@color/gray2</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <style name="customEditText" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxStrokeColor">@color/colorPrimary</item>
+        <item name="passwordToggleTint">@color/black</item>
+        <item name="helperTextTextColor">@color/gray2</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="textSmallWhite">
+        <item name="android:textSize">@dimen/text_h1</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="textStandardWhite">
+        <item name="android:textSize">@dimen/text_h4</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="textBigWhite">
+        <item name="android:textSize">@dimen/text_h5</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/red1</item>
+        <item name="android:textSize">@dimen/text_h3</item>
+    </style>
+
+    <style name="buttonSmallWhite">
+        <item name="android:textSize">@dimen/text_h1</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="buttonBigWhite">
+        <item name="android:textSize">@dimen/text_h5</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="buttonStandardBlue" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:textSize">@dimen/text_h3</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:background">@drawable/btn_gradient_blue</item>
+        <item name="android:radius">@dimen/h1</item>
+        <item name="dialogCornerRadius">@dimen/h1</item>
+        <item name="android:topLeftRadius">@dimen/h1</item>
+        <item name="android:topRightRadius">@dimen/h1</item>
+        <item name="android:bottomLeftRadius">@dimen/h1</item>
+        <item name="android:bottomRightRadius">@dimen/h1</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="LoadingIndicatorView">
+        <item name="minWidth">48dip</item>
+        <item name="maxWidth">48dip</item>
+        <item name="minHeight">48dip</item>
+        <item name="maxHeight">48dip</item>
+        <item name="indicatorName">LineScaleIndicator</item>
+    </style>
+
+    <style name="CustomStyle.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="CustomStyle.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

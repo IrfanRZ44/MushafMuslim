@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav"
+    android:label="Authentication"
+    tools:showIn="navigation_view"
+    app:startDestination="@id/splashFragment">
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.exomatik.baseapplication.ui.auth.splash.SplashFragment"
+        android:label="@string/splash_screen"
+        tools:layout="@layout/fragment_splash" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.exomatik.baseapplication.ui.auth.login.LoginFragment"
+        android:label="@string/login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.exomatik.baseapplication.ui.auth.register.RegisterFragment"
+        android:label="@string/register"
+        tools:layout="@layout/fragment_register"
+        />
+    <fragment
+        android:id="@+id/lihatFotoFragment"
+        android:name="com.exomatik.baseapplication.utils.LihatFotoFragment"
+        android:label="@string/foto"
+        tools:layout="@layout/fragment_lihat_foto"
+        />
+</navigation>

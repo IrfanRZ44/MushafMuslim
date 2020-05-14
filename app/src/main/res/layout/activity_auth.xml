@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apps="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/viewParent"
+    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/h4"/>
+    <fragment
+        android:id="@+id/navAuthFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        apps:defaultNavHost="true"
+        apps:navGraph="@navigation/auth_nav"
+        />
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    tools:context="com.exomatik.baseapplication.ui.auth.splash.SplashFragment"
+    >
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:layout_width="@dimen/_170"
+        android:layout_height="@dimen/_170"
+        android:layout_marginBottom="@dimen/h2"
+        android:padding="@dimen/h2"
+        android:scaleType="fitCenter"
+        android:background="@drawable/ic_launcher_background"
+        android:src="@drawable/ic_launcher_foreground"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_40"
+        android:id="@+id/img"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/base_application"
+        style="@style/textStandardWhite"
+        android:textColor="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/h3"
+        android:layout_centerHorizontal="true"
+        />
+</RelativeLayout>

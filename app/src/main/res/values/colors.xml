@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5D6ACB</color>
+    <color name="colorPrimaryDark">#242B79</color>
+    <color name="colorAccent">#6D7FFF</color>
+
+    <color name="blue1">#6D7FFF</color>
+    <color name="blue2">#344C8D</color>
+    <color name="blue3">#5D6ACB</color>
+    <color name="blue4">#344C8D</color>
+    <color name="blue5">#5764C3</color>
+    <color name="blue6">#E7EDFA</color>
+    <color name="blue7">#AFB8FF</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+
+    <color name="gray1">#BDBBBB</color>
+    <color name="gray2">#757575</color>
+    <color name="gray3">#707070</color>
+    <color name="gray4">#4D4D4D</color>
+    <color name="gray5">#EDEFF9</color>
+    <color name="gray6">#E0E0E0</color>
+    <color name="gray7">#F0F0F0</color>
+    <color name="gray8">#E6E6E6</color>
+    <color name="gray9">#C4C4C4</color>
+    <color name="gray10">#BEBCBC</color>
+    <color name="gray11">#ADADAD</color>
+    <color name="gray12">#E3E3E3</color>
+
+    <color name="red1">#d32f2f</color>
+    <color name="red2">#B00020</color>
+
+    <color name="green1">#0CBC20</color>
+
+    <color name="yellow1">#FFA726</color>
+
+    <color name="colorRouteLine">#5D6ACB</color>
+</resources>

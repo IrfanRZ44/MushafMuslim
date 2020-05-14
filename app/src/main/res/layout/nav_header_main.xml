@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00FFFFFF"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_30"
+    android:paddingBottom="@dimen/h2"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/foto"
+        android:layout_width="@dimen/margin_large"
+        android:layout_height="@dimen/margin_large"
+        android:src="@drawable/ic_camera_white"
+        android:scaleType="centerInside"
+        android:padding="2dp"
+        android:background="@drawable/border_circle_gray"
+        android:layout_marginStart="@dimen/h4"
+        android:layout_marginEnd="@dimen/h4"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/namaMb"
+        style="@style/textStandardWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/h2"
+        android:layout_marginStart="@dimen/h4"
+        android:layout_marginEnd="@dimen/h4"
+        android:text="@string/nama"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_h5"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/gelarMb"
+        style="@style/textStandardWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gelar"
+        android:textColor="@color/gray3"
+        android:layout_marginStart="@dimen/h4"
+        android:layout_marginEnd="@dimen/h4"
+        android:textSize="@dimen/text_h2" />
+    <View
+        android:background="@color/gray1"
+        android:layout_marginTop="@dimen/h5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp">
+    </View>
+</androidx.appcompat.widget.LinearLayoutCompat>

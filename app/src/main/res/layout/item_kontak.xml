@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/h1"
+    android:layout_marginBottom="@dimen/h2"
+    >
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imgFoto"
+        android:layout_width="@dimen/margin_large"
+        android:layout_height="@dimen/margin_large"
+        android:scaleType="centerInside"
+        android:layout_marginTop="@dimen/h1"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/h2"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textNama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_h3"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/nama_kontak"
+            android:maxLines="2"
+            android:ellipsize="end"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_h2"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/deskripsi"
+            android:maxLines="1"
+            android:ellipsize="end"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textLokasi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_h2"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/kecamatan_dan_kota"
+            android:maxLines="2"
+            android:ellipsize="end"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:visibility="visible"
+            android:background="@color/gray12"
+            android:layout_marginTop="@dimen/h2"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

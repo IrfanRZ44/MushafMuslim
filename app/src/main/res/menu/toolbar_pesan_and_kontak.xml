@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/actionPesan"
+        android:icon="@drawable/ic_chat_white"
+        android:title="@string/action_chat"
+        app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/actionKontak"
+        android:icon="@drawable/ic_contact_white"
+        android:title="@string/menu_kontak"
+        app:showAsAction="ifRoom|collapseActionView" />
+</menu>
