@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.exomatik.baseapplication.ui.auth.register.RegisterFragment">
+    tools:context="com.exomatik.zcodex.ui.auth.register.RegisterFragment">
 
     <data>
         <variable
             name="viewModel"
-            type="com.exomatik.baseapplication.ui.auth.register.RegisterViewModel"
+            type="com.exomatik.zcodex.ui.auth.register.RegisterViewModel"
             />
     </data>
 
@@ -34,16 +34,15 @@
                 android:onClick="@{()-> viewModel.onClickBack()}"
                 android:src="@drawable/ic_back_black" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img"
                 android:layout_width="@dimen/_100"
                 android:layout_height="@dimen/_100"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/h2"
-                android:background="@drawable/ic_launcher_background"
                 android:padding="@dimen/h2"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_launcher_foreground" />
+                android:src="@drawable/logo_acc" />
 
             <include layout="@layout/progress_loading"
                 android:layout_width="wrap_content"
@@ -141,7 +140,7 @@
                 android:text="@string/sign_up"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
-                android:onClick="@{()-> viewModel.onClickRegister()}"
+                android:onClick="@{()-> viewModel.cekUserName()}"
                 disableButton="@{viewModel.isShowLoading}"
                 android:textAlignment="center"
                 />

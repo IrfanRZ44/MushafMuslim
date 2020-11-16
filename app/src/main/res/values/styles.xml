@@ -104,4 +104,9 @@
 
     <style name="CustomStyle.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MyAlertDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

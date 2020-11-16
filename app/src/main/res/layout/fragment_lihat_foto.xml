@@ -8,7 +8,7 @@
         android:background="@color/black"
         >
 
-        <com.exomatik.baseapplication.services.photoView.PhotoView
+        <com.exomatik.zcodex.services.photoView.PhotoView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerInside"

@@ -1,77 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context="com.exomatik.baseapplication.ui.main.beranda.BerandaFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.exomatik.zcodex.ui.main.beranda.BerandaFragment"
     >
     <data>
         <variable
             name="viewModel"
-            type="com.exomatik.baseapplication.ui.main.beranda.BerandaViewModel" />
+            type="com.exomatik.zcodex.ui.main.beranda.BerandaViewModel" />
     </data>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:theme="@style/CustomTheme"
         snackbar="@{viewModel.message}"
+        android:theme="@style/CustomStyle"
         >
-
         <androidx.core.widget.NestedScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView"
+            android:layout_above="@+id/viewGaris2"
+            android:layout_alignParentTop="true"
+            >
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/h2"
+                    android:id="@+id/rlHeader"
+                    >
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgLogo"
+                        android:layout_width="@dimen/_100"
+                        android:layout_height="@dimen/_100"
+                        android:padding="@dimen/h2"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/logo_acc"
+                        />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_h5"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:id="@+id/textAdmob"
+                        android:layout_toEndOf="@+id/imgLogo"
+                        android:text="@={viewModel.totalPoint}"
+                        android:layout_marginTop="@dimen/h2"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_h3"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:id="@+id/textTotalUser"
+                        android:layout_toEndOf="@+id/imgLogo"
+                        android:layout_below="@+id/textAdmob"
+                        android:text="@={viewModel.totalUser}"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_h3"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:id="@+id/textHargaPoint"
+                        android:layout_toEndOf="@+id/imgLogo"
+                        android:text="@={viewModel.hargaPoint}"
+                        android:layout_below="@+id/textTotalUser"
+                        />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    android:layout_below="@+id/rlHeader"
+                    android:layout_margin="@dimen/h2"
+                    android:id="@+id/viewGaris"
+                    />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/h2"
-                    android:layout_marginTop="@dimen/h2"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="@string/list_temp_data"
+                    android:textSize="@dimen/text_h5"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_h2"
+                    android:fontFamily="@font/roboto_regular"
+                    android:id="@+id/textNotes"
+                    android:text="@string/notes"
+                    android:layout_below="@+id/viewGaris"
+                    android:layout_margin="@dimen/h2"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/textStandardWhite"
+                    android:textSize="@dimen/text_h3"
+                    android:layout_below="@+id/textNotes"
+                    android:layout_marginTop="@dimen/text_h3"
+                    android:layout_marginBottom="@dimen/h3"
+                    android:layout_marginLeft="@dimen/_30"
+                    android:layout_marginRight="@dimen/_30"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:textColor="@color/gray2"
+                    android:id="@+id/textStatus"
+                    showTextStatus="@{viewModel.message}"
                     />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/text"
+                    android:id="@+id/rcNotes"
+                    android:layout_below="@+id/textStatus"
                     />
-
-                <include
-                    android:id="@+id/progress"
-                    layout="@layout/progress_loading"
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnAddNotes"
+                    style="@style/buttonStandardBlue"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rvData"
+                    android:layout_below="@+id/rcNotes"
+                    android:layout_margin="@dimen/h2"
+                    android:padding="@dimen/h3"
+                    android:text="@string/add_notes"
+                    android:drawableEnd="@drawable/ic_add_white"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/h2"
-                    android:visibility="gone"
-                    visible="@{viewModel.isShowLoading}"
+                    android:textColor="@color/white"
+                    android:onClick="@{()-> viewModel.onClickAddNotes()}"
+                    disableButton="@{viewModel.isShowLoading}"
                     />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/progress"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/h1"
-                    android:layout_marginBottom="@dimen/h1"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="@={viewModel.status}"
-                    showTextStatus="@{viewModel.status}"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_h2" />
             </RelativeLayout>
         </androidx.core.widget.NestedScrollView>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <include layout="@layout/progress_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            visible="@{viewModel.isShowLoading}"
+            android:id="@+id/progress"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_above="@+id/textAds"
+            android:layout_margin="@dimen/h2"
+            android:id="@+id/viewGaris2"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_h5"
+            android:textColor="@color/black"
+            android:fontFamily="@font/roboto_regular"
+            android:id="@+id/textAds"
+            android:text="@string/admob"
+            android:layout_above="@+id/btnIntersitial"
+            android:layout_margin="@dimen/h2"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnIntersitial"
+            android:backgroundTint="@color/green1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/adView"
+            android:layout_margin="@dimen/h2"
+            android:padding="@dimen/h3"
+            android:text="@string/click_me"
+            android:drawableEnd="@drawable/ic_video_white"
+            android:drawablePadding="@dimen/h2"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:onClick="@{()-> viewModel.onClickInterstisial()}"
+            disableButton="@{viewModel.isShowLoading}"
+            tools:ignore="UnusedAttribute" />
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/bannerIDTesting"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="@{()-> viewModel.onClickBanner()}"
+            />
+    </RelativeLayout>
+
 </layout>

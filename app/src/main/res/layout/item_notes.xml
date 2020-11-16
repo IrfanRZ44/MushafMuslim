@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/CustomTheme">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/h2"
+        app:cardCornerRadius="@dimen/h2"
+        app:cardElevation="@dimen/h2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/h2">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/margin_large"
+                android:layout_height="@dimen/margin_large"
+                android:layout_margin="@dimen/h2"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_notes_yellow"
+                android:id="@+id/imgNotes"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/h2"
+                android:layout_toEndOf="@+id/imgNotes"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_h3"
+                android:textStyle="bold"
+                android:id="@+id/textName"
+                android:maxLines="1"
+                android:ellipsize="end"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/h2"
+                android:layout_toEndOf="@+id/imgNotes"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/notes"
+                android:textColor="@color/gray3"
+                android:textSize="@dimen/text_h2"
+                android:layout_below="@+id/textName"
+                android:id="@+id/textNotes"
+                android:maxLines="2"
+                android:ellipsize="end"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/h2"
+                android:layout_marginEnd="@dimen/h2"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/tanggal"
+                android:textSize="@dimen/text_h2"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="false"
+                android:layout_below="@+id/textNotes"
+                android:layout_marginBottom="@dimen/h2"
+                android:id="@+id/textTanggal"
+                tools:ignore="RelativeOverlap"
+                android:drawableEnd="@drawable/ic_time_gray"
+                android:drawablePadding="@dimen/h2"
+                />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

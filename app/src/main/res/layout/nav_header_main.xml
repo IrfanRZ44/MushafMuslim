@@ -23,7 +23,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/namaMb"
+        android:id="@+id/nama"
         style="@style/textStandardWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,11 +36,11 @@
         android:textStyle="bold" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/gelarMb"
+        android:id="@+id/username"
         style="@style/textStandardWhite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/gelar"
+        android:text="@string/username"
         android:textColor="@color/gray3"
         android:layout_marginStart="@dimen/h4"
         android:layout_marginEnd="@dimen/h4"

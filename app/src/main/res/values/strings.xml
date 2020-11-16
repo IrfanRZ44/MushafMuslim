@@ -1,9 +1,14 @@
 <resources>
-    <string name="app_name">BaseApplication</string>
-    <string name="base_application">Base Application</string>
+    <string name="app_name">ZCode</string>
 
     <string name="text_all_right_reserved">Ahlan Wa Sahlan</string>
     <string name="selamat_datang">Selamat Datang</string>
+
+    <string name="admobID">ca-app-pub-5626225155470686~8394534181</string>
+    <string name="bannerID">ca-app-pub-5626225155470686/2679173073</string>
+    <string name="interstisialID">ca-app-pub-5626225155470686/6785939046</string>
+    <string name="admobIDTesting">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="bannerIDTesting">ca-app-pub-3940256099942544/6300978111</string>
     <string name="login">Masuk</string>
     <string name="lanjut">Lanjut</string>
     <string name="sign_up">Daftar</string>
@@ -95,7 +100,7 @@
     <string name="username_atau_no_handphone">Username atau No. Handphone</string>
     <string name="lokasi">Lokasi</string>
     <string name="navigasi">Navigasi</string>
-    <string name="edit_profil">Edit Profil</string>
+    <string name="edit_profil">Edit Profile</string>
     <string name="kecamatan_dan_kota">Kecamatan dan Kota</string>
     <string name="waktu">Waktu</string>
     <string name="tanggal">Tanggal</string>
@@ -121,4 +126,15 @@
     <string name="menu_setting">Setting</string>
     <string name="main_activity">Main Activity</string>
     <string name="authentication">Authentication</string>
+    <string name="admob">Admob</string>
+    <string name="test_admob">Test Admob</string>
+    <string name="intersitial_admob">Intersitial Admob</string>
+    <string name="logout">Logout</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="notes">Notes</string>
+    <string name="add_notes">Add Notes</string>
+    <string name="save">Save</string>
+    <string name="title">Title</string>
+    <string name="click_me">Click Me</string>
+    <string name="about_us">About Us</string>
 </resources>

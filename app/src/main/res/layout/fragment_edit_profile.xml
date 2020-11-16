@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.exomatik.zcodex.ui.main.editProfile.EditProfileFragment"
+    >
+    <data>
+        <variable
+            name="viewModel"
+            type="com.exomatik.zcodex.ui.main.editProfile.EditProfileViewModel" />
+    </data>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/CustomStyle"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            snackbar="@{viewModel.message}"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img"
+                android:layout_width="@dimen/_100"
+                android:layout_height="@dimen/_100"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_40"
+                android:layout_marginBottom="@dimen/h2"
+                android:padding="@dimen/h2"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo_acc"
+                android:background="@android:color/transparent"
+                />
+
+            <include layout="@layout/progress_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                visible="@{viewModel.isShowLoading}"
+                android:id="@+id/progress"
+                android:layout_below="@+id/img"
+                android:visibility="gone"
+                android:layout_centerHorizontal="true"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/textStandardWhite"
+                android:textSize="@dimen/text_h3"
+                android:layout_below="@+id/progress"
+                android:layout_marginTop="@dimen/text_h3"
+                android:layout_marginBottom="@dimen/h3"
+                android:layout_marginLeft="@dimen/_30"
+                android:layout_marginRight="@dimen/_30"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"
+                android:textColor="@color/gray2"
+                android:id="@+id/textStatus"
+                android:text="@string/edit_profile"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100"
+                />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

@@ -7,24 +7,29 @@
     tools:showIn="navigation_view"
     app:startDestination="@id/nav_beranda">
     <fragment
+        android:id="@+id/nav_beranda"
+        android:name="com.exomatik.zcodex.ui.main.beranda.BerandaFragment"
+        android:label="@string/beranda"
+        tools:layout="@layout/fragment_beranda" />
+    <fragment
+        android:id="@+id/nav_edit_profile"
+        android:name="com.exomatik.zcodex.ui.main.editProfile.EditProfileFragment"
+        android:label="@string/edit_profil"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
         android:id="@+id/lihatFotoFragment"
-        android:name="com.exomatik.baseapplication.utils.LihatFotoFragment"
+        android:name="com.exomatik.zcodex.utils.LihatFotoFragment"
         android:label="@string/foto"
         tools:layout="@layout/fragment_lihat_foto"
         />
     <fragment
-        android:id="@+id/nav_beranda"
-        android:name="com.exomatik.baseapplication.ui.main.beranda.BerandaFragment"
-        android:label="@string/beranda"
-        tools:layout="@layout/fragment_beranda" />
+        android:id="@+id/addNotesFragment"
+        android:name="com.exomatik.zcodex.ui.main.addNotes.AddNotesFragment"
+        android:label="@string/add_notes"
+        tools:layout="@layout/fragment_add_notes" />
     <fragment
-        android:id="@+id/nav_profile"
-        android:name="com.exomatik.baseapplication.ui.main.blank1.Blank1Fragment"
-        android:label="fragment_blank1"
-        tools:layout="@layout/fragment_blank1" />
-    <fragment
-        android:id="@+id/nav_setting"
-        android:name="com.exomatik.baseapplication.ui.main.blank2.Blank2Fragment"
-        android:label="fragment_blank2"
-        tools:layout="@layout/fragment_blank2" />
+        android:id="@+id/editNotesFragment"
+        android:name="com.exomatik.zcodex.ui.main.editNotes.EditNotesFragment"
+        android:label="fragment_edit_notes"
+        tools:layout="@layout/fragment_edit_notes" />
 </navigation>
