@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseViewModel
 import com.exomatik.zcodex.model.ModelUser
-import com.exomatik.zcodex.ui.auth.verify.VerifyFragment
+import com.exomatik.zcodex.ui.auth.verifyRegister.VerifyRegisterFragment
 import com.exomatik.zcodex.utils.Constant.active
 import com.exomatik.zcodex.utils.Constant.phone
 import com.exomatik.zcodex.utils.Constant.referenceUser
@@ -146,17 +146,17 @@ class RegisterViewModel(
                     if (unverify) {
                         isShowLoading.value = false
                         val dataUser = ModelUser(user, hp, "", "user"
-                            , user, "", "", tglSekarang
+                            , user, "", tglSekarang
                             , 0, active
                         )
 
                         val bundle = Bundle()
-                        val fragmentTujuan = VerifyFragment()
+                        val fragmentTujuan = VerifyRegisterFragment()
                         bundle.putString("verifyId", verificationId)
                         bundle.putBoolean("auth", true)
                         bundle.putParcelable("dataUser", dataUser)
                         fragmentTujuan.arguments = bundle
-                        navController.navigate(R.id.verifyFragment, bundle)
+                        navController.navigate(R.id.verifyRegisterFragment, bundle)
                         unverify = false
                     }
                 }, 5000L)
@@ -179,7 +179,7 @@ class RegisterViewModel(
                 if (task.isSuccessful) {
 
                     val dataUser = ModelUser(user, hp, "", "user"
-                        , user, "", "", tglSekarang, 0
+                        , user, "", tglSekarang, 0
                         , active
                     )
 

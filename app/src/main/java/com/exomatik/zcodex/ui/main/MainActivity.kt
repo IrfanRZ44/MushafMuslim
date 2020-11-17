@@ -1,6 +1,8 @@
 package com.exomatik.zcodex.ui.main
 
+import android.content.Intent
 import android.os.CountDownTimer
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -28,6 +30,8 @@ import com.google.android.gms.tasks.OnFailureListener
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.navigation.ui.navigateUp
 import coil.api.load
+import com.exomatik.zcodex.ui.auth.AuthActivity
+import com.exomatik.zcodex.utils.showMessage
 import kotlinx.android.synthetic.main.nav_header.view.*
 
 class MainActivity : BaseActivity() {
@@ -36,6 +40,7 @@ class MainActivity : BaseActivity() {
     private lateinit var navController: NavController
     private lateinit var view: View
     private var timerCekKoneksi: CountDownTimer? = null
+    private var exit = false
 
     override fun myCodeHere() {
         setTheme(R.style.CustomStyle)
@@ -62,7 +67,7 @@ class MainActivity : BaseActivity() {
         val dataUser = savedData.getDataUser()
         val headerView = navView?.getHeaderView(0)
 
-        if (dataUser != null){
+        if (dataUser != null) {
 
             headerView?.fotoMb?.load(savedData.getDataUser()?.urlFoto) {
                 crossfade(true)
@@ -75,8 +80,7 @@ class MainActivity : BaseActivity() {
 
             headerView?.namaMb?.text = savedData.getDataUser()?.username
             headerView?.gelarMb?.text = savedData.getDataUser()?.noHp
-        }
-        else{
+        } else {
             headerView?.fotoMb?.load(R.drawable.ic_profile_white) {
                 crossfade(true)
                 placeholder(R.drawable.ic_profile_white)
@@ -123,15 +127,17 @@ class MainActivity : BaseActivity() {
         val onCompleteListener = OnCompleteListener<Void> { result ->
             progress.visibility = View.GONE
             if (result.isSuccessful) {
-                    Toast.makeText(this, "Berhasil Keluar", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Berhasil Keluar", Toast.LENGTH_LONG).show()
 
-                    FirebaseUtils.signOut()
-                    savedData.setDataObject(ModelUser(), Constant.referenceUser)
-                    navController.navigate(R.id.splashFragment)
+                FirebaseUtils.signOut()
+                savedData.setDataObject(ModelUser(), Constant.referenceUser)
+                val intent = Intent(this, AuthActivity::class.java)
+                startActivity(intent)
+                finish()
             } else {
-                    Toast.makeText(this, "Gagal menghapus token", Toast.LENGTH_LONG).show()
-                }
+                Toast.makeText(this, "Gagal menghapus token", Toast.LENGTH_LONG).show()
             }
+        }
 
         val onFailureListener = OnFailureListener { result ->
             progress.visibility = View.GONE
@@ -140,14 +146,16 @@ class MainActivity : BaseActivity() {
 
         FirebaseUtils.deleteValueWith2Child(
             Constant.referenceUser, username,
-            Constant.token, onCompleteListener, onFailureListener)
+            Constant.token, onCompleteListener, onFailureListener
+        )
     }
 
     private fun showProgress() {
         progress.visibility = View.VISIBLE
         window.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
     }
 
     override fun onBackPressed() {
@@ -157,7 +165,14 @@ class MainActivity : BaseActivity() {
         if (drawerLayout?.isDrawerOpen(GravityCompat.END)!!) {
             drawerLayout?.closeDrawer(GravityCompat.END)
         } else {
-            super.onBackPressed()
+            if (exit) {
+                finish()
+                return
+            } else {
+                showMessage(view, "Tekan Cepat 2 Kali untuk Keluar")
+                exit = true
+                Handler().postDelayed({ exit = false }, 2000)
+            }
         }
     }
 

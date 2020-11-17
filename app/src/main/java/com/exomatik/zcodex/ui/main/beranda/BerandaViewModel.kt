@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.exomatik.zcodex.ui.main.beranda
 
 import android.annotation.SuppressLint
@@ -8,13 +10,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseViewModel
+import com.exomatik.zcodex.model.ModelNotes
 import com.exomatik.zcodex.model.ModelTransaction
 import com.exomatik.zcodex.model.ModelUser
+import com.exomatik.zcodex.ui.main.editNotes.EditNotesFragment
 import com.exomatik.zcodex.utils.Constant
+import com.exomatik.zcodex.utils.Constant.defaultRewardedID
 import com.exomatik.zcodex.utils.DataSave
 import com.exomatik.zcodex.utils.FirebaseUtils
 import com.google.android.gms.ads.*
+import com.google.android.gms.ads.reward.RewardItem
+import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.database.DataSnapshot
@@ -24,9 +33,6 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import com.exomatik.zcodex.R
-import com.exomatik.zcodex.model.ModelNotes
-import com.exomatik.zcodex.ui.main.editNotes.EditNotesFragment
 
 class BerandaViewModel(
     private val navController: NavController,
@@ -40,6 +46,7 @@ class BerandaViewModel(
     val hargaPoint = MutableLiveData<String>()
     private var listNotes = ArrayList<ModelNotes>()
     private var adapter: AdapterNotesBeranda? = null
+    private lateinit var mRewardedVideoAd : RewardedVideoAd
 
     @SuppressLint("SimpleDateFormat")
     private val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -57,42 +64,63 @@ class BerandaViewModel(
         rcNotes.adapter = adapter
     }
 
-    fun setAdMob() {
+    fun setAdMobBanner() {
         totalPoint.value = "Total Point = ${savedData?.getDataUser()?.totalPoin.toString()}"
         hargaPoint.value = "Price Point = N/A"
 
         MobileAds.initialize(activity) {}
+        adView.loadAd(AdRequest.Builder().build())
+    }
 
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
+    @Suppress("DEPRECATION")
+    fun setUpRewardedAds(){
+        MobileAds.initialize(activity) {}
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(activity)
 
-        adView.adListener = object: AdListener() {
-            override fun onAdLoaded() {
+        mRewardedVideoAd.loadAd(defaultRewardedID,
+            AdRequest.Builder().build())
+
+        mRewardedVideoAd.rewardedVideoAdListener = object: RewardedVideoAdListener {
+            override fun onRewardedVideoAdClosed() {
             }
 
-            override fun onAdFailedToLoad(error : LoadAdError) {
-                message.value = error.toString()
+            override fun onRewardedVideoAdLeftApplication() {
             }
 
-            override fun onAdOpened() {
-                onClickBanner()
+            override fun onRewardedVideoAdLoaded() {
+                message.value = "Ads Reward is ready"
             }
 
-            override fun onAdClicked() {
+            override fun onRewardedVideoAdOpened() {
             }
 
-            override fun onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
+            override fun onRewardedVideoCompleted() {
             }
 
-            override fun onAdClosed() {
-                // Code to be executed when the user is about to return
-                // to the app after tapping on an ad.
+            override fun onRewarded(reward: RewardItem?) {
+                saveRewarded()
             }
+
+            override fun onRewardedVideoStarted() {
+            }
+
+            override fun onRewardedVideoAdFailedToLoad(error: Int) {
+                message.value = "Failed to load ads"
+            }
+
         }
     }
 
-    fun onClickBanner(){
+    fun onClickAdmob(){
+        if (mRewardedVideoAd.isLoaded) {
+            mRewardedVideoAd.show()
+        }
+        else {
+            message.value = "Ads it's not loaded yet"
+        }
+    }
+
+    private fun saveRewarded(){
         val dataUser = savedData?.getDataUser()
         val username = savedData?.getDataUser()?.username
 
@@ -128,50 +156,6 @@ class BerandaViewModel(
         }
     }
 
-    fun onClickAddNotes(){
-        navController.navigate(R.id.addNotesFragment)
-    }
-
-    @Suppress("DEPRECATION")
-    fun onClickInterstisial(){
-        MobileAds.initialize(activity,
-            "ca-app-pub-3940256099942544~3347511713")
-
-        val mInterstitialAd = InterstitialAd(activity)
-        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
-
-        mInterstitialAd.adListener = object: AdListener() {
-            override fun onAdLoaded() {
-                if (mInterstitialAd.isLoaded) {
-                    mInterstitialAd.show()
-                } else {
-                    message.value = "Ads is not loaded yet"
-                }
-            }
-
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                message.value = adError.toString()
-            }
-
-            override fun onAdOpened() {
-                onClickBanner()
-            }
-
-            override fun onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            override fun onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            override fun onAdClosed() {
-                // Code to be executed when the interstitial ad is closed.
-            }
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     private fun addTotalPoint(dataUser: ModelUser, username: String, point: Long){
         val onCompleteListener = OnCompleteListener<Void> { result ->
@@ -181,9 +165,7 @@ class BerandaViewModel(
                 dataUser.totalPoin = point
                 savedData?.setDataObject(dataUser, Constant.referenceUser)
                 totalPoint.value = "Total Point = ${savedData?.getDataUser()?.totalPoin.toString()}"
-
-                val adRequest = AdRequest.Builder().build()
-                adView.loadAd(adRequest)
+                mRewardedVideoAd.loadAd(defaultRewardedID, AdRequest.Builder().build())
             } else {
                 isShowLoading.value = false
                 message.value = "Failed to add point"
@@ -203,6 +185,10 @@ class BerandaViewModel(
             , onCompleteListener
             , onFailureListener
         )
+    }
+
+    fun onClickAddNotes(){
+        navController.navigate(R.id.addNotesFragment)
     }
 
     fun getTotalUser() {

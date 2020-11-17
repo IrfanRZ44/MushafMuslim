@@ -36,6 +36,10 @@ object Constant {
     const val codeRequestLocationUpdate = 10
     const val codeRequestResultCrop = 400
 
+    const val defaultAdmobID = "ca-app-pub-5626225155470686~8394534181"
+    const val defaultBannerID = "ca-app-pub-5626225155470686/2679173073"
+    const val defaultIntersitialID = "ca-app-pub-5626225155470686/6785939046"
+    const val defaultRewardedID = "ca-app-pub-5626225155470686/2924028738"
     const val defaultTempFoto = "https://www.google.co.id/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
     const val timeFormat = "HH:mm"
     const val dateFormat1 = "dd-M-yyyy"

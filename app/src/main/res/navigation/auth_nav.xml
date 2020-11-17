@@ -17,10 +17,15 @@
         android:label="@string/login"
         tools:layout="@layout/fragment_login" />
     <fragment
-        android:id="@+id/verifyFragment"
-        android:name="com.exomatik.zcodex.ui.auth.verify.VerifyFragment"
+        android:id="@+id/verifyRegisterFragment"
+        android:name="com.exomatik.zcodex.ui.auth.verifyRegister.VerifyRegisterFragment"
         android:label="@string/login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_verify_register" />
+    <fragment
+        android:id="@+id/verifyLoginFragment"
+        android:name="com.exomatik.zcodex.ui.auth.verifyLogin.VerifyLoginFragment"
+        android:label="@string/login"
+        tools:layout="@layout/fragment_verify_login" />
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.exomatik.zcodex.ui.auth.register.RegisterFragment"

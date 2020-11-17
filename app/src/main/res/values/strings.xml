@@ -7,6 +7,7 @@
     <string name="admobID">ca-app-pub-5626225155470686~8394534181</string>
     <string name="bannerID">ca-app-pub-5626225155470686/2679173073</string>
     <string name="interstisialID">ca-app-pub-5626225155470686/6785939046</string>
+    <string name="rewardedAdsID">ca-app-pub-5626225155470686/2924028738</string>
     <string name="admobIDTesting">ca-app-pub-3940256099942544~3347511713</string>
     <string name="bannerIDTesting">ca-app-pub-3940256099942544/6300978111</string>
     <string name="login">Masuk</string>
@@ -137,4 +138,5 @@
     <string name="title">Title</string>
     <string name="click_me">Click Me</string>
     <string name="about_us">About Us</string>
+    <string name="rewarded_ads">Rewarded Ads</string>
 </resources>

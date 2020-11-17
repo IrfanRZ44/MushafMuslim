@@ -11,7 +11,6 @@ data class ModelUser(
     var jenisAkun: String = "",
     var username: String = "",
     var urlFoto: String = "",
-    var deviceInfo: String = "",
     var lastSignIn: String = "",
     var totalPoin: Long = 0,
     var active: String = ""

@@ -15,7 +15,8 @@ class BerandaFragment : BaseFragmentBind<FragmentBerandaBinding>(){
         bind.viewModel = viewModel
 
         viewModel.initAdapter()
-        viewModel.setAdMob()
+        viewModel.setAdMobBanner()
+        viewModel.setUpRewardedAds()
         viewModel.getTotalUser()
         savedData.getDataUser()?.username?.let { viewModel.getListNotes(it) }
         onClick()
