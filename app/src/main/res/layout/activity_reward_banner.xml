@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.exomatik.zcodex.ui.rewardBanner.RewardBannerFragment"
+    >
+    <data>
+        <variable
+            name="viewModel"
+            type="com.exomatik.zcodex.ui.rewardBanner.RewardBannerViewModel" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/CustomStyle"
+        android:background="@color/white"
+        >
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/bannerID"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_up_green"
+            android:layout_below="@+id/adView"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/imgUp"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_h5"
+            android:textColor="@color/black"
+            android:fontFamily="@font/roboto_regular"
+            android:id="@+id/textAdmob"
+            android:text="@string/intruksi_point"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/imgUp"
+            android:textAlignment="center"
+            android:layout_marginTop="@dimen/h2"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="@dimen/_150"
+            android:layout_height="@dimen/_150"
+            android:padding="@dimen/h2"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_acc"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_30"
+            />
+        <include layout="@layout/progress_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            visible="@{viewModel.isShowLoading}"
+            android:id="@+id/progress"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+</layout>

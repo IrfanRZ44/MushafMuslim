@@ -3,7 +3,7 @@ package com.exomatik.zcodex.ui.auth.verifyRegister
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
-import android.os.Handler
+import android.os.CountDownTimer
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
@@ -245,26 +245,32 @@ class VerifyRegisterViewModel(
                 verificationId: String,
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
-                Handler().postDelayed({
-                    if (unverify) {
-                        isShowLoading.value = false
-                        loading.value = true
-                        val dataUser = ModelUser(dataUser.nama,
-                            dataUser.noHp, dataUser.token, "user", dataUser.username,
-                            dataUser.urlFoto, tglSekarang, dataUser.totalPoin, active
-                        )
-                        message.value =
-                            "Kami sudah mengirimkan kode verifikasi ke nomor ${dataUser.noHp}"
-                        unverify = false
-                        setProgress()
+                object : CountDownTimer(2000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                    }
 
-                        try {
-                            verifyId = verificationId
-                        } catch (e: Exception) {
-                            message.value = e.message
+                    override fun onFinish() {
+                        if (unverify) {
+                            isShowLoading.value = false
+                            loading.value = true
+                            val dataUser = ModelUser(dataUser.nama,
+                                dataUser.noHp, dataUser.token, "user", dataUser.username,
+                                "", "", "", tglSekarang, tglSekarang,
+                                0, active
+                            )
+                            message.value =
+                                "Kami sudah mengirimkan kode verifikasi ke nomor ${dataUser.noHp}"
+                            unverify = false
+                            setProgress()
+
+                            try {
+                                verifyId = verificationId
+                            } catch (e: Exception) {
+                                message.value = e.message
+                            }
                         }
                     }
-                }, 2000L)
+                }.start()
             }
         }
 

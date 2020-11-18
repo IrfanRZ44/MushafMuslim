@@ -30,9 +30,9 @@ class EditNotesViewModel(
 
     @SuppressLint("SimpleDateFormat")
     private val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm dd-M-yyyy"))
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.timeDateFormat))
     } else {
-        SimpleDateFormat("dd-M-yyyy").format(Date())
+        SimpleDateFormat(Constant.timeDateFormat).format(Date())
     }
 
     fun onClickSave(){

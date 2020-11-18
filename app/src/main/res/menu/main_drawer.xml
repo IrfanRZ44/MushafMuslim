@@ -11,9 +11,9 @@
             android:icon="@drawable/ic_profile_gray"
             android:title="@string/edit_profil" />
         <item
-            android:id="@+id/nav_about_us"
-            android:icon="@drawable/ic_info_gray"
-            android:title="@string/about_us" />
+            android:id="@+id/nav_faq"
+            android:icon="@drawable/ic_faq_gray"
+            android:title="@string/faq" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_logout_gray"

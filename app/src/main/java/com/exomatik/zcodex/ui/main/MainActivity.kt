@@ -2,7 +2,6 @@ package com.exomatik.zcodex.ui.main
 
 import android.content.Intent
 import android.os.CountDownTimer
-import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -19,19 +18,19 @@ import coil.transform.CircleCropTransformation
 import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseActivity
 import com.exomatik.zcodex.model.ModelUser
-import com.exomatik.zcodex.utils.Constant
 import com.exomatik.zcodex.utils.Constant.attention
 import com.exomatik.zcodex.utils.Constant.iya
 import com.exomatik.zcodex.utils.Constant.tidak
-import com.exomatik.zcodex.utils.FirebaseUtils
-import com.exomatik.zcodex.utils.dismissKeyboard
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.navigation.ui.navigateUp
 import coil.api.load
 import com.exomatik.zcodex.ui.auth.AuthActivity
-import com.exomatik.zcodex.utils.showMessage
+import com.exomatik.zcodex.utils.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.nav_header.view.*
 
 class MainActivity : BaseActivity() {
@@ -39,13 +38,10 @@ class MainActivity : BaseActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
     private lateinit var view: View
-    private var timerCekKoneksi: CountDownTimer? = null
     private var exit = false
 
     override fun myCodeHere() {
         setTheme(R.style.CustomStyle)
-        drawerLayout.systemUiVisibility = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
 
         setSupportActionBar(toolbar)
         view = findViewById(android.R.id.content)
@@ -53,6 +49,7 @@ class MainActivity : BaseActivity() {
             setOf(
                 R.id.nav_beranda,
                 R.id.nav_edit_profile,
+                R.id.nav_faq,
                 R.id.nav_logout
             ), drawerLayout
         )
@@ -60,7 +57,36 @@ class MainActivity : BaseActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val username = savedData.getDataUser()?.username
+        if (!username.isNullOrEmpty()){
+            getDataUser(username)
+        }
+    }
+
+    fun getDataUser(username: String) {
         setSavedData()
+
+        val valueEventListener = object : ValueEventListener {
+            override fun onCancelled(result: DatabaseError) {
+            }
+
+            override fun onDataChange(result: DataSnapshot) {
+                if (result.exists()) {
+                    val data = result.getValue(ModelUser::class.java)
+
+                    if (data?.urlFoto != savedData.getDataUser()?.urlFoto){
+                        savedData.setDataObject(data, Constant.referenceUser)
+                        setSavedData()
+                    }
+                }
+            }
+        }
+
+        FirebaseUtils.refreshDataWith1ChildObject1(
+            Constant.referenceUser
+            , username
+            , valueEventListener
+        )
     }
 
     private fun setSavedData() {
@@ -68,7 +94,6 @@ class MainActivity : BaseActivity() {
         val headerView = navView?.getHeaderView(0)
 
         if (dataUser != null) {
-
             headerView?.fotoMb?.load(savedData.getDataUser()?.urlFoto) {
                 crossfade(true)
                 placeholder(R.drawable.ic_profile_white)
@@ -95,11 +120,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        timerCekKoneksi?.cancel()
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         dismissKeyboard(this)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
@@ -112,7 +132,10 @@ class MainActivity : BaseActivity() {
         alert.setPositiveButton(
             iya
         ) { _, _ ->
-            savedData.getDataUser()?.username?.let { removeToken(it) }
+            val username = savedData.getDataUser()?.username
+            if (!username.isNullOrEmpty()){
+                removeToken(username)
+            }
         }
         alert.setNegativeButton(
             tidak
@@ -171,9 +194,22 @@ class MainActivity : BaseActivity() {
             } else {
                 showMessage(view, "Tekan Cepat 2 Kali untuk Keluar")
                 exit = true
-                Handler().postDelayed({ exit = false }, 2000)
+
+                object : CountDownTimer(2000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                    }
+
+                    override fun onFinish() {
+                        exit = false
+                    }
+                }.start()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        FirebaseUtils.stopRefresh2()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

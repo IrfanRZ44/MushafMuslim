@@ -3,17 +3,7 @@ package com.exomatik.zcodex.utils
 object Constant {
     const val instalApp = "Dapatkan update tabligh dari ustadz favoritmu hanya di Balligh. " +
             "Install Aplikasinya sekarang juga </downloadlink>"
-    const val referenceBiodata = "Biodata"
-    const val referenceNotif = "Notif"
-    const val referenceSampul = "sampul"
-    const val referenceIdKontak = "idKontak"
-    const val referenceIdUser = "idUser"
-    const val referenceIdTujuan = "idTujuan"
-    const val referenceWilayah = "Wilayah"
-    const val referenceProvinsi = "Provinsi"
-    const val referenceKota = "Kota"
-    const val referenceKecamatan = "Kecamatan"
-    const val onBoarding = "onBoarding"
+    const val referenceStatusApps = "statusApps"
     const val referenceUser = "Users"
     const val referenceTransaction = "Transaction"
     const val referenceNotes = "Notes"
@@ -26,7 +16,9 @@ object Constant {
     const val referenceActiveAccount = "activeAkun"
     const val referenceBookmark= "Bookmark"
 
-    const val referenceFotoUser = "fotoUser"
+    const val referenceFotoUser = "urlFoto"
+    const val totalUser = "totalUser"
+    const val pricePoint = "pricePoint"
 
     const val codeRequestFoto = 100
     const val codeRequestGallery = 1
@@ -45,6 +37,7 @@ object Constant {
     const val dateFormat1 = "dd-M-yyyy"
     const val dateFormat2 = "dd-MMM-yyyy"
     const val dateFormat3 = "dd MMM yyyy"
+    const val timeDateFormat = "HH:mm dd-M-yyyy"
 
     const val phone = "noHp"
     const val nama = "nama"
@@ -52,6 +45,7 @@ object Constant {
     const val username = "username"
     const val provinsi = "provinsi"
     const val noHp = "noHp"
+    const val active = "active"
 
     const val personal = "Personal"
 
@@ -88,7 +82,6 @@ object Constant {
     const val manual = "manual"
     const val invalid = "invalid"
     const val status = "status"
-    const val active = "active"
     const val pending = "pending"
     const val switch = "switch"
     const val request = "request"
@@ -98,4 +91,13 @@ object Constant {
     const val unread = "unread"
     const val sended = "sended"
     const val message = "message"
+
+    const val pilihJenisBank = "Pilih Jenis Bank"
+    const val bankBRI = "Bank Republik Indonesia (BRI)"
+    const val bankBCA = "Bank Central Asia (BCA)"
+    const val bankBNI = "Bank Negara Indonesia (BNI)"
+    const val bankCIMBNiaga = "Bank CIMB Niaga"
+    const val walletOvo = "E-Wallet Ovo"
+    const val walletDana = "E-Wallet Dana"
+    const val walletGopay = "E-Wallet Gopay"
 }

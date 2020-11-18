@@ -4,13 +4,14 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
+import android.os.CountDownTimer
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseViewModel
 import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.ui.auth.verifyRegister.VerifyRegisterFragment
+import com.exomatik.zcodex.utils.Constant
 import com.exomatik.zcodex.utils.Constant.active
 import com.exomatik.zcodex.utils.Constant.phone
 import com.exomatik.zcodex.utils.Constant.referenceUser
@@ -43,9 +44,9 @@ class RegisterViewModel(
 
     @SuppressLint("SimpleDateFormat")
     private val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm dd-M-yyyy"))
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.timeDateFormat))
     } else {
-        SimpleDateFormat("dd-M-yyyy").format(Date())
+        SimpleDateFormat(Constant.timeDateFormat).format(Date())
     }
 
     fun onClickBack(){
@@ -138,28 +139,34 @@ class RegisterViewModel(
                 isShowLoading.value = false
             }
 
+            @Suppress("DEPRECATION")
             override fun onCodeSent(
                 verificationId: String,
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
-                Handler().postDelayed({
-                    if (unverify) {
-                        isShowLoading.value = false
-                        val dataUser = ModelUser(user, hp, "", "user"
-                            , user, "", tglSekarang
-                            , 0, active
-                        )
-
-                        val bundle = Bundle()
-                        val fragmentTujuan = VerifyRegisterFragment()
-                        bundle.putString("verifyId", verificationId)
-                        bundle.putBoolean("auth", true)
-                        bundle.putParcelable("dataUser", dataUser)
-                        fragmentTujuan.arguments = bundle
-                        navController.navigate(R.id.verifyRegisterFragment, bundle)
-                        unverify = false
+                object : CountDownTimer(5000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
                     }
-                }, 5000L)
+
+                    override fun onFinish() {
+                        if (unverify) {
+                            isShowLoading.value = false
+                            val dataUser = ModelUser(user, hp, "", "user"
+                                , user, "", "", "", tglSekarang, tglSekarang
+                                , 0, active
+                            )
+
+                            val bundle = Bundle()
+                            val fragmentTujuan = VerifyRegisterFragment()
+                            bundle.putString("verifyId", verificationId)
+                            bundle.putBoolean("auth", true)
+                            bundle.putParcelable("dataUser", dataUser)
+                            fragmentTujuan.arguments = bundle
+                            navController.navigate(R.id.verifyRegisterFragment, bundle)
+                            unverify = false
+                        }
+                    }
+                }.start()
             }
         }
 
@@ -179,7 +186,7 @@ class RegisterViewModel(
                 if (task.isSuccessful) {
 
                     val dataUser = ModelUser(user, hp, "", "user"
-                        , user, "", tglSekarang, 0
+                        , user, "", "", "", tglSekarang, tglSekarang, 0
                         , active
                     )
 

@@ -2,9 +2,8 @@
 
 package com.exomatik.zcodex.ui.main.beranda
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
@@ -13,25 +12,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseViewModel
 import com.exomatik.zcodex.model.ModelNotes
-import com.exomatik.zcodex.model.ModelTransaction
 import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.ui.main.editNotes.EditNotesFragment
 import com.exomatik.zcodex.utils.Constant
-import com.exomatik.zcodex.utils.Constant.defaultRewardedID
 import com.exomatik.zcodex.utils.DataSave
 import com.exomatik.zcodex.utils.FirebaseUtils
-import com.google.android.gms.ads.*
-import com.google.android.gms.ads.reward.RewardItem
-import com.google.android.gms.ads.reward.RewardedVideoAd
-import com.google.android.gms.ads.reward.RewardedVideoAdListener
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnFailureListener
+import com.exomatik.zcodex.utils.MyService
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class BerandaViewModel(
@@ -46,14 +38,6 @@ class BerandaViewModel(
     val hargaPoint = MutableLiveData<String>()
     private var listNotes = ArrayList<ModelNotes>()
     private var adapter: AdapterNotesBeranda? = null
-    private lateinit var mRewardedVideoAd : RewardedVideoAd
-
-    @SuppressLint("SimpleDateFormat")
-    private val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm dd-M-yyyy"))
-    } else {
-        SimpleDateFormat("dd-M-yyyy").format(Date())
-    }
 
     fun initAdapter(){
         adapter = AdapterNotesBeranda(listNotes) { item: ModelNotes -> onClickItem(item) }
@@ -66,125 +50,15 @@ class BerandaViewModel(
 
     fun setAdMobBanner() {
         totalPoint.value = "Total Point = ${savedData?.getDataUser()?.totalPoin.toString()}"
-        hargaPoint.value = "Price Point = N/A"
 
         MobileAds.initialize(activity) {}
         adView.loadAd(AdRequest.Builder().build())
     }
 
-    @Suppress("DEPRECATION")
-    fun setUpRewardedAds(){
-        MobileAds.initialize(activity) {}
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(activity)
-
-        mRewardedVideoAd.loadAd(defaultRewardedID,
-            AdRequest.Builder().build())
-
-        mRewardedVideoAd.rewardedVideoAdListener = object: RewardedVideoAdListener {
-            override fun onRewardedVideoAdClosed() {
-            }
-
-            override fun onRewardedVideoAdLeftApplication() {
-            }
-
-            override fun onRewardedVideoAdLoaded() {
-                message.value = "Ads Reward is ready"
-            }
-
-            override fun onRewardedVideoAdOpened() {
-            }
-
-            override fun onRewardedVideoCompleted() {
-            }
-
-            override fun onRewarded(reward: RewardItem?) {
-                saveRewarded()
-            }
-
-            override fun onRewardedVideoStarted() {
-            }
-
-            override fun onRewardedVideoAdFailedToLoad(error: Int) {
-                message.value = "Failed to load ads"
-            }
-
-        }
-    }
-
     fun onClickAdmob(){
-        if (mRewardedVideoAd.isLoaded) {
-            mRewardedVideoAd.show()
-        }
-        else {
-            message.value = "Ads it's not loaded yet"
-        }
-    }
-
-    private fun saveRewarded(){
-        val dataUser = savedData?.getDataUser()
-        val username = savedData?.getDataUser()?.username
-
-        if (dataUser != null && !username.isNullOrEmpty()){
-            isShowLoading.value = true
-            val dataTransaction = ModelTransaction("", tglSekarang, username, 1)
-
-            val onCompleteListener = OnCompleteListener<Void> { result ->
-                if (result.isSuccessful) {
-                    val point = dataUser.totalPoin + 1
-
-                    addTotalPoint(dataUser, username, point)
-                } else {
-                    isShowLoading.value = false
-                    message.value = "Failed to add point"
-                }
-            }
-
-            val onFailureListener = OnFailureListener { result ->
-                isShowLoading.value = false
-                message.value = result.message
-            }
-
-            FirebaseUtils.setValueUniqueTransaction(
-                Constant.referenceTransaction
-                , dataTransaction
-                , onCompleteListener
-                , onFailureListener
-            )
-        }
-        else{
-            message.value = "Failed to add point"
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun addTotalPoint(dataUser: ModelUser, username: String, point: Long){
-        val onCompleteListener = OnCompleteListener<Void> { result ->
-            if (result.isSuccessful) {
-                isShowLoading.value = false
-                message.value = "Adding 1 point"
-                dataUser.totalPoin = point
-                savedData?.setDataObject(dataUser, Constant.referenceUser)
-                totalPoint.value = "Total Point = ${savedData?.getDataUser()?.totalPoin.toString()}"
-                mRewardedVideoAd.loadAd(defaultRewardedID, AdRequest.Builder().build())
-            } else {
-                isShowLoading.value = false
-                message.value = "Failed to add point"
-            }
-        }
-
-        val onFailureListener = OnFailureListener { result ->
-            isShowLoading.value = false
-            message.value = result.message
-        }
-
-        FirebaseUtils.setValueWith3ChildInt(
-            Constant.referenceUser
-            , username
-            , Constant.referenceTotalPoin
-            , point
-            , onCompleteListener
-            , onFailureListener
-        )
+        val intent = Intent(activity, MyService::class.java)
+        intent.putExtra(Constant.referenceToken, savedData?.getDataUser()?.token)
+        activity?.startService(intent)
     }
 
     fun onClickAddNotes(){
@@ -192,29 +66,55 @@ class BerandaViewModel(
     }
 
     fun getTotalUser() {
-        isShowLoading.value = true
+        totalUser.value = "Jumlah User = ${savedData?.getKeyString(Constant.totalUser)?:0}"
 
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(result: DatabaseError) {
-                isShowLoading.value = false
-                totalUser.value = "Total User = 0"
             }
 
             override fun onDataChange(result: DataSnapshot) {
-                isShowLoading.value = false
                 if (result.exists()) {
+                    var size = 0
+
                     for ((totalSize) in result.children.withIndex()) {
-                        totalUser.value = "Total User = $totalSize"
+                        size = totalSize
                     }
-                } else {
-                    isShowLoading.value = false
-                    totalUser.value = "Total User = 0"
+
+                    if (size.toString() != savedData?.getKeyString(Constant.totalUser)){
+                        savedData?.setDataString(size.toString(), Constant.totalUser)
+                        totalUser.value = "Jumlah User = $size"
+                    }
                 }
             }
         }
 
         FirebaseUtils.getDataObject(
             Constant.referenceUser
+            , valueEventListener
+        )
+    }
+
+    fun getPricePoint() {
+        hargaPoint.value = "Harga Point = ${savedData?.getKeyString(Constant.pricePoint)?:0} rupiah"
+
+        val valueEventListener = object : ValueEventListener {
+            override fun onCancelled(result: DatabaseError) {
+            }
+
+            override fun onDataChange(result: DataSnapshot) {
+                if (result.exists()) {
+                    val data = result.getValue(Int::class.java)
+
+                    if (data.toString() != savedData?.getKeyString(Constant.pricePoint)){
+                        savedData?.setDataString(data.toString(), Constant.pricePoint)
+                        hargaPoint.value = "Harga Point = ${savedData?.getKeyString(Constant.pricePoint)?:0} rupiah"
+                    }
+                }
+            }
+        }
+
+        FirebaseUtils.getDataObject(
+            Constant.pricePoint
             , valueEventListener
         )
     }
@@ -267,5 +167,31 @@ class BerandaViewModel(
         bundle.putParcelable("dataNotes", item)
         cariFragment.arguments = bundle
         navController.navigate(R.id.editNotesFragment, bundle)
+    }
+
+    fun getTotalPoint(username: String) {
+        totalPoint.value = "Total Point = ${savedData?.getDataUser()?.totalPoin.toString()}"
+
+        val valueEventListener = object : ValueEventListener {
+            override fun onCancelled(result: DatabaseError) {
+            }
+
+            override fun onDataChange(result: DataSnapshot) {
+                if (result.exists()) {
+                    val data = result.getValue(ModelUser::class.java)
+
+                    if (data?.totalPoin != savedData?.getDataUser()?.totalPoin){
+                        savedData?.setDataObject(data, Constant.referenceUser)
+                        totalPoint.value = "Total Point = ${data?.totalPoin.toString()}"
+                    }
+                }
+            }
+        }
+
+        FirebaseUtils.refreshDataWith1ChildObject1(
+            Constant.referenceUser
+            , username
+            , valueEventListener
+        )
     }
 }

@@ -1,10 +1,16 @@
 package com.exomatik.zcodex.utils
 
 import android.app.Activity
+import android.net.Uri
 import com.exomatik.zcodex.model.ModelNotes
 import com.exomatik.zcodex.model.ModelTransaction
+import com.exomatik.zcodex.services.notification.APIService
+import com.exomatik.zcodex.services.notification.Common
+import com.exomatik.zcodex.services.notification.model.MyResponse
+import com.exomatik.zcodex.services.notification.model.Sender
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -15,6 +21,11 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
 object FirebaseUtils {
@@ -23,34 +34,30 @@ object FirebaseUtils {
     private lateinit var refreshData: ValueEventListener
     private lateinit var query2: Query
     private lateinit var refreshData2: ValueEventListener
-    private lateinit var query3: Query
-    private lateinit var refreshData3: ValueEventListener
-    private lateinit var queryDataUserChat: Query
-    private lateinit var refreshDataUserChat: ValueEventListener
-    private lateinit var queryDataChat: Query
-    private lateinit var refreshDataChat: ChildEventListener
-    private lateinit var queryListChat2: Query
-    private lateinit var refreshListChat2: ChildEventListener
-    private lateinit var queryListChat3: Query
-    private lateinit var refreshListChat3: ChildEventListener
-    private lateinit var queryListChat4: Query
-    private lateinit var refreshListChat4: ChildEventListener
-    private lateinit var queryListChat5: Query
-    private lateinit var refreshListChat5: ChildEventListener
-    private lateinit var queryListChat6: Query
-    private lateinit var refreshListChat6: ChildEventListener
-    private lateinit var queryIdChat: Query
-    private lateinit var refreshIdChat: ValueEventListener
-    private lateinit var queryIdChat2: Query
-    private lateinit var refreshIdChat2: ValueEventListener
-    private lateinit var queryNotifJadwal1: Query
-    private lateinit var refreshNotifJadwal1: ValueEventListener
-    private lateinit var queryNotifJadwal2: Query
-    private lateinit var refreshNotifJadwal2: ValueEventListener
-    private lateinit var queryAfiliasi: Query
-    private lateinit var refreshDataAfiliasi: ValueEventListener
-    private lateinit var queryAfiliasi2: Query
-    private lateinit var refreshDataAfiliasi2: ValueEventListener
+
+    fun sendNotif(sender: Sender) {
+        val mService: APIService = Common.fCMClient
+        mService.sendNotification(sender)?.enqueue(object : Callback<MyResponse?> {
+            override fun onResponse(
+                call: Call<MyResponse?>?,
+                response: Response<MyResponse?>?
+            ) {
+                if (response != null) {
+                    if (response.isSuccessful) {
+                        showLog("Notify Succes")
+                    } else {
+                        showLog("Notify Failed")
+                    }
+                } else {
+                    showLog("Null Response")
+                }
+            }
+
+            override fun onFailure(call: Call<MyResponse?>?, t: Throwable) {
+                showLog(t.message)
+            }
+        })
+    }
 
     fun searchDataWith1ChildObject(
         reference: String,
@@ -177,220 +184,16 @@ object FirebaseUtils {
         query.addValueEventListener(refreshData)
     }
 
-    fun refreshDataWith2ChildObject1(
+    fun refreshDataWith1ChildObject2(
         reference: String,
-        child: String,
         id: String,
         eventListener: ValueEventListener
     ) {
         this.refreshData2 = eventListener
         query2 = FirebaseDatabase.getInstance()
             .getReference(reference)
-            .child(child)
             .child(id)
         query2.addValueEventListener(refreshData2)
-    }
-
-    fun refreshDataWith3ChildObject1(
-        reference: String,
-        child: String,
-        eventListener: ValueEventListener
-    ) {
-        this.refreshData3 = eventListener
-        query3 = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child)
-        query3.addValueEventListener(refreshData3)
-    }
-
-    fun refreshDataUserChatWith2Child(
-        reference: String,
-        search: String,
-        value: String?,
-        eventListener: ValueEventListener
-    ) {
-        this.refreshDataUserChat = eventListener
-
-        queryDataUserChat = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .orderByChild(search)
-            .equalTo(value)
-        queryDataUserChat.addValueEventListener(refreshDataUserChat)
-    }
-
-    fun refreshDataChatWith2Child(
-        reference: String,
-        child1: String,
-        idChat: String,
-        eventListener: ChildEventListener
-    ) {
-        this.refreshDataChat = eventListener
-
-        queryDataChat = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child1)
-            .child(idChat)
-        queryDataChat.addChildEventListener(refreshDataChat)
-    }
-
-    fun refresh2ListChatWith1Child(
-        reference: String,
-        child1: String,
-        search: String,
-        value: String?,
-        eventListener: ChildEventListener
-    ) {
-        this.refreshListChat2 = eventListener
-
-        queryListChat2 = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child1)
-            .orderByChild(search)
-            .equalTo(value)
-        queryListChat2.addChildEventListener(refreshListChat2)
-    }
-
-    fun refresh3ListChatWith1Child(
-        reference: String,
-        child1: String,
-        search: String,
-        value: String?,
-        eventListener: ChildEventListener
-    ) {
-        this.refreshListChat3 = eventListener
-
-        queryListChat3 = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child1)
-            .orderByChild(search)
-            .equalTo(value)
-        queryListChat3.addChildEventListener(refreshListChat3)
-    }
-
-    fun refresh4ListChatWith1Child(
-        reference: String,
-        child1: String,
-        search: String,
-        value: String?,
-        eventListener: ChildEventListener
-    ) {
-        this.refreshListChat4 = eventListener
-
-        queryListChat4 = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child1)
-            .orderByChild(search)
-            .equalTo(value)
-        queryListChat4.addChildEventListener(refreshListChat4)
-    }
-
-    fun refresh5ListChatWith1Child(
-        reference: String,
-        child1: String,
-        search: String,
-        value: String?,
-        eventListener: ChildEventListener
-    ) {
-        this.refreshListChat5 = eventListener
-
-        queryListChat5 = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child1)
-            .orderByChild(search)
-            .equalTo(value)
-        queryListChat5.addChildEventListener(refreshListChat5)
-    }
-
-    fun refresh6ListChatWith1Child(
-        reference: String,
-        child1: String,
-        search: String,
-        value: String?,
-        eventListener: ChildEventListener
-    ) {
-        this.refreshListChat6 = eventListener
-
-        queryListChat6 = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child1)
-            .orderByChild(search)
-            .equalTo(value)
-        queryListChat6.addChildEventListener(refreshListChat6)
-    }
-
-    fun refreshGetIdChatWith2Child(
-        reference: String,
-        child1: String,
-        idChat: String,
-        eventListener: ValueEventListener
-    ) {
-        this.refreshIdChat = eventListener
-
-        queryIdChat = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child1)
-            .child(idChat)
-        queryIdChat.addValueEventListener(refreshIdChat)
-    }
-
-    fun refreshNotifJadwalWith2Child(
-        reference: String,
-        search: String,
-        value: String,
-        eventListener: ValueEventListener
-    ) {
-        this.refreshNotifJadwal1 = eventListener
-
-        queryNotifJadwal1 = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .orderByChild(search)
-            .equalTo(value)
-        queryNotifJadwal1.addValueEventListener(refreshNotifJadwal1)
-    }
-
-    fun refreshNotif2JadwalWith2Child(
-        reference: String,
-        search: String,
-        value: String?,
-        eventListener: ValueEventListener
-    ) {
-        this.refreshNotifJadwal2 = eventListener
-
-        queryNotifJadwal2 = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .orderByChild(search)
-            .equalTo(value)
-        queryNotifJadwal2.addValueEventListener(refreshNotifJadwal2)
-    }
-
-    fun refreshAfiliasi1DataWith2ChildObject(
-        reference: String,
-        child: String,
-        search: String,
-        value: String?,
-        eventListener: ValueEventListener
-    ) {
-        this.refreshDataAfiliasi = eventListener
-        queryAfiliasi = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child)
-            .orderByChild(search)
-            .equalTo(value)
-        queryAfiliasi.addValueEventListener(eventListener)
-    }
-
-    fun refreshAfiliasi2DataWith2ChildObject(
-        reference: String,
-        child: String,
-        value: String,
-        eventListener: ValueEventListener
-    ) {
-        this.refreshDataAfiliasi2 = eventListener
-        queryAfiliasi2 = FirebaseDatabase.getInstance()
-            .getReference(reference)
-            .child(child)
-            .child(value)
-        queryAfiliasi2.addValueEventListener(eventListener)
     }
 
     fun registerUser(
@@ -598,6 +401,27 @@ object FirebaseUtils {
             .addOnFailureListener(onFailureListener)
     }
 
+    fun simpanFoto(
+        reference: String, id: String, image: Uri
+        , onSuccessListener: OnSuccessListener<UploadTask.TaskSnapshot>
+        , onFailureListener: OnFailureListener
+    ) {
+        FirebaseStorage.getInstance().getReference(reference)
+            .child(id).putFile(image)
+            .addOnSuccessListener(onSuccessListener)
+            .addOnFailureListener(onFailureListener)
+    }
+
+    fun getUrlFoto(
+        uploadTask: UploadTask.TaskSnapshot
+        , onSuccessListener: OnSuccessListener<Uri?>
+        , onFailureListener: OnFailureListener
+    ) {
+        uploadTask.storage.downloadUrl
+            .addOnSuccessListener(onSuccessListener)
+            .addOnFailureListener(onFailureListener)
+    }
+
     fun deleteValueWith1Child(
         reference: String, child: String
         , onCompleteListener: OnCompleteListener<Void>
@@ -624,110 +448,6 @@ object FirebaseUtils {
             query2.removeEventListener(refreshData2)
         } catch (e: Exception) {
             showLog("error, method not running ${e.message} query 2")
-        }
-    }
-
-    fun stopRefresh3() {
-        try {
-            query3.removeEventListener(refreshData3)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query 3")
-        }
-    }
-
-    fun stopRefreshNotifJadwal1() {
-        try {
-            queryNotifJadwal1.removeEventListener(refreshNotifJadwal1)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query notif jadwal 1")
-        }
-    }
-
-    fun stopRefreshNotifJadwal2() {
-        try {
-            queryNotifJadwal2.removeEventListener(refreshNotifJadwal2)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query notif jadwal 2")
-        }
-    }
-
-    fun stopRefreshDataUserChat() {
-        try {
-            queryDataUserChat.removeEventListener(refreshDataUserChat)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query data user chat")
-        }
-    }
-
-    fun stopRefreshDataChat() {
-        try {
-            queryDataChat.removeEventListener(refreshDataChat)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query data chat")
-        }
-    }
-
-    fun stopRefreshListChat2() {
-        try {
-            queryListChat2.removeEventListener(refreshListChat2)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query data chat 2")
-        }
-    }
-
-    fun stopRefreshListChat3() {
-        try {
-            queryListChat3.removeEventListener(refreshListChat3)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query data chat 3")
-        }
-    }
-
-    fun stopRefreshListChat4() {
-        try {
-            queryListChat4.removeEventListener(refreshListChat4)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query data chat 4")
-        }
-    }
-
-    fun stopRefreshListChat5() {
-        try {
-            queryListChat5.removeEventListener(refreshListChat5)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query data chat 5")
-        }
-    }
-
-    fun stopRefreshListChat6() {
-        try {
-            queryListChat6.removeEventListener(refreshListChat6)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query data chat 6")
-        }
-    }
-
-    fun stopRefreshIdChat() {
-        try {
-            queryIdChat.removeEventListener(refreshIdChat)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query id chat")
-        }
-    }
-
-    fun stopRefreshAfiliasi1() {
-        try {
-            queryAfiliasi.removeEventListener(refreshDataAfiliasi)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query afiliasi 1")
-        }
-    }
-
-    fun stopRefreshAfiliasi2() {
-        try {
-            queryAfiliasi2.removeEventListener(refreshDataAfiliasi2)
-        } catch (e: Exception) {
-            showLog("error, method not running ${e.message} query afiliasi 2")
         }
     }
 }

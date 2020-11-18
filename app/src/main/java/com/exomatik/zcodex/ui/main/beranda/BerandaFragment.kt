@@ -4,6 +4,7 @@ import androidx.navigation.fragment.findNavController
 import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseFragmentBind
 import com.exomatik.zcodex.databinding.FragmentBerandaBinding
+import com.exomatik.zcodex.utils.FirebaseUtils
 
 class BerandaFragment : BaseFragmentBind<FragmentBerandaBinding>(){
     override fun getLayoutResource(): Int = R.layout.fragment_beranda
@@ -16,13 +17,16 @@ class BerandaFragment : BaseFragmentBind<FragmentBerandaBinding>(){
 
         viewModel.initAdapter()
         viewModel.setAdMobBanner()
-        viewModel.setUpRewardedAds()
         viewModel.getTotalUser()
-        savedData.getDataUser()?.username?.let { viewModel.getListNotes(it) }
-        onClick()
+        viewModel.getPricePoint()
+        savedData.getDataUser()?.username?.let {
+            viewModel.getListNotes(it)
+            viewModel.getTotalPoint(it)
+        }
     }
 
-    private fun onClick() {
-
+    override fun onDestroy() {
+        super.onDestroy()
+        FirebaseUtils.stopRefresh()
     }
 }

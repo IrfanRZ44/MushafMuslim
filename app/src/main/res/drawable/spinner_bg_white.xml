@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        >
+        <layer-list>
+            <item>
+                <shape>
+                    <gradient android:angle="90"
+                        android:endColor="@android:color/transparent"
+                        android:startColor="@android:color/transparent"
+                        android:type="linear" />
+                    <corners android:radius="3dp" />
+
+                    <padding android:bottom="@dimen/h1"
+                        android:left="@dimen/h1"
+                        android:right="@dimen/h1"
+                        android:top="@dimen/h1"
+                        />
+                    <size android:height="18dp"
+                        android:width="16dp"
+                        />
+                </shape>
+            </item>
+
+            <item
+                >
+                <bitmap android:gravity="right|center_vertical"
+                    android:src="@drawable/ic_spinner_gray"
+                    android:filter="true"
+                    android:dither="true"
+                    android:antialias="true"
+                    />
+            </item>
+
+        </layer-list>
+
+    </item>
+
+</selector>

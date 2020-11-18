@@ -11,7 +11,10 @@ data class ModelUser(
     var jenisAkun: String = "",
     var username: String = "",
     var urlFoto: String = "",
+    var nomorRekening: String = "",
+    var namaBank: String = "",
     var lastSignIn: String = "",
+    var dateCreated: String = "",
     var totalPoin: Long = 0,
     var active: String = ""
     ) : Parcelable

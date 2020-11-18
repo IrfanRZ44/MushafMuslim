@@ -25,6 +25,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.exomatik.zcode.fcm_TARGET_SPLASH"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,10 +38,26 @@
             android:hardwareAccelerated="true"
             />
 
+        <activity
+            android:name=".ui.rewardBanner.RewardBannerActivity"
+            android:label="@string/rewarded_ads"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomTheme"
+            android:hardwareAccelerated="true"
+            />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admobID"
         />
+
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
+
+        <service
+            android:name=".utils.MyService"
+            android:enabled="true"
+            />
     </application>
 
 </manifest>

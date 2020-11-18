@@ -1,7 +1,7 @@
 package com.exomatik.zcodex.ui.auth.verifyLogin
 
 import android.app.Activity
-import android.os.Handler
+import android.os.CountDownTimer
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
@@ -189,23 +189,28 @@ class VerifyLoginViewModel(
                 verificationId: String,
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
-                Handler().postDelayed({
-                    if (unverify) {
-                        isShowLoading.value = false
-                        loading.value = true
+                object : CountDownTimer(2000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                    }
 
-                        message.value =
-                            "Kami sudah mengirimkan kode verifikasi ke nomor ${dataUser.noHp}"
-                        unverify = false
-                        setProgress()
+                    override fun onFinish() {
+                        if (unverify) {
+                            isShowLoading.value = false
+                            loading.value = true
 
-                        try {
-                            verifyId = verificationId
-                        } catch (e: Exception) {
-                            message.value = e.message
+                            message.value =
+                                "Kami sudah mengirimkan kode verifikasi ke nomor ${dataUser.noHp}"
+                            unverify = false
+                            setProgress()
+
+                            try {
+                                verifyId = verificationId
+                            } catch (e: Exception) {
+                                message.value = e.message
+                            }
                         }
                     }
-                }, 2000L)
+                }.start()
             }
         }
 

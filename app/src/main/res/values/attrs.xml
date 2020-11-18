@@ -31,4 +31,10 @@
             <enum name="left" value="180" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="ExpandableLayout">
+        <attr name="expDuration" format="integer|reference"/>
+        <attr name="expWithParentScroll" format="boolean"/>
+        <attr name="expExpandScrollTogether" format="boolean"/>
+    </declare-styleable>
 </resources>

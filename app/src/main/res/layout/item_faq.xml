@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.exomatik.zcodex.services.expandableLayout.ExpandableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/expand_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <RelativeLayout
+        android:id="@+id/question_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:padding="@dimen/h2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_h3"
+            android:textStyle="italic"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_toStartOf="@+id/imgDropdown"
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_drop_down_black"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/h2"
+            android:layout_marginStart="@dimen/h2"
+            android:id="@+id/imgDropdown"
+            />
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/answer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textQuestion"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/h5"
+            android:paddingEnd="@dimen/h5"
+            android:textColor="@color/gray2"
+            android:textSize="@dimen/text_h2"
+            android:fontFamily="@font/roboto_regular"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</com.exomatik.zcodex.services.expandableLayout.ExpandableLayout>
