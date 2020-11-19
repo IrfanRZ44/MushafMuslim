@@ -1,10 +1,11 @@
 package com.exomatik.zcodex.utils
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.widget.Toast
+import com.exomatik.zcodex.model.ModelInfoApps
 import com.exomatik.zcodex.model.ModelUser
+import com.exomatik.zcodex.utils.Constant.referenceInfoApps
 import com.exomatik.zcodex.utils.Constant.referenceUser
 import com.google.gson.Gson
 
@@ -36,7 +37,18 @@ class DataSave(private val context: Context?) {
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
+    fun getDataApps(): ModelInfoApps? {
+        return try {
+            val gson = Gson()
+            val json: String = preferences?.getString(referenceInfoApps, "")
+                ?: throw Exception("Preferences Belum Di Inisialisasikan")
+            gson.fromJson(json, ModelInfoApps::class.java)
+        }catch (e: Exception){
+            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            null
+        }
+    }
+
     fun setDataString(value: String?, key: String) {
         try {
             val prefsEditor: SharedPreferences.Editor =
@@ -48,9 +60,49 @@ class DataSave(private val context: Context?) {
         }
     }
 
+    fun setDataInt(value: Int?, key: String) {
+        try {
+            val prefsEditor: SharedPreferences.Editor =
+                preferences?.edit() ?: throw Exception("Preferences Belum Di Inisialisasikan")
+            prefsEditor.putInt(key, value?:0)
+            prefsEditor.apply()
+        } catch (e: Exception) {
+            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    fun setDataLong(value: Long, key: String) {
+        try {
+            val prefsEditor: SharedPreferences.Editor =
+                preferences?.edit() ?: throw Exception("Preferences Belum Di Inisialisasikan")
+            prefsEditor.putLong(key, value)
+            prefsEditor.apply()
+        } catch (e: Exception) {
+            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+        }
+    }
+
     fun getKeyString(key: String): String? {
         return try {
             preferences?.getString(key, "") ?: throw Exception("Data Kosong")
+        }catch (e: Exception){
+            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            null
+        }
+    }
+
+    fun getKeyLong(key: String): Long? {
+        return try {
+            preferences?.getLong(key, 0) ?: 0
+        }catch (e: Exception){
+            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            null
+        }
+    }
+
+    fun getKeyInt(key: String): Int? {
+        return try {
+            preferences?.getInt(key, 0) ?: 0
         }catch (e: Exception){
             Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             null

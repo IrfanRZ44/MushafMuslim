@@ -30,7 +30,7 @@ class MyService : Service() {
 
     override fun onCreate() {
         if (enableAds){
-            setUpRewardedAds()
+            setUpTimer()
             val intent = Intent(this, RewardBannerActivity::class.java)
             intent.flags = FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
@@ -70,7 +70,7 @@ class MyService : Service() {
             Toast.makeText(this, "Iklan berikutnya sudah tersedia", Toast.LENGTH_SHORT).show()
             val notification = Notification("Iklan berikutnya sudah tersedia",
                 "ZCode"
-                , "com.exomatik.zcode.fcm_TARGET_SPLASH")
+                , "com.exomatik.zcodex.fcm_TARGET_SPLASH")
 
             val sender = Sender(notification, token)
             FirebaseUtils.sendNotif(sender)
@@ -78,7 +78,7 @@ class MyService : Service() {
         stopSelf()
     }
 
-    private fun setUpRewardedAds(){
+    private fun setUpTimer(){
         val randomTimer = (300000..600000).random().toLong()
 
         time = object : CountDownTimer(randomTimer, 1000) {

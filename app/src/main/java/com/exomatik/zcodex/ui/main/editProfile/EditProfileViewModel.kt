@@ -4,29 +4,27 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.Uri
 import android.os.Build
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import coil.api.load
-import coil.request.CachePolicy
-import coil.transform.CircleCropTransformation
 import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseViewModel
 import com.exomatik.zcodex.model.ModelUser
-import com.exomatik.zcodex.utils.*
+import com.exomatik.zcodex.utils.Constant
 import com.exomatik.zcodex.utils.Constant.referenceUser
+import com.exomatik.zcodex.utils.DataSave
+import com.exomatik.zcodex.utils.FirebaseUtils
+import com.exomatik.zcodex.utils.SpinnerAdapter
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.material.navigation.NavigationView
+import com.google.firebase.storage.UploadTask
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
-import com.google.firebase.storage.UploadTask
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header.view.*
 
 class EditProfileViewModel(
     private val navController: NavController,
@@ -61,6 +59,7 @@ class EditProfileViewModel(
         listBank.add(Constant.walletOvo)
         listBank.add(Constant.walletDana)
         listBank.add(Constant.walletGopay)
+        listBank.add(Constant.walletLinkAja)
 
         adapterJenis = SpinnerAdapter(activity, listBank)
         spinnerBank.adapter = adapterJenis
@@ -97,6 +96,28 @@ class EditProfileViewModel(
                 savedData?.getDataUser()?.totalPoin?:0, Constant.active)
 
             simpanData(dataUser)
+        }
+        else{
+            when {
+                user.isNullOrEmpty() -> {
+                    message.value = "Terjadi kesalahan database"
+                }
+                phone.isNullOrEmpty() -> {
+                    message.value = "Terjadi kesalahan database"
+                }
+                nama.isNullOrEmpty() -> {
+                    message.value = "Mohon mengisi nama lengkap"
+                }
+                rekening.isNullOrEmpty() -> {
+                    message.value = "Mohon mengisi nomor rekening"
+                }
+                spinnerBank.selectedItemPosition == 0 -> {
+                    message.value = "Mohon pilih salah satu jenis bank yang tersedia"
+                }
+                urlFoto.isNullOrEmpty() -> {
+                    message.value = "Mohon unggah foto terlebih dulu"
+                }
+            }
         }
     }
 
@@ -166,6 +187,7 @@ class EditProfileViewModel(
         val onCompleteListener =
             OnCompleteListener<Void> { result ->
                 if (result.isSuccessful) {
+                    Toast.makeText(activity, "Berhasil menyimpan data user", Toast.LENGTH_LONG).show()
                     message.value = "Berhasil menyimpan data user"
                     navController.navigate(R.id.nav_beranda)
                     savedData?.setDataObject(dataUser, referenceUser)

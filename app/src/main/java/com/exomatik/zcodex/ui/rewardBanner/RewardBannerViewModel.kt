@@ -71,18 +71,18 @@ class RewardBannerViewModel(
 
             val onCompleteListener = OnCompleteListener<Void> { result ->
                 if (result.isSuccessful) {
-                    val point = dataUser.totalPoin + 1
+                    val Poin = dataUser.totalPoin + 1
 
-                    addTotalPoint(dataUser, username, point)
+                    addTotalPoin(dataUser, username, Poin)
                 } else {
                     isShowLoading.value = false
-                    message.value = "Gagal menambah point"
+                    message.value = "Gagal menambah Poin"
                 }
             }
 
             val onFailureListener = OnFailureListener {
                 isShowLoading.value = false
-                message.value = "Gagal menambah point"
+                message.value = "Gagal menambah Poin"
             }
 
             FirebaseUtils.setValueUniqueTransaction(
@@ -93,35 +93,35 @@ class RewardBannerViewModel(
             )
         }
         else{
-            message.value = "Gagal menambah point"
+            message.value = "Gagal menambah Poin"
         }
     }
 
-    private fun addTotalPoint(dataUser: ModelUser, username: String, point: Long){
+    private fun addTotalPoin(dataUser: ModelUser, username: String, Poin: Long){
         val onCompleteListener = OnCompleteListener<Void> { result ->
             if (result.isSuccessful) {
                 isShowLoading.value = false
-                message.value = "Berhasil menambah 1 point"
-                dataUser.totalPoin = point
+                message.value = "Berhasil menambah 1 Poin"
+                dataUser.totalPoin = Poin
                 savedData?.setDataObject(dataUser, Constant.referenceUser)
 
                 activity?.finish()
             } else {
                 isShowLoading.value = false
-                message.value = "Gagal menambah point"
+                message.value = "Gagal menambah Poin"
             }
         }
 
         val onFailureListener = OnFailureListener {
             isShowLoading.value = false
-            message.value = "Gagal menambah point"
+            message.value = "Gagal menambah Poin"
         }
 
         FirebaseUtils.setValueWith3ChildInt(
             Constant.referenceUser
             , username
             , Constant.referenceTotalPoin
-            , point
+            , Poin
             , onCompleteListener
             , onFailureListener
         )

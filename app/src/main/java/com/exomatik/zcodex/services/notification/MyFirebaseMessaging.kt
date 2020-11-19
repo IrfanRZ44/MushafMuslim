@@ -7,8 +7,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.media.AudioManager
 import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -71,26 +71,27 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
 
         val intent = Intent(remoteMessage.notification?.clickAction)
         intent.action = remoteMessage.notification?.clickAction
-        val pendingIntent: PendingIntent =
-            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val bigText = NotificationCompat.BigTextStyle()
         bigText.bigText(remoteMessage.notification?.body)
         bigText.setBigContentTitle(remoteMessage.notification?.title)
-//        bigText.setSummaryText(remoteMessage.notification?.body)
         mBuilder.setContentIntent(pendingIntent)
-        mBuilder.setSmallIcon(R.mipmap.ic_launcher)
+        mBuilder.setSmallIcon(R.drawable.ic_notif)
         mBuilder.setContentTitle(remoteMessage.notification?.title)
         mBuilder.setContentText(remoteMessage.notification?.body)
         mBuilder.setStyle(bigText)
-        val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        mBuilder.setSound(uri)
+        val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        mBuilder.setSound(uri, AudioManager.STREAM_NOTIFICATION)
         mBuilder.setAutoCancel(true)
-        mNotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
-        // === Removed some obsoletes
+        mBuilder.setLights(Color.BLUE, 500, 500)
+        mBuilder.setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
+
+        mBuilder.priority = NotificationCompat.PRIORITY_HIGH
+
+        mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId: String = resources.getString(R.string.app_name)
+            val channelId = resources.getString(R.string.app_name)
             val channel = NotificationChannel(
                 channelId,
                 resources.getString(R.string.app_name),
@@ -98,7 +99,7 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
             )
             channel.lightColor = Color.BLUE
             channel.enableLights(true)
-            val uriSound: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            val uriSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             channel.setSound(uriSound, Notification.AUDIO_ATTRIBUTES_DEFAULT)
             channel.enableVibration(true)
             mNotificationManager?.createNotificationChannel(channel)

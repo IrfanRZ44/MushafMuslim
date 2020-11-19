@@ -8,17 +8,14 @@ object Constant {
     const val referenceTransaction = "Transaction"
     const val referenceNotes = "Notes"
     const val referenceTotalPoin = "totalPoin"
-    const val referenceChat = "Chat"
-    const val referenceRuangChat = "RuangChat"
-    const val referenceStatus = "status"
     const val referenceToken = "token"
-    const val referenceJenisAkun = "jenisAkun"
-    const val referenceActiveAccount = "activeAkun"
-    const val referenceBookmark= "Bookmark"
 
+    const val referenceInfoApps = "infoApps"
     const val referenceFotoUser = "urlFoto"
     const val totalUser = "totalUser"
-    const val pricePoint = "pricePoint"
+    const val totalTransaksiIklan = "totalTransaksiIklan"
+    const val adsDate = "AdsDate"
+    const val adsLeft = "AdsLeft"
 
     const val codeRequestFoto = 100
     const val codeRequestGallery = 1
@@ -100,4 +97,5 @@ object Constant {
     const val walletOvo = "E-Wallet Ovo"
     const val walletDana = "E-Wallet Dana"
     const val walletGopay = "E-Wallet Gopay"
+    const val walletLinkAja = "E-Wallet Link Aja"
 }

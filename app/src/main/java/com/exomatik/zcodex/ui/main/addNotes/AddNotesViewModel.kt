@@ -8,10 +8,8 @@ import androidx.navigation.NavController
 import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseViewModel
 import com.exomatik.zcodex.model.ModelNotes
-import com.exomatik.zcodex.utils.Constant
-import com.exomatik.zcodex.utils.DataSave
-import com.exomatik.zcodex.utils.FirebaseUtils
-import com.exomatik.zcodex.utils.dismissKeyboard
+import com.exomatik.zcodex.utils.*
+import com.google.android.gms.ads.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import java.text.SimpleDateFormat
@@ -46,6 +44,7 @@ class AddNotesViewModel(
             val onCompleteListener = OnCompleteListener<Void> { result ->
                 isShowLoading.value = false
                 if (result.isSuccessful) {
+                    setUpIntersitialAds()
                     message.value = "Succed creating notes"
                     navController.navigate(R.id.nav_beranda)
                 } else {
@@ -68,6 +67,37 @@ class AddNotesViewModel(
         }
         else{
             message.value = "Failed to save notes"
+        }
+    }
+
+    private fun setUpIntersitialAds(){
+        MobileAds.initialize(activity) {}
+
+        val mInterstitialAd = InterstitialAd(activity)
+        mInterstitialAd.adUnitId = Constant.defaultIntersitialID
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+        mInterstitialAd.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+                if (mInterstitialAd.isLoaded) {
+                    mInterstitialAd.show()
+                }
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+            }
+
+            override fun onAdOpened() {
+            }
+
+            override fun onAdClicked() {
+            }
+
+            override fun onAdLeftApplication() {
+            }
+
+            override fun onAdClosed() {
+            }
         }
     }
 }

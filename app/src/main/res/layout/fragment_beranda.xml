@@ -44,37 +44,91 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_h5"
-                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_h3"
+                        android:textColor="@color/green1"
                         android:fontFamily="@font/roboto_regular"
-                        android:id="@+id/textAdmob"
+                        android:id="@+id/textUserRevenue"
                         android:layout_toEndOf="@+id/imgLogo"
-                        android:text="@={viewModel.totalPoint}"
-                        android:layout_marginTop="@dimen/h2"
+                        android:text="@={viewModel.userRevenue}"
                         />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_h3"
+                        android:textSize="@dimen/text_h2"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:id="@+id/textTotalPoin"
+                        android:layout_toEndOf="@+id/imgLogo"
+                        android:text="@={viewModel.totalPoin}"
+                        android:layout_marginTop="@dimen/h2"
+                        android:layout_below="@+id/textUserRevenue"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_h2"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:id="@+id/textTotalRevenue"
+                        android:layout_toEndOf="@+id/imgLogo"
+                        android:layout_below="@+id/textTotalPoin"
+                        android:text="@={viewModel.totalRevenue}"
+                        android:maxLines="1"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_h2"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:id="@+id/textTotalTransaction"
+                        android:layout_toEndOf="@+id/imgLogo"
+                        android:layout_below="@+id/textTotalRevenue"
+                        android:text="@={viewModel.totalTransaction}"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_h2"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/roboto_regular"
+                        android:id="@+id/textHargaPoin"
+                        android:layout_toEndOf="@+id/imgLogo"
+                        android:text="@={viewModel.hargaPoin}"
+                        android:layout_below="@+id/textTotalTransaction"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_h2"
                         android:textColor="@color/black"
                         android:fontFamily="@font/roboto_regular"
                         android:id="@+id/textTotalUser"
                         android:layout_toEndOf="@+id/imgLogo"
-                        android:layout_below="@+id/textAdmob"
+                        android:layout_below="@+id/textHargaPoin"
                         android:text="@={viewModel.totalUser}"
                         />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_h3"
-                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_h2"
+                        android:textColor="@color/gray2"
                         android:fontFamily="@font/roboto_regular"
-                        android:id="@+id/textHargaPoint"
+                        android:id="@+id/textLastUpdated"
+                        android:layout_marginStart="@dimen/h1"
                         android:layout_toEndOf="@+id/imgLogo"
-                        android:text="@={viewModel.hargaPoint}"
+                        android:gravity="end"
+                        android:layout_alignParentEnd="true"
                         android:layout_below="@+id/textTotalUser"
+                        android:text="@={viewModel.lastUpdated}"
+                        android:maxLines="2"
+                        android:layout_marginTop="@dimen/h2"
                         />
                 </RelativeLayout>
 
@@ -157,7 +211,7 @@
             android:layout_above="@+id/adView"
             android:layout_margin="@dimen/h2"
             android:padding="@dimen/h3"
-            android:text="@string/rewarded_ads"
+            android:text="@={viewModel.btnRewardedAds}"
             android:drawableEnd="@drawable/ic_ads_white"
             android:drawablePadding="@dimen/h2"
             android:layout_centerHorizontal="true"
@@ -172,7 +226,7 @@
             android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            ads:adSize="SMART_BANNER"
+            ads:adSize="BANNER"
             ads:adUnitId="@string/bannerID"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"

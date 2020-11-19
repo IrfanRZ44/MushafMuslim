@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnFailureListener
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.navigation.ui.navigateUp
 import coil.api.load
+import com.exomatik.zcodex.model.ModelInfoApps
 import com.exomatik.zcodex.ui.auth.AuthActivity
 import com.exomatik.zcodex.utils.*
 import com.google.firebase.database.DataSnapshot
@@ -61,6 +62,8 @@ class MainActivity : BaseActivity() {
         if (!username.isNullOrEmpty()){
             getDataUser(username)
         }
+        getInfoApps()
+        savedData.getDataApps()?.informasi?.let { alertInformation(it) }
     }
 
     fun getDataUser(username: String) {
@@ -120,6 +123,26 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun getInfoApps() {
+        val valueEventListener = object : ValueEventListener {
+            override fun onCancelled(result: DatabaseError) {
+            }
+
+            override fun onDataChange(result: DataSnapshot) {
+                if (result.exists()) {
+                    val data = result.getValue(ModelInfoApps::class.java)
+
+                    savedData.setDataObject(data, Constant.referenceInfoApps)
+                }
+            }
+        }
+
+        FirebaseUtils.getDataObject(
+            Constant.referenceInfoApps
+            , valueEventListener
+        )
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         dismissKeyboard(this)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
@@ -140,6 +163,20 @@ class MainActivity : BaseActivity() {
         alert.setNegativeButton(
             tidak
         ) { dialog, _ -> dialog.dismiss() }
+
+        alert.show()
+    }
+
+    private fun alertInformation(information: String) {
+        val alert = AlertDialog.Builder(this)
+        alert.setTitle(attention)
+        alert.setMessage(information)
+        alert.setCancelable(true)
+        alert.setPositiveButton(
+            "Baik"
+        ) { dialog, _ ->
+            dialog.dismiss()
+        }
 
         alert.show()
     }

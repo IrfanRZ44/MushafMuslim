@@ -18,10 +18,17 @@ class BerandaFragment : BaseFragmentBind<FragmentBerandaBinding>(){
         viewModel.initAdapter()
         viewModel.setAdMobBanner()
         viewModel.getTotalUser()
-        viewModel.getPricePoint()
+        val revenue = savedData.getDataApps()?.totalRevenue
+        if (revenue != null && revenue > 1000){
+            viewModel.getTotalTransaction(revenue)
+        }
+        else{
+            viewModel.message.value = "Mohon mulai ulang aplikasi"
+        }
+
         savedData.getDataUser()?.username?.let {
             viewModel.getListNotes(it)
-            viewModel.getTotalPoint(it)
+            viewModel.getTotalPoin(it)
         }
     }
 

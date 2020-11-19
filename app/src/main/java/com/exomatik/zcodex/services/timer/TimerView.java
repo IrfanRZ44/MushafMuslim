@@ -82,7 +82,7 @@ public class TimerView extends View {
         prefix = ta.getString(R.styleable.TimerView_prefix);
         text = ta.getString(R.styleable.TimerView_progressText);
 //        isClockwise = ta.getBoolean(R.styleable.CircularTimer_isClockwise, true);
-        startingAngle = ta.getInt(R.styleable.TimerView_startingPoint, 270);
+        startingAngle = ta.getInt(R.styleable.TimerView_startingPoin, 270);
 
         progressBarPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressBarPaint.setStyle(Paint.Style.FILL);

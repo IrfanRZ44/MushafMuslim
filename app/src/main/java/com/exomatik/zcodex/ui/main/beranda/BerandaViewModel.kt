@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.exomatik.zcodex.ui.main.beranda
 
 import android.app.Activity
@@ -24,6 +22,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import java.text.NumberFormat
 import java.util.*
 
 class BerandaViewModel(
@@ -33,9 +32,14 @@ class BerandaViewModel(
     private val adView: AdView,
     private val rcNotes: RecyclerView
     ) : BaseViewModel() {
-    val totalPoint = MutableLiveData<String>()
+    val totalPoin = MutableLiveData<String>()
     val totalUser = MutableLiveData<String>()
-    val hargaPoint = MutableLiveData<String>()
+    val hargaPoin = MutableLiveData<String>()
+    val userRevenue = MutableLiveData<String>()
+    val totalTransaction = MutableLiveData<String>()
+    val totalRevenue = MutableLiveData<String>()
+    val lastUpdated = MutableLiveData<String>()
+    val btnRewardedAds = MutableLiveData<String>()
     private var listNotes = ArrayList<ModelNotes>()
     private var adapter: AdapterNotesBeranda? = null
 
@@ -49,16 +53,31 @@ class BerandaViewModel(
     }
 
     fun setAdMobBanner() {
-        totalPoint.value = "Total Point = ${savedData?.getDataUser()?.totalPoin.toString()}"
+        val format = NumberFormat.getCurrencyInstance()
+
+        totalRevenue.value = "Total Pendapatan = ${format.format(savedData?.getDataApps()?.totalRevenue)}"
+        lastUpdated.value = "(Di update pada ${savedData?.getDataApps()?.lastUpdated})"
+        totalPoin.value = "Total Poin = ${savedData?.getDataUser()?.totalPoin}"
+        btnRewardedAds.value = "Rewarded Ads ${savedData?.getKeyInt(Constant.adsLeft)}"
 
         MobileAds.initialize(activity) {}
         adView.loadAd(AdRequest.Builder().build())
     }
 
     fun onClickAdmob(){
-        val intent = Intent(activity, MyService::class.java)
-        intent.putExtra(Constant.referenceToken, savedData?.getDataUser()?.token)
-        activity?.startService(intent)
+        var ads = savedData?.getKeyInt(Constant.adsLeft)?:0
+
+        if (ads <= 0){
+            message.value = "Maaf, batas maksimal poin sudah tercapai hari ini"
+        }
+        else{
+            ads -= 1
+            btnRewardedAds.value = "Rewarded Ads $ads"
+            savedData?.setDataInt(ads, Constant.adsLeft)
+            val intent = Intent(activity, MyService::class.java)
+            intent.putExtra(Constant.referenceToken, savedData?.getDataUser()?.token)
+            activity?.startService(intent)
+        }
     }
 
     fun onClickAddNotes(){
@@ -66,7 +85,7 @@ class BerandaViewModel(
     }
 
     fun getTotalUser() {
-        totalUser.value = "Jumlah User = ${savedData?.getKeyString(Constant.totalUser)?:0}"
+        totalUser.value = "Jumlah User = ${savedData?.getKeyLong(Constant.totalUser)?:0}"
 
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(result: DatabaseError) {
@@ -74,14 +93,10 @@ class BerandaViewModel(
 
             override fun onDataChange(result: DataSnapshot) {
                 if (result.exists()) {
-                    var size = 0
+                    val size = result.childrenCount
 
-                    for ((totalSize) in result.children.withIndex()) {
-                        size = totalSize
-                    }
-
-                    if (size.toString() != savedData?.getKeyString(Constant.totalUser)){
-                        savedData?.setDataString(size.toString(), Constant.totalUser)
+                    if (size != savedData?.getKeyLong(Constant.totalUser)){
+                        savedData?.setDataLong(size, Constant.totalUser)
                         totalUser.value = "Jumlah User = $size"
                     }
                 }
@@ -94,8 +109,18 @@ class BerandaViewModel(
         )
     }
 
-    fun getPricePoint() {
-        hargaPoint.value = "Harga Point = ${savedData?.getKeyString(Constant.pricePoint)?:0} rupiah"
+    fun getTotalTransaction(revenue: Long) {
+        val format = NumberFormat.getCurrencyInstance()
+        val transaction = savedData?.getKeyLong(Constant.totalTransaksiIklan)
+        totalTransaction.value = "Total Transaksi Klik Iklan = $transaction"
+
+        if (transaction != null && transaction > 1){
+            val harga =  (revenue / transaction)
+            val userRev = savedData?.getDataUser()?.totalPoin?.times(harga)
+
+            hargaPoin.value = "Harga Poin = Rp$harga"
+            userRevenue.value = "Penghasilan User = ${format.format(userRev)}"
+        }
 
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(result: DatabaseError) {
@@ -103,18 +128,25 @@ class BerandaViewModel(
 
             override fun onDataChange(result: DataSnapshot) {
                 if (result.exists()) {
-                    val data = result.getValue(Int::class.java)
+                    val transactionUpdate = result.childrenCount
 
-                    if (data.toString() != savedData?.getKeyString(Constant.pricePoint)){
-                        savedData?.setDataString(data.toString(), Constant.pricePoint)
-                        hargaPoint.value = "Harga Point = ${savedData?.getKeyString(Constant.pricePoint)?:0} rupiah"
+                    if (transactionUpdate != savedData?.getKeyLong(Constant.totalTransaksiIklan)){
+                        savedData?.setDataLong(transactionUpdate, Constant.totalTransaksiIklan)
+                        totalTransaction.value = "Total Transaksi Klik Iklan = $transactionUpdate"
+
+                        val revenue2 = savedData?.getDataApps()?.totalRevenue?:0
+                        val harga2 =  (revenue2 / transactionUpdate)
+                        val userRev2 = savedData?.getDataUser()?.totalPoin?.times(harga2)
+
+                        hargaPoin.value = "Harga Poin = Rp$harga2"
+                        userRevenue.value = "Penghasilan User = ${format.format(userRev2)}"
                     }
                 }
             }
         }
 
         FirebaseUtils.getDataObject(
-            Constant.pricePoint
+            Constant.referenceTransaction
             , valueEventListener
         )
     }
@@ -169,8 +201,8 @@ class BerandaViewModel(
         navController.navigate(R.id.editNotesFragment, bundle)
     }
 
-    fun getTotalPoint(username: String) {
-        totalPoint.value = "Total Point = ${savedData?.getDataUser()?.totalPoin.toString()}"
+    fun getTotalPoin(username: String) {
+        totalPoin.value = "Total Poin = ${savedData?.getDataUser()?.totalPoin.toString()}"
 
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(result: DatabaseError) {
@@ -182,7 +214,7 @@ class BerandaViewModel(
 
                     if (data?.totalPoin != savedData?.getDataUser()?.totalPoin){
                         savedData?.setDataObject(data, Constant.referenceUser)
-                        totalPoint.value = "Total Point = ${data?.totalPoin.toString()}"
+                        totalPoin.value = "Total Poin = ${data?.totalPoin.toString()}"
                     }
                 }
             }

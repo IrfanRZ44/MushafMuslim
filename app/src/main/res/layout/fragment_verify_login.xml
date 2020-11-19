@@ -74,7 +74,7 @@
                 app:progressBackgroundColor="@color/colorAccent"
                 app:backgroundWidth="8"
                 app:textSize="@dimen/text_h3"
-                app:startingPoint="top"
+                app:startingPoin="top"
                 app:progressTextColor="@color/colorAccent"
                 android:layout_below="@+id/textStatus"
                 android:layout_centerHorizontal="true"

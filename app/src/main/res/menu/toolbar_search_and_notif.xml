@@ -8,9 +8,4 @@
         android:title="@string/cari"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/actionNotif"
-        android:icon="@drawable/ic_notif_white"
-        android:title="@string/action_notif"
-        app:showAsAction="collapseActionView|ifRoom" />
 </menu>
