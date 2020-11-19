@@ -71,11 +71,8 @@ class BerandaViewModel(
             message.value = "Maaf, batas maksimal poin sudah tercapai hari ini"
         }
         else{
-            ads -= 1
             btnRewardedAds.value = "Rewarded Ads $ads"
-            savedData?.setDataInt(ads, Constant.adsLeft)
             val intent = Intent(activity, MyService::class.java)
-            intent.putExtra(Constant.referenceToken, savedData?.getDataUser()?.token)
             activity?.startService(intent)
         }
     }

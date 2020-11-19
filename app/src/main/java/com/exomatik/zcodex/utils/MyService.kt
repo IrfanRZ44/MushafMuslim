@@ -29,7 +29,13 @@ class MyService : Service() {
     }
 
     override fun onCreate() {
+        val savedData = DataSave(this)
+        token = savedData.getDataUser()?.token
+        var ads = savedData.getKeyInt(Constant.adsLeft)?:0
+
         if (enableAds){
+            ads -= 1
+            savedData.setDataInt(ads, Constant.adsLeft)
             setUpTimer()
             val intent = Intent(this, RewardBannerActivity::class.java)
             intent.flags = FLAG_ACTIVITY_NEW_TASK
@@ -38,7 +44,6 @@ class MyService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        token = intent.getStringExtra(Constant.referenceToken)
 
         if (!enableAds){
             Toast.makeText(this, "Mohon tunggu $timerCountDown detik", Toast.LENGTH_SHORT).show()
