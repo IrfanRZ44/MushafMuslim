@@ -56,6 +56,7 @@ class EditProfileViewModel(
         listBank.add(Constant.bankBCA)
         listBank.add(Constant.bankBNI)
         listBank.add(Constant.bankCIMBNiaga)
+        listBank.add(Constant.bankMandiriSyariah)
         listBank.add(Constant.walletOvo)
         listBank.add(Constant.walletDana)
         listBank.add(Constant.walletGopay)
@@ -92,8 +93,11 @@ class EditProfileViewModel(
             }
 
             val dataUser = ModelUser(nama, phone, savedData?.getDataUser()?.token?:"",
-                "user", user, urlFoto, rekening, bank, tglSkrng, tglSkrng,
-                savedData?.getDataUser()?.totalPoin?:0, Constant.active)
+                "user", user, urlFoto, rekening, bank, tglSkrng,
+                savedData?.getDataUser()?.dateCreated?:tglSkrng,
+                savedData?.getDataUser()?.totalPoin?:0,
+                savedData?.getDataUser()?.adsLeft?:Constant.defaultMaxAds,
+                savedData?.getDataUser()?.adsDate?:tglSkrng, Constant.active)
 
             simpanData(dataUser)
         }

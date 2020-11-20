@@ -10,5 +10,5 @@ data class ModelInfoApps(
     var versionApps: String? = "",
     var lastUpdated: String? = "",
     var totalRevenue: Long = 0,
-    var totalAds: Int = 0
+    var totalAds: Long = 0
     ) : Parcelable

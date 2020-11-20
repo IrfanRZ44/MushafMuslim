@@ -5,16 +5,21 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.CountDownTimer
+import android.widget.Toast
 import androidx.navigation.NavController
 import com.exomatik.zcodex.BuildConfig
 import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseViewModel
 import com.exomatik.zcodex.model.ModelInfoApps
+import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.ui.main.MainActivity
 import com.exomatik.zcodex.utils.Constant
 import com.exomatik.zcodex.utils.DataSave
 import com.exomatik.zcodex.utils.FirebaseUtils
+import com.exomatik.zcodex.utils.showLog
 import com.google.android.gms.ads.*
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -125,23 +130,79 @@ class SplashViewModel(
             }
 
             override fun onFinish() {
-                if (savedData?.getDataUser()?.noHp.isNullOrEmpty()){
+                if (savedData?.getDataUser()?.username.isNullOrEmpty() || savedData?.getDataUser()?.noHp.isNullOrEmpty()){
                     navController.navigate(R.id.loginFragment)
                 }
                 else{
                     isShowLoading.value = false
                     setUpIntersitialAds()
+                    val data = savedData?.getDataUser()
+                    val userName = data?.username
 
-                    if (savedData?.getKeyString(Constant.adsDate) != tglSekarang){
-                        savedData?.setDataString(tglSekarang, Constant.adsDate)
-                        savedData?.setDataInt(savedData.getDataApps()?.totalAds, Constant.adsLeft)
+                    if (savedData?.getDataUser()?.adsDate != tglSekarang && !userName.isNullOrEmpty()){
+                        showLog("Datas tidak sama")
+                        saveAdsLeft(userName, savedData?.getDataApps()?.totalAds?:Constant.defaultMaxAds, data)
+                    }
+                    else{
+                        val intent = Intent(activity, MainActivity::class.java)
+                        activity?.startActivity(intent)
+                        activity?.finish()
                     }
 
-                    val intent = Intent(activity, MainActivity::class.java)
-                    activity?.startActivity(intent)
-                    activity?.finish()
                 }
             }
         }.start()
+    }
+
+    private fun saveAdsLeft(userName: String, ads: Long, data: ModelUser) {
+        val onCompleteListener =
+            OnCompleteListener<Void> { result ->
+                if (result.isSuccessful) {
+                    data.adsLeft = ads
+                    saveTglSekarang(userName, tglSekarang, data)
+                } else {
+                    Toast.makeText(activity, "Error, terjadi kesalahan database", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        val onFailureListener = OnFailureListener { result ->
+            Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show()
+        }
+        FirebaseUtils.setValueWith2ChildLong(
+            Constant.referenceUser
+            , userName
+            , Constant.adsLeft
+            , ads
+            , onCompleteListener
+            , onFailureListener
+        )
+    }
+
+    private fun saveTglSekarang(userName: String, tglSekarang: String, data: ModelUser) {
+        val onCompleteListener =
+            OnCompleteListener<Void> { result ->
+                if (result.isSuccessful) {
+                    data.adsDate = tglSekarang
+                    savedData?.setDataObject(data, Constant.referenceUser)
+                    val intent = Intent(activity, MainActivity::class.java)
+                    activity?.startActivity(intent)
+                    activity?.finish()
+                } else {
+                    Toast.makeText(activity, "Error, terjadi kesalahan database", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        val onFailureListener = OnFailureListener { result ->
+            Toast.makeText(activity, result.message, Toast.LENGTH_SHORT).show()
+        }
+
+        FirebaseUtils.setValueWith2ChildString(
+            Constant.referenceUser
+            , userName
+            , Constant.adsDate
+            , tglSekarang
+            , onCompleteListener
+            , onFailureListener
+        )
     }
 }

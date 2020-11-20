@@ -15,7 +15,6 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
@@ -307,6 +306,20 @@ object FirebaseUtils {
 
     fun setValueWith2ChildString(
         reference: String, child: String, child2: String, value: String
+        , onCompleteListener: OnCompleteListener<Void>
+        , onFailureListener: OnFailureListener
+    ) {
+        database = FirebaseDatabase.getInstance()
+        database.getReference(reference)
+            .child(child)
+            .child(child2)
+            .setValue(value)
+            .addOnCompleteListener(onCompleteListener)
+            .addOnFailureListener(onFailureListener)
+    }
+
+    fun setValueWith2ChildLong(
+        reference: String, child: String, child2: String, value: Long
         , onCompleteListener: OnCompleteListener<Void>
         , onFailureListener: OnFailureListener
     ) {

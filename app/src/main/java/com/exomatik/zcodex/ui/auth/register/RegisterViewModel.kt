@@ -153,7 +153,7 @@ class RegisterViewModel(
                             isShowLoading.value = false
                             val dataUser = ModelUser(user, hp, "", "user"
                                 , user, "", "", "", tglSekarang, tglSekarang
-                                , 0, active
+                                , 0, dataSave?.getDataApps()?.totalAds?:Constant.defaultMaxAds, tglSekarang, active
                             )
 
                             val bundle = Bundle()
@@ -187,7 +187,7 @@ class RegisterViewModel(
 
                     val dataUser = ModelUser(user, hp, "", "user"
                         , user, "", "", "", tglSekarang, tglSekarang, 0
-                        , active
+                        , dataSave?.getDataApps()?.totalAds?:Constant.defaultMaxAds, tglSekarang, active
                     )
 
                     getUserToken(dataUser, user)

@@ -14,8 +14,8 @@ object Constant {
     const val referenceFotoUser = "urlFoto"
     const val totalUser = "totalUser"
     const val totalTransaksiIklan = "totalTransaksiIklan"
-    const val adsDate = "AdsDate"
-    const val adsLeft = "AdsLeft"
+    const val adsDate = "adsDate"
+    const val adsLeft = "adsLeft"
 
     const val codeRequestFoto = 100
     const val codeRequestGallery = 1
@@ -25,6 +25,7 @@ object Constant {
     const val codeRequestLocationUpdate = 10
     const val codeRequestResultCrop = 400
 
+    const val defaultMaxAds : Long = 20
     const val defaultAdmobID = "ca-app-pub-5626225155470686~8394534181"
     const val defaultBannerID = "ca-app-pub-5626225155470686/2679173073"
     const val defaultIntersitialID = "ca-app-pub-5626225155470686/6785939046"
@@ -38,7 +39,6 @@ object Constant {
 
     const val phone = "noHp"
     const val nama = "nama"
-    const val token = "token"
     const val username = "username"
     const val provinsi = "provinsi"
     const val noHp = "noHp"
@@ -94,6 +94,7 @@ object Constant {
     const val bankBCA = "Bank Central Asia (BCA)"
     const val bankBNI = "Bank Negara Indonesia (BNI)"
     const val bankCIMBNiaga = "Bank CIMB Niaga"
+    const val bankMandiriSyariah = "Bank Mandiri Syariah"
     const val walletOvo = "E-Wallet Ovo"
     const val walletDana = "E-Wallet Dana"
     const val walletGopay = "E-Wallet Gopay"

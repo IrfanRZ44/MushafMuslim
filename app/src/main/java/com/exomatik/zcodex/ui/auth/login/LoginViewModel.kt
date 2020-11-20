@@ -2,13 +2,14 @@ package com.exomatik.zcodex.ui.auth.login
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
+import android.os.CountDownTimer
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseViewModel
 import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.ui.auth.verifyLogin.VerifyLoginFragment
+import com.exomatik.zcodex.utils.Constant
 import com.exomatik.zcodex.utils.Constant.noHp
 import com.exomatik.zcodex.utils.Constant.referenceUser
 import com.exomatik.zcodex.utils.Constant.username
@@ -150,20 +151,24 @@ class LoginViewModel(
                 verificationId: String,
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
-                Handler().postDelayed({
-                    if (unverify) {
-                        isShowLoading.value = false
-                        unverify = false
-                        val bundle = Bundle()
-                        val fragmentTujuan = VerifyLoginFragment()
-                        bundle.putString("verifyId", verificationId)
-                        bundle.putBoolean("auth", true)
-                        bundle.putParcelable("dataUser", dataUser.value)
-                        fragmentTujuan.arguments = bundle
-                        navController.navigate(R.id.verifyLoginFragment, bundle)
+                object : CountDownTimer(5000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
                     }
-                }, 5000L)
 
+                    override fun onFinish() {
+                        if (unverify) {
+                            isShowLoading.value = false
+                            unverify = false
+                            val bundle = Bundle()
+                            val fragmentTujuan = VerifyLoginFragment()
+                            bundle.putString("verifyId", verificationId)
+                            bundle.putBoolean("auth", true)
+                            bundle.putParcelable("dataUser", dataUser.value)
+                            fragmentTujuan.arguments = bundle
+                            navController.navigate(R.id.verifyLoginFragment, bundle)
+                        }
+                    }
+                }.start()
             }
         }
 
@@ -247,7 +252,7 @@ class LoginViewModel(
         FirebaseUtils.setValueWith2ChildString(
             referenceUser
             , userName
-            , "token"
+            , Constant.referenceToken
             , value
             , onCompleteListener
             , onFailureListener

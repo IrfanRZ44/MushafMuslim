@@ -12,10 +12,7 @@ import com.exomatik.zcodex.base.BaseViewModel
 import com.exomatik.zcodex.model.ModelNotes
 import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.ui.main.editNotes.EditNotesFragment
-import com.exomatik.zcodex.utils.Constant
-import com.exomatik.zcodex.utils.DataSave
-import com.exomatik.zcodex.utils.FirebaseUtils
-import com.exomatik.zcodex.utils.MyService
+import com.exomatik.zcodex.utils.*
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -55,17 +52,16 @@ class BerandaViewModel(
     fun setAdMobBanner() {
         val format = NumberFormat.getCurrencyInstance()
 
-        totalRevenue.value = "Total Pendapatan = ${format.format(savedData?.getDataApps()?.totalRevenue)}"
+        totalRevenue.value = "Saldo Perusahaan = ${format.format(savedData?.getDataApps()?.totalRevenue)}"
         lastUpdated.value = "(Di update pada ${savedData?.getDataApps()?.lastUpdated})"
         totalPoin.value = "Total Poin = ${savedData?.getDataUser()?.totalPoin}"
-        btnRewardedAds.value = "Rewarded Ads ${savedData?.getKeyInt(Constant.adsLeft)}"
 
         MobileAds.initialize(activity) {}
         adView.loadAd(AdRequest.Builder().build())
     }
 
     fun onClickAdmob(){
-        var ads = savedData?.getKeyInt(Constant.adsLeft)?:0
+        val ads = savedData?.getDataUser()?.adsLeft?:0
 
         if (ads <= 0){
             message.value = "Maaf, batas maksimal poin sudah tercapai hari ini"
@@ -116,7 +112,7 @@ class BerandaViewModel(
             val userRev = savedData?.getDataUser()?.totalPoin?.times(harga)
 
             hargaPoin.value = "Harga Poin = Rp$harga"
-            userRevenue.value = "Penghasilan User = ${format.format(userRev)}"
+            userRevenue.value = "Saldo Anda = ${format.format(userRev)}"
         }
 
         val valueEventListener = object : ValueEventListener {
@@ -136,7 +132,7 @@ class BerandaViewModel(
                         val userRev2 = savedData?.getDataUser()?.totalPoin?.times(harga2)
 
                         hargaPoin.value = "Harga Poin = Rp$harga2"
-                        userRevenue.value = "Penghasilan User = ${format.format(userRev2)}"
+                        userRevenue.value = "Saldo Anda = ${format.format(userRev2)}"
                     }
                 }
             }
@@ -200,6 +196,7 @@ class BerandaViewModel(
 
     fun getTotalPoin(username: String) {
         totalPoin.value = "Total Poin = ${savedData?.getDataUser()?.totalPoin.toString()}"
+        btnRewardedAds.value = "Rewarded Ads ${savedData?.getDataUser()?.adsLeft}"
 
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(result: DatabaseError) {
@@ -213,6 +210,8 @@ class BerandaViewModel(
                         savedData?.setDataObject(data, Constant.referenceUser)
                         totalPoin.value = "Total Poin = ${data?.totalPoin.toString()}"
                     }
+
+                    btnRewardedAds.value = "Rewarded Ads ${data?.adsLeft}"
                 }
             }
         }

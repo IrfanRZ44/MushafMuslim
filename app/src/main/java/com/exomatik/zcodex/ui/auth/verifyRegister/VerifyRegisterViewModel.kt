@@ -13,10 +13,10 @@ import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.services.timer.TListener
 import com.exomatik.zcodex.services.timer.TimeFormatEnum
 import com.exomatik.zcodex.services.timer.TimerView
+import com.exomatik.zcodex.utils.Constant
 import com.exomatik.zcodex.utils.Constant.active
 import com.exomatik.zcodex.utils.Constant.phone
 import com.exomatik.zcodex.utils.Constant.referenceUser
-import com.exomatik.zcodex.utils.Constant.token
 import com.exomatik.zcodex.utils.Constant.username
 import com.exomatik.zcodex.utils.DataSave
 import com.exomatik.zcodex.utils.FirebaseUtils
@@ -193,7 +193,7 @@ class VerifyRegisterViewModel(
         FirebaseUtils.setValueWith2ChildString(
             referenceUser
             , userName
-            , token
+            , Constant.referenceToken
             , value
             , onCompleteListener
             , onFailureListener
@@ -256,7 +256,8 @@ class VerifyRegisterViewModel(
                             val dataUser = ModelUser(dataUser.nama,
                                 dataUser.noHp, dataUser.token, "user", dataUser.username,
                                 "", "", "", tglSekarang, tglSekarang,
-                                0, active
+                                0, dataSave.getDataApps()?.totalAds?:Constant.defaultMaxAds,
+                                tglSekarang, active
                             )
                             message.value =
                                 "Kami sudah mengirimkan kode verifikasi ke nomor ${dataUser.noHp}"

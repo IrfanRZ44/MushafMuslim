@@ -51,6 +51,7 @@ class MainActivity : BaseActivity() {
                 R.id.nav_beranda,
                 R.id.nav_edit_profile,
                 R.id.nav_faq,
+                R.id.nav_info_apps,
                 R.id.nav_logout
             ), drawerLayout
         )
@@ -77,19 +78,35 @@ class MainActivity : BaseActivity() {
                 if (result.exists()) {
                     val data = result.getValue(ModelUser::class.java)
 
-                    if (data?.urlFoto != savedData.getDataUser()?.urlFoto){
+                    if(data?.token != savedData.getDataUser()?.token){
+                        FirebaseUtils.stopRefresh()
+                        FirebaseUtils.stopRefresh2()
+                        logout()
+                    }
+                    else{
                         savedData.setDataObject(data, Constant.referenceUser)
-                        setSavedData()
+                        if (data?.urlFoto != savedData.getDataUser()?.urlFoto){
+                            setSavedData()
+                        }
                     }
                 }
             }
         }
 
-        FirebaseUtils.refreshDataWith1ChildObject1(
+        FirebaseUtils.refreshDataWith1ChildObject2(
             Constant.referenceUser
             , username
             , valueEventListener
         )
+    }
+
+    private fun logout(){
+        Toast.makeText(this, "Maaf, akun Anda sedang masuk dari perangkat lain", Toast.LENGTH_LONG).show()
+        FirebaseUtils.signOut()
+        savedData.setDataObject(ModelUser(), Constant.referenceUser)
+        val intent = Intent(this, AuthActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun setSavedData() {
@@ -97,6 +114,14 @@ class MainActivity : BaseActivity() {
         val headerView = navView?.getHeaderView(0)
 
         if (dataUser != null) {
+            val urlFoto = savedData.getDataUser()?.urlFoto
+            if (!urlFoto.isNullOrEmpty()) {
+                headerView?.fotoMb?.setOnClickListener {
+                    drawerLayout?.closeDrawer(GravityCompat.START)
+                    onClickFoto(urlFoto, navController)
+                }
+                headerView?.fotoMb?.setBackgroundResource(android.R.color.transparent)
+            }
             headerView?.fotoMb?.load(savedData.getDataUser()?.urlFoto) {
                 crossfade(true)
                 placeholder(R.drawable.ic_profile_white)
@@ -187,6 +212,8 @@ class MainActivity : BaseActivity() {
         val onCompleteListener = OnCompleteListener<Void> { result ->
             progress.visibility = View.GONE
             if (result.isSuccessful) {
+                FirebaseUtils.stopRefresh()
+                FirebaseUtils.stopRefresh2()
                 Toast.makeText(this, "Berhasil Keluar", Toast.LENGTH_LONG).show()
 
                 FirebaseUtils.signOut()
@@ -206,7 +233,7 @@ class MainActivity : BaseActivity() {
 
         FirebaseUtils.deleteValueWith2Child(
             Constant.referenceUser, username,
-            Constant.token, onCompleteListener, onFailureListener
+            Constant.referenceToken, onCompleteListener, onFailureListener
         )
     }
 

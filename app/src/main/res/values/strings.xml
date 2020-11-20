@@ -144,8 +144,11 @@
     <string name="nomor_rekening">Nomor Rekening</string>
     <string name="simpan">Simpan</string>
     <string name="nama_lengkap_sesuai_nama_di_rekening_bank">Nama Lengkap (sesuai nama di rekening Bank)</string>
-    <string name="intruksi_Poin">Silahkan klik banner ads di atas untuk mendapatkan poin</string>
+    <string name="intruksi_Poin">Jangan klik iklan, nanti dapat poin</string>
     <string name="all_right_reserved_zcode_2020">All Right Reserved | ZCode 2020</string>
     <string name="faq">FAQ</string>
     <string name="edit_notes">Edit Notes</string>
+    <string name="link_grup_telegram">Link Grup Telegram</string>
+    <string name="info_aplikasi">Info Aplikasi</string>
+    <string name="berikan_rating">Berikan Rating</string>
 </resources>

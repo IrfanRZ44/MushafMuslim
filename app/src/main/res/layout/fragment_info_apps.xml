@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.exomatik.zcodex.ui.main.infoApps.InfoAppsFragment"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rlParent"
+        >
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/futura"
+                android:text="@string/app_name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="40sp"
+                android:textStyle="normal"
+                android:letterSpacing="0.1"
+                tools:targetApi="lollipop" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textVersi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_h3"
+                android:textStyle="normal"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="@dimen/_150"
+                android:layout_height="@dimen/_150"
+                android:padding="@dimen/h2"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo_acc"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/_30"
+                />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textDev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_h3"
+                android:textStyle="normal"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLinkTelegram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etUsername"
+                android:layout_margin="@dimen/h5"
+                android:padding="@dimen/h5"
+                android:text="@string/link_grup_telegram"
+                android:textColor="@color/gray3"
+                android:backgroundTint="@color/white"
+                tools:targetApi="lollipop"
+                android:drawableEnd="@drawable/ic_telegram"
+                android:drawablePadding="@dimen/h2"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/h5"
+                android:textColor="@color/black"
+                android:text="@string/berikan_rating"
+                android:textSize="@dimen/text_h2"
+                android:backgroundTint="@color/white"
+                android:drawableEnd="@drawable/ic_rate_gray"
+                android:drawablePadding="@dimen/h2"
+                android:id="@+id/btnRate"
+                tools:targetApi="lollipop"
+                />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/bannerID"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+</layout>

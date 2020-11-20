@@ -16,5 +16,7 @@ data class ModelUser(
     var lastSignIn: String = "",
     var dateCreated: String = "",
     var totalPoin: Long = 0,
+    var adsLeft: Long = 0,
+    var adsDate: String = "",
     var active: String = ""
     ) : Parcelable

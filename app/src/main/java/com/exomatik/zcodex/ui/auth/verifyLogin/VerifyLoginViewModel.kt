@@ -11,9 +11,9 @@ import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.services.timer.TListener
 import com.exomatik.zcodex.services.timer.TimeFormatEnum
 import com.exomatik.zcodex.services.timer.TimerView
+import com.exomatik.zcodex.utils.Constant
 import com.exomatik.zcodex.utils.Constant.phone
 import com.exomatik.zcodex.utils.Constant.referenceUser
-import com.exomatik.zcodex.utils.Constant.token
 import com.exomatik.zcodex.utils.Constant.username
 import com.exomatik.zcodex.utils.DataSave
 import com.exomatik.zcodex.utils.FirebaseUtils
@@ -142,7 +142,7 @@ class VerifyLoginViewModel(
         FirebaseUtils.setValueWith2ChildString(
             referenceUser
             , userName
-            , token
+            , Constant.referenceToken
             , value
             , onCompleteListener
             , onFailureListener

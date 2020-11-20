@@ -1,21 +1,19 @@
 package com.exomatik.zcodex.utils
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.CountDownTimer
 import android.os.IBinder
-import android.os.SystemClock
 import android.widget.Toast
 import androidx.annotation.Nullable
+import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.services.notification.model.Notification
 import com.exomatik.zcodex.services.notification.model.Sender
 import com.exomatik.zcodex.ui.rewardBanner.RewardBannerActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
 import java.util.concurrent.TimeUnit
-
 
 class MyService : Service() {
     private lateinit var time : CountDownTimer
@@ -30,44 +28,45 @@ class MyService : Service() {
 
     override fun onCreate() {
         val savedData = DataSave(this)
-        token = savedData.getDataUser()?.token
-        var ads = savedData.getKeyInt(Constant.adsLeft)?:0
+        val dataUser = savedData.getDataUser()
+        token = dataUser?.token
+        var ads = dataUser?.adsLeft?:0
+        val username = dataUser?.username
 
-        if (enableAds){
+        if (enableAds && !username.isNullOrEmpty()){
             ads -= 1
-            savedData.setDataInt(ads, Constant.adsLeft)
-            setUpTimer()
-            val intent = Intent(this, RewardBannerActivity::class.java)
-            intent.flags = FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
+            saveAdsLeft(username, ads, dataUser)
         }
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    private fun saveAdsLeft(userName: String, ads: Long, dataUser: ModelUser) {
+        val onCompleteListener =
+            OnCompleteListener<Void> { result ->
+                if (result.isSuccessful) {
+                    setUpTimer(dataUser, ads)
+                } else {
+                    Toast.makeText(this, "Error, terjadi kesalahan database", Toast.LENGTH_SHORT).show()
+                }
+            }
 
+        val onFailureListener = OnFailureListener { result ->
+            Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
+        }
+        FirebaseUtils.setValueWith2ChildLong(
+            Constant.referenceUser
+            , userName
+            , Constant.adsLeft
+            , ads
+            , onCompleteListener
+            , onFailureListener
+        )
+    }
+
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         if (!enableAds){
             Toast.makeText(this, "Mohon tunggu $timerCountDown detik", Toast.LENGTH_SHORT).show()
         }
         return super.onStartCommand(intent, flags, startId)
-    }
-
-    override fun onTaskRemoved(rootIntent: Intent?) {
-        if (!enableAds){
-            val restartServiceIntent = Intent(applicationContext, this.javaClass)
-            restartServiceIntent.setPackage(packageName)
-
-            val restartServicePendingIntent = PendingIntent.getService(
-                applicationContext,
-                1,
-                restartServiceIntent,
-                PendingIntent.FLAG_ONE_SHOT
-            )
-            val alarmService =
-                applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarmService[AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000] =
-                restartServicePendingIntent
-        }
-        super.onTaskRemoved(rootIntent)
     }
 
     override fun onDestroy() {
@@ -83,8 +82,14 @@ class MyService : Service() {
         stopSelf()
     }
 
-    private fun setUpTimer(){
+    private fun setUpTimer(dataUser: ModelUser, ads: Long){
         val randomTimer = (300000..600000).random().toLong()
+        val savedData = DataSave(this)
+        dataUser.adsLeft = ads
+        savedData.setDataObject(dataUser, Constant.referenceUser)
+        val intent = Intent(this, RewardBannerActivity::class.java)
+        intent.flags = FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
 
         time = object : CountDownTimer(randomTimer, 1000) {
             override fun onTick(millisUntilFinished: Long) {
