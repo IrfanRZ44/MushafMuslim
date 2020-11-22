@@ -2,10 +2,13 @@
     <string name="app_name">ZCode</string>
 
     <string name="text_all_right_reserved">Ahlan Wa Sahlan</string>
-    <string name="selamat_datang">Selamat Datang</string>
+    <string name="selamat_datang">Selamat Daang</string>
 
     <string name="admobID">ca-app-pub-5626225155470686~8394534181</string>
     <string name="bannerID">ca-app-pub-5626225155470686/2679173073</string>
+    <string name="interstisialAddNotesID">ca-app-pub-5626225155470686/1162286704</string>
+    <string name="interstisialEditNotesID">ca-app-pub-5626225155470686/7850968073</string>
+    <string name="interstisialEditProfilID">ca-app-pub-5626225155470686/5512595258</string>
     <string name="interstisialID">ca-app-pub-5626225155470686/6785939046</string>
     <string name="rewardedAdsID">ca-app-pub-5626225155470686/2924028738</string>
     <string name="admobIDTesting">ca-app-pub-3940256099942544~3347511713</string>
@@ -144,11 +147,13 @@
     <string name="nomor_rekening">Nomor Rekening</string>
     <string name="simpan">Simpan</string>
     <string name="nama_lengkap_sesuai_nama_di_rekening_bank">Nama Lengkap (sesuai nama di rekening Bank)</string>
-    <string name="intruksi_Poin">Jangan klik iklan, nanti dapat poin</string>
     <string name="all_right_reserved_zcode_2020">All Right Reserved | ZCode 2020</string>
     <string name="faq">FAQ</string>
     <string name="edit_notes">Edit Notes</string>
     <string name="link_grup_telegram">Link Grup Telegram</string>
     <string name="info_aplikasi">Info Aplikasi</string>
     <string name="berikan_rating">Berikan Rating</string>
+    <string name="maaf_belum_ada_data">Maaf, belum ada data</string>
+    <string name="perbarui_aplikasi">Perbarui Aplikasi</string>
+    <string name="belum_ada_data_video">Belum ada data video</string>
 </resources>

@@ -12,7 +12,7 @@ class BerandaFragment : BaseFragmentBind<FragmentBerandaBinding>(){
 
     override fun myCodeHere() {
         bind.lifecycleOwner = this
-        viewModel = BerandaViewModel(findNavController(), savedData, activity, bind.adView, bind.rcNotes)
+        viewModel = BerandaViewModel(findNavController(), savedData, activity, bind.rcNotes, bind.btnRewardedAds)
         bind.viewModel = viewModel
 
         viewModel.initAdapter()

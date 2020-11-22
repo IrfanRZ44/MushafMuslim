@@ -2,7 +2,6 @@ package com.exomatik.zcodex.utils
 
 import android.app.Service
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.CountDownTimer
 import android.os.IBinder
 import android.widget.Toast
@@ -10,7 +9,6 @@ import androidx.annotation.Nullable
 import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.services.notification.model.Notification
 import com.exomatik.zcodex.services.notification.model.Sender
-import com.exomatik.zcodex.ui.rewardBanner.RewardBannerActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import java.util.concurrent.TimeUnit
@@ -71,13 +69,7 @@ class MyService : Service() {
 
     override fun onDestroy() {
         if (enableAds){
-            Toast.makeText(this, "Iklan berikutnya sudah tersedia", Toast.LENGTH_SHORT).show()
-            val notification = Notification("Iklan berikutnya sudah tersedia",
-                "ZCode"
-                , "com.exomatik.zcodex.fcm_TARGET_SPLASH")
 
-            val sender = Sender(notification, token)
-            FirebaseUtils.sendNotif(sender)
         }
         stopSelf()
     }
@@ -87,9 +79,6 @@ class MyService : Service() {
         val savedData = DataSave(this)
         dataUser.adsLeft = ads
         savedData.setDataObject(dataUser, Constant.referenceUser)
-        val intent = Intent(this, RewardBannerActivity::class.java)
-        intent.flags = FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
 
         time = object : CountDownTimer(randomTimer, 1000) {
             override fun onTick(millisUntilFinished: Long) {

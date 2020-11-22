@@ -21,10 +21,11 @@
             android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            ads:adSize="BANNER"
+            ads:adSize="SMART_BANNER"
             ads:adUnitId="@string/bannerID"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/h3"
             />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -33,31 +34,43 @@
             android:textSize="@dimen/text_h5"
             android:textColor="@color/black"
             android:fontFamily="@font/roboto_regular"
-            android:id="@+id/textAdmob"
-            android:text="@string/intruksi_Poin"
+            android:id="@+id/textStatus"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/adView"
             android:textAlignment="center"
-            android:layout_marginTop="@dimen/h2"
+            android:text="@string/belum_ada_data_video"
             />
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgLogo"
-            android:layout_width="@dimen/_150"
-            android:layout_height="@dimen/_150"
-            android:padding="@dimen/h2"
-            android:scaleType="fitCenter"
-            android:src="@drawable/logo_acc"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/_30"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rcVideo"
+            android:layout_below="@+id/textStatus"
+            android:layout_marginStart="@dimen/h3"
+            android:layout_marginEnd="@dimen/h3"
             />
-        <include layout="@layout/progress_loading"
+
+        <include layout="@layout/progress_loading_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             visible="@{viewModel.isShowLoading}"
             android:id="@+id/progress"
             android:visibility="gone"
             android:layout_centerInParent="true"
+            />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_below="@+id/progress"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:text="@string/mohon_tunggu"
+            visible="@{viewModel.isShowLoading}"
+            android:visibility="gone"
             />
     </RelativeLayout>
 </layout>

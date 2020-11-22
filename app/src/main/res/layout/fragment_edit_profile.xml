@@ -204,17 +204,6 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/bannerID"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            />
-
         <include layout="@layout/progress_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

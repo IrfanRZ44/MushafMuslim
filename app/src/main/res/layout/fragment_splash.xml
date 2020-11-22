@@ -51,6 +51,25 @@
             showTextStatus="@{viewModel.message}"
             />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/h5"
+            android:textColor="@color/white"
+            android:text="@string/perbarui_aplikasi"
+            android:textSize="@dimen/text_h2"
+            android:backgroundTint="@color/green1"
+            android:drawableEnd="@drawable/ic_update_white"
+            android:drawablePadding="@dimen/h2"
+            android:id="@+id/btnRate"
+            tools:targetApi="lollipop"
+            android:layout_below="@+id/textStatus"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            visible="@{viewModel.isShowUpdate()}"
+            android:layout_marginTop="@dimen/h5"
+            />
+
         <include layout="@layout/progress_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

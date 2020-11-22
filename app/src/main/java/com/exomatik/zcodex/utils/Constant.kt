@@ -16,6 +16,11 @@ object Constant {
     const val totalTransaksiIklan = "totalTransaksiIklan"
     const val adsDate = "adsDate"
     const val adsLeft = "adsLeft"
+    const val adsAlreadyNote = "adsAlreadyNote"
+    const val adsAlreadyVideo = "adsAlreadyVideo"
+    const val adsIsNotLoading = "adsIsNotLoading"
+    const val adsTimer = "adsTimer"
+    const val randomTimer = "randomTimer"
 
     const val codeRequestFoto = 100
     const val codeRequestGallery = 1
@@ -29,7 +34,11 @@ object Constant {
     const val defaultAdmobID = "ca-app-pub-5626225155470686~8394534181"
     const val defaultBannerID = "ca-app-pub-5626225155470686/2679173073"
     const val defaultIntersitialID = "ca-app-pub-5626225155470686/6785939046"
+    const val defaultIntersitialIDAddNotes = "ca-app-pub-5626225155470686/1162286704"
+    const val defaultIntersitialIDEditProfile = "ca-app-pub-5626225155470686/5512595258"
+    const val defaultIntersitialIDEditNotes = "ca-app-pub-5626225155470686/7850968073"
     const val defaultRewardedID = "ca-app-pub-5626225155470686/2924028738"
+    const val defaultRewardedIDTesting = "ca-app-pub-3940256099942544/5224354917"
     const val defaultTempFoto = "https://www.google.co.id/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
     const val timeFormat = "HH:mm"
     const val dateFormat1 = "dd-M-yyyy"

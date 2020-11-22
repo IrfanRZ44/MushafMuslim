@@ -1,8 +1,11 @@
 package com.exomatik.zcodex.ui.main.beranda
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.NonNull
+import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,22 +15,30 @@ import com.exomatik.zcodex.base.BaseViewModel
 import com.exomatik.zcodex.model.ModelNotes
 import com.exomatik.zcodex.model.ModelUser
 import com.exomatik.zcodex.ui.main.editNotes.EditNotesFragment
-import com.exomatik.zcodex.utils.*
+import com.exomatik.zcodex.ui.rewardBanner.RewardBannerActivity
+import com.exomatik.zcodex.utils.Constant
+import com.exomatik.zcodex.utils.DataSave
+import com.exomatik.zcodex.utils.FirebaseUtils
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdCallback
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class BerandaViewModel(
     private val navController: NavController,
     private val savedData: DataSave?,
     private val activity: Activity?,
-    private val adView: AdView,
-    private val rcNotes: RecyclerView
+    private val rcNotes: RecyclerView,
+    private val btnRewardedAds: AppCompatButton
     ) : BaseViewModel() {
     val totalPoin = MutableLiveData<String>()
     val totalUser = MutableLiveData<String>()
@@ -36,9 +47,10 @@ class BerandaViewModel(
     val totalTransaction = MutableLiveData<String>()
     val totalRevenue = MutableLiveData<String>()
     val lastUpdated = MutableLiveData<String>()
-    val btnRewardedAds = MutableLiveData<String>()
     private var listNotes = ArrayList<ModelNotes>()
     private var adapter: AdapterNotesBeranda? = null
+    private lateinit var rewardedAd: RewardedAd
+    private lateinit var adCallback : RewardedAdCallback
 
     fun initAdapter(){
         adapter = AdapterNotesBeranda(listNotes) { item: ModelNotes -> onClickItem(item) }
@@ -55,21 +67,52 @@ class BerandaViewModel(
         totalRevenue.value = "Saldo Perusahaan = ${format.format(savedData?.getDataApps()?.totalRevenue)}"
         lastUpdated.value = "(Di update pada ${savedData?.getDataApps()?.lastUpdated})"
         totalPoin.value = "Total Poin = ${savedData?.getDataUser()?.totalPoin}"
-
-        MobileAds.initialize(activity) {}
-        adView.loadAd(AdRequest.Builder().build())
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun onClickAdmob(){
+        val adsTimer = savedData?.getKeyString(Constant.adsTimer)
+
+        val c = Calendar.getInstance()
+        val sdf = SimpleDateFormat(Constant.timeFormat)
+        val getCurrentTime = sdf.format(c.time)
+
+        if (adsTimer != null){
+            if (getCurrentTime < adsTimer){
+                message.value = "Coba lagi pada $adsTimer"
+            }
+            else {
+                checkingCondition()
+            }
+        }
+        else{
+            message.value = "Terjadi kesalahan yang tidak diketahui"
+        }
+    }
+
+    private fun checkingCondition(){
         val ads = savedData?.getDataUser()?.adsLeft?:0
+        val adsAlreadyNote = savedData?.getKeyBoolean(Constant.adsAlreadyNote)?:false
+        val adsAlreadyVideo = savedData?.getKeyBoolean(Constant.adsAlreadyVideo)?:false
 
         if (ads <= 0){
             message.value = "Maaf, batas maksimal poin sudah tercapai hari ini"
         }
-        else{
-            btnRewardedAds.value = "Rewarded Ads $ads"
-            val intent = Intent(activity, MyService::class.java)
-            activity?.startService(intent)
+        else {
+            if (adsAlreadyNote) {
+                if (adsAlreadyVideo) {
+                    val intent = Intent(activity, RewardBannerActivity::class.java)
+                    activity?.startActivity(intent)
+                } else {
+                    if (rewardedAd.isLoaded) {
+                        rewardedAd.show(activity, adCallback)
+                    } else {
+                        message.value = "Iklan belum tersedia"
+                    }
+                }
+            } else {
+                message.value = "Mohon untuk mengubah atau menambah notes terlebih dahulu"
+            }
         }
     }
 
@@ -163,8 +206,9 @@ class BerandaViewModel(
                 if (result.exists()) {
                     for (snapshot in result.children) {
                         val data = snapshot.getValue(ModelNotes::class.java)
-                        data?.let {
-                            listNotes.add(it)
+
+                        if (data != null && data.username == username){
+                            listNotes.add(data)
                             adapter?.notifyDataSetChanged()
                         }
                     }
@@ -196,7 +240,7 @@ class BerandaViewModel(
 
     fun getTotalPoin(username: String) {
         totalPoin.value = "Total Poin = ${savedData?.getDataUser()?.totalPoin.toString()}"
-        btnRewardedAds.value = "Rewarded Ads ${savedData?.getDataUser()?.adsLeft}"
+        loadRewardedAd()
 
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(result: DatabaseError) {
@@ -208,10 +252,10 @@ class BerandaViewModel(
 
                     if (data?.totalPoin != savedData?.getDataUser()?.totalPoin){
                         savedData?.setDataObject(data, Constant.referenceUser)
-                        totalPoin.value = "Total Poin = ${data?.totalPoin.toString()}"
                     }
 
-                    btnRewardedAds.value = "Rewarded Ads ${data?.adsLeft}"
+                    totalPoin.value = "Total Poin = ${data?.totalPoin.toString()}"
+                    loadRewardedAd()
                 }
             }
         }
@@ -221,5 +265,47 @@ class BerandaViewModel(
             , username
             , valueEventListener
         )
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun loadRewardedAd(){
+        if (savedData != null){
+            isShowLoading.value = true
+            rewardedAd = RewardedAd(activity, Constant.defaultRewardedID)
+
+            val adLoadCallback = object: RewardedAdLoadCallback() {
+                override fun onRewardedAdLoaded() {
+                    isShowLoading.value = false
+                    onClickRewardedAd()
+                }
+                override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
+                    isShowLoading.value = false
+                    message.value = "Iklan gagal dimuat"
+                }
+            }
+            rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
+        }
+        btnRewardedAds.text = "Rewarded Ads ${savedData?.getDataUser()?.adsLeft}"
+    }
+
+    private fun onClickRewardedAd(){
+        adCallback = object: RewardedAdCallback() {
+            var isRewarded = false
+            override fun onRewardedAdOpened() {
+            }
+            override fun onRewardedAdClosed() {
+                if (isRewarded){
+                    val intent = Intent(activity, RewardBannerActivity::class.java)
+                    activity?.startActivity(intent)
+                    savedData?.setDataBoolean(true, Constant.adsAlreadyVideo)
+                }
+            }
+            override fun onUserEarnedReward(@NonNull reward: RewardItem) {
+                isRewarded = true
+            }
+            override fun onRewardedAdFailedToShow(adError: AdError) {
+                message.value = "Iklan gagal di tampilkan"
+            }
+        }
     }
 }

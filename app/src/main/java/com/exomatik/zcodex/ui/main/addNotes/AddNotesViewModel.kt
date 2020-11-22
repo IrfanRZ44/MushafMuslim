@@ -3,6 +3,7 @@ package com.exomatik.zcodex.ui.main.addNotes
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.exomatik.zcodex.R
@@ -45,10 +46,11 @@ class AddNotesViewModel(
                 isShowLoading.value = false
                 if (result.isSuccessful) {
                     setUpIntersitialAds()
-                    message.value = "Succed creating notes"
+                    Toast.makeText(activity, "Berhasil membuat catatan", Toast.LENGTH_LONG).show()
+                    dataSave?.setDataBoolean(true, Constant.adsAlreadyNote)
                     navController.navigate(R.id.nav_beranda)
                 } else {
-                    message.value = "Failed to create notes"
+                    message.value = "Gagal membuat catatan"
                 }
             }
 
@@ -74,7 +76,7 @@ class AddNotesViewModel(
         MobileAds.initialize(activity) {}
 
         val mInterstitialAd = InterstitialAd(activity)
-        mInterstitialAd.adUnitId = Constant.defaultIntersitialID
+        mInterstitialAd.adUnitId = Constant.defaultIntersitialIDAddNotes
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         mInterstitialAd.adListener = object: AdListener() {

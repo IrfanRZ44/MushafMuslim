@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.CountDownTimer
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.exomatik.zcodex.BuildConfig
 import com.exomatik.zcodex.R
@@ -16,7 +17,6 @@ import com.exomatik.zcodex.ui.main.MainActivity
 import com.exomatik.zcodex.utils.Constant
 import com.exomatik.zcodex.utils.DataSave
 import com.exomatik.zcodex.utils.FirebaseUtils
-import com.exomatik.zcodex.utils.showLog
 import com.google.android.gms.ads.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
@@ -33,6 +33,7 @@ class SplashViewModel(
     private val savedData: DataSave?,
     private val activity: Activity?
     ) : BaseViewModel() {
+    val isShowUpdate = MutableLiveData<Boolean>()
 
     @SuppressLint("SimpleDateFormat")
     private val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -113,11 +114,12 @@ class SplashViewModel(
                     timerNavigation()
                 }
                 else{
-                    message.value = "Aplikasi sedang dalam perbaikan, mohon tunggu..."
+                    message.value = dataApps.statusApps
                 }
             }
             else{
-                message.value = "Mohon update versi aplikasi ${dataApps.versionApps}"
+                message.value = "Mohon perbarui versi aplikasi ke ${dataApps.versionApps}"
+                isShowUpdate.value = true
             }
         }
     }
@@ -140,7 +142,6 @@ class SplashViewModel(
                     val userName = data?.username
 
                     if (savedData?.getDataUser()?.adsDate != tglSekarang && !userName.isNullOrEmpty()){
-                        showLog("Datas tidak sama")
                         saveAdsLeft(userName, savedData?.getDataApps()?.totalAds?:Constant.defaultMaxAds, data)
                     }
                     else{

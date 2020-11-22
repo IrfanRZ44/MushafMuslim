@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/border_rl_black"
+    android:padding="@dimen/h2"
+    android:layout_margin="@dimen/h1"
+    >
+    <com.google.android.youtube.player.YouTubeThumbnailView
+        android:id="@+id/youtube_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150"
+        android:scaleType="centerCrop"
+        android:visibility="visible" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:layout_below="@+id/youtube_thumbnail"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:id="@+id/text_title"
+        android:textAlignment="center"
+        android:maxLines="2"
+        />
+    <RelativeLayout
+        android:id="@+id/relativeLayout_over_youtube_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnYoutube_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/ic_play_white"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="85dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_subscribe"
+        android:layout_below="@+id/text_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/h1"
+        android:layout_marginBottom="@dimen/h2"
+        android:id="@+id/img_youtube"
+        />
+</RelativeLayout>

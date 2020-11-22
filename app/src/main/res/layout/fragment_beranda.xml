@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/scrollView"
-            android:layout_above="@+id/adView"
+            android:layout_above="@+id/btnRewardedAds"
             android:layout_alignParentTop="true"
             >
             <RelativeLayout
@@ -204,32 +204,20 @@
             />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnRewarded"
+            android:id="@+id/btnRewardedAds"
             android:backgroundTint="@color/green1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/adView"
+            android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/h2"
             android:padding="@dimen/h3"
-            android:text="@={viewModel.btnRewardedAds}"
             android:drawableEnd="@drawable/ic_ads_white"
             android:drawablePadding="@dimen/h2"
             android:layout_centerHorizontal="true"
             android:textColor="@color/white"
             disableButton="@{viewModel.isShowLoading}"
-            tools:ignore="UnusedAttribute"
             android:onClick="@{()-> viewModel.onClickAdmob()}"
-            />
-
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/bannerID"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
+            tools:targetApi="lollipop"
             />
     </RelativeLayout>
 </layout>

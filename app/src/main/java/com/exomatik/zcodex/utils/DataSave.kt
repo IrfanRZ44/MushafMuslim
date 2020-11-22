@@ -71,6 +71,17 @@ class DataSave(private val context: Context?) {
         }
     }
 
+    fun setDataBoolean(value: Boolean, key: String) {
+        try {
+            val prefsEditor: SharedPreferences.Editor =
+                preferences?.edit() ?: throw Exception("Preferences Belum Di Inisialisasikan")
+            prefsEditor.putBoolean(key, value)
+            prefsEditor.apply()
+        } catch (e: Exception) {
+            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+        }
+    }
+
     fun setDataLong(value: Long, key: String) {
         try {
             val prefsEditor: SharedPreferences.Editor =
@@ -98,6 +109,10 @@ class DataSave(private val context: Context?) {
             Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             null
         }
+    }
+
+    fun getKeyBoolean(key: String): Boolean {
+        return preferences?.getBoolean(key, false)?:false
     }
 
     fun getKeyInt(key: String): Int? {

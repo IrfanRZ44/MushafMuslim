@@ -3,6 +3,7 @@ package com.exomatik.zcodex.ui.main.editNotes
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.exomatik.zcodex.R
@@ -12,6 +13,7 @@ import com.exomatik.zcodex.utils.Constant
 import com.exomatik.zcodex.utils.DataSave
 import com.exomatik.zcodex.utils.FirebaseUtils
 import com.exomatik.zcodex.utils.dismissKeyboard
+import com.google.android.gms.ads.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import java.text.SimpleDateFormat
@@ -49,10 +51,12 @@ class EditNotesViewModel(
             val onCompleteListener = OnCompleteListener<Void> { result ->
                 isShowLoading.value = false
                 if (result.isSuccessful) {
-                    message.value = "Succed editing notes"
+                    setUpIntersitialAds()
+                    Toast.makeText(activity, "Berhasil mengubah catatan", Toast.LENGTH_LONG).show()
+                    dataSave?.setDataBoolean(true, Constant.adsAlreadyNote)
                     navController.navigate(R.id.nav_beranda)
                 } else {
-                    message.value = "Failed to editing notes"
+                    message.value = "Gagal mengubah catatan"
                 }
             }
 
@@ -78,5 +82,36 @@ class EditNotesViewModel(
     fun setData(data: ModelNotes){
         title.value = data.title
         notes.value = data.notes
+    }
+
+    private fun setUpIntersitialAds(){
+        MobileAds.initialize(activity) {}
+
+        val mInterstitialAd = InterstitialAd(activity)
+        mInterstitialAd.adUnitId = Constant.defaultIntersitialIDEditNotes
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+        mInterstitialAd.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+                if (mInterstitialAd.isLoaded) {
+                    mInterstitialAd.show()
+                }
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+            }
+
+            override fun onAdOpened() {
+            }
+
+            override fun onAdClicked() {
+            }
+
+            override fun onAdLeftApplication() {
+            }
+
+            override fun onAdClosed() {
+            }
+        }
     }
 }

@@ -16,6 +16,7 @@ import com.exomatik.zcodex.utils.Constant.referenceUser
 import com.exomatik.zcodex.utils.DataSave
 import com.exomatik.zcodex.utils.FirebaseUtils
 import com.exomatik.zcodex.utils.SpinnerAdapter
+import com.google.android.gms.ads.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -191,6 +192,7 @@ class EditProfileViewModel(
         val onCompleteListener =
             OnCompleteListener<Void> { result ->
                 if (result.isSuccessful) {
+                    setUpIntersitialAds()
                     Toast.makeText(activity, "Berhasil menyimpan data user", Toast.LENGTH_LONG).show()
                     message.value = "Berhasil menyimpan data user"
                     navController.navigate(R.id.nav_beranda)
@@ -213,5 +215,36 @@ class EditProfileViewModel(
             , onCompleteListener
             , onFailureListener
         )
+    }
+
+    private fun setUpIntersitialAds(){
+        MobileAds.initialize(activity) {}
+
+        val mInterstitialAd = InterstitialAd(activity)
+        mInterstitialAd.adUnitId = Constant.defaultIntersitialIDEditProfile
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+        mInterstitialAd.adListener = object: AdListener() {
+            override fun onAdLoaded() {
+                if (mInterstitialAd.isLoaded) {
+                    mInterstitialAd.show()
+                }
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+            }
+
+            override fun onAdOpened() {
+            }
+
+            override fun onAdClicked() {
+            }
+
+            override fun onAdLeftApplication() {
+            }
+
+            override fun onAdClosed() {
+            }
+        }
     }
 }

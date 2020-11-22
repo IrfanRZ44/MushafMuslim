@@ -62,25 +62,10 @@
                 />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnLinkTelegram"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/etUsername"
-                android:layout_margin="@dimen/h5"
                 android:padding="@dimen/h5"
-                android:text="@string/link_grup_telegram"
                 android:textColor="@color/gray3"
-                android:backgroundTint="@color/white"
-                tools:targetApi="lollipop"
-                android:drawableEnd="@drawable/ic_telegram"
-                android:drawablePadding="@dimen/h2"
-                />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/h5"
-                android:textColor="@color/black"
                 android:text="@string/berikan_rating"
                 android:textSize="@dimen/text_h2"
                 android:backgroundTint="@color/white"

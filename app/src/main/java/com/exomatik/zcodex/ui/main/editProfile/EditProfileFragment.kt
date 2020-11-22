@@ -7,8 +7,6 @@ import com.exomatik.zcodex.R
 import com.exomatik.zcodex.base.BaseFragmentBind
 import com.exomatik.zcodex.databinding.FragmentEditProfileBinding
 import com.exomatik.zcodex.utils.setImageBox
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
@@ -23,8 +21,6 @@ class EditProfileFragment : BaseFragmentBind<FragmentEditProfileBinding>(){
 
         viewModel.setData()
 
-        MobileAds.initialize(activity) {}
-        bind.adView.loadAd(AdRequest.Builder().build())
         onClick()
     }
 

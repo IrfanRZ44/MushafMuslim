@@ -15,13 +15,9 @@ class InfoAppsFragment : BaseFragmentBind<FragmentInfoAppsBinding>(){
 
     @SuppressLint("SetTextI18n")
     override fun myCodeHere() {
-        bind.textDev.text = "ZCode Development"
+        bind.textDev.text = "ZCode Development by Exomatik"
         bind.textVersi.text = "Versi Aplikasi ${BuildConfig.VERSION_NAME}"
-        bind.btnLinkTelegram.setOnClickListener {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("https://telegram.me/ZCodePoin"))
-            startActivity(intent)
-        }
+
         bind.btnRate.setOnClickListener {
             activity?.startActivity(
                 Intent(

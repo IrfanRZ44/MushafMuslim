@@ -12,17 +12,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rcFaq"
-            android:layout_above="@+id/adView"
+            android:layout_alignParentTop="true"
             />
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/bannerID"
-            android:layout_alignParentBottom="true"
+            style="@style/textStandardWhite"
+            android:textSize="@dimen/text_h3"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/text_h3"
+            android:layout_marginBottom="@dimen/h3"
+            android:layout_marginLeft="@dimen/_30"
+            android:layout_marginRight="@dimen/_30"
             android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:textColor="@color/gray2"
+            android:id="@+id/textStatus"
+            android:text="@string/maaf_belum_ada_data"
             />
     </RelativeLayout>
 </layout>

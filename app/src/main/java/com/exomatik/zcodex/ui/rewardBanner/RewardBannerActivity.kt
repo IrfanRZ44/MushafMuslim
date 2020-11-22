@@ -10,8 +10,9 @@ class RewardBannerActivity : BaseActivityBind<ActivityRewardBannerBinding>(){
 
     override fun myCodeHere() {
         bind.lifecycleOwner = this
-        viewModel = RewardBannerViewModel(savedData, this, bind.adView)
+        viewModel = RewardBannerViewModel(savedData, this, bind.adView, bind.rcVideo, bind.textStatus, this)
         bind.viewModel = viewModel
         viewModel.setUpBanner()
+        viewModel.initAdapter()
     }
 }

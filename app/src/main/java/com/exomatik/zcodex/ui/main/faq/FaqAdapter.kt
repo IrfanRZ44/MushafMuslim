@@ -10,10 +10,9 @@ import com.exomatik.zcodex.model.ModelFaq
 import com.exomatik.zcodex.services.expandableLayout.ExpandableLayout
 import kotlinx.android.synthetic.main.item_faq.view.*
 
-class FaqAdapter(private val itemsCells: ArrayList<ModelFaq>) :
+class FaqAdapter(private val itemsCells: List<ModelFaq>) :
     RecyclerView.Adapter<FaqAdapter.ViewHolder>() {
 
-    // Save the expanded row position
     private val expandedPositionSet: HashSet<Int> = HashSet()
     lateinit var context: Context
 
