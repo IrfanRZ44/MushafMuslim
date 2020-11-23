@@ -1,14 +1,13 @@
 package com.exomatik.zcodex.ui.rewardBanner
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.AlarmManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
+import android.graphics.Color
+import android.media.RingtoneManager
 import android.os.Build
-import android.os.CountDownTimer
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
@@ -86,13 +85,13 @@ class RewardBannerViewModel(
     }
 
     private fun saveRewarded(){
-        isShowLoading.value = true
-
         val dataUser = savedData?.getDataUser()
         val username = savedData?.getDataUser()?.username
 
         if (dataUser != null && !username.isNullOrEmpty()){
             isShowLoading.value = true
+            textStatus.visibility = View.VISIBLE
+
             val dataTransaction = ModelTransaction("", tglSekarang, username, 1)
 
             val onCompleteListener = OnCompleteListener<Void> { result ->
@@ -101,12 +100,14 @@ class RewardBannerViewModel(
 
                     addTotalPoin(dataUser, username, poin)
                 } else {
+                    textStatus.visibility = View.GONE
                     isShowLoading.value = false
                     message.value = "Gagal menambah Poin"
                 }
             }
 
             val onFailureListener = OnFailureListener {
+                textStatus.visibility = View.GONE
                 isShowLoading.value = false
                 message.value = "Gagal menambah Poin"
             }
@@ -131,12 +132,14 @@ class RewardBannerViewModel(
                 ads -= 1
                 saveAdsLeft(dataUser, username, ads)
             } else {
+                textStatus.visibility = View.GONE
                 isShowLoading.value = false
                 message.value = "Gagal menambah Poin"
             }
         }
 
         val onFailureListener = OnFailureListener {
+            textStatus.visibility = View.GONE
             isShowLoading.value = false
             message.value = "Gagal menambah Poin"
         }
@@ -151,48 +154,23 @@ class RewardBannerViewModel(
         )
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun saveAdsLeft(dataUser: ModelUser, username: String, ads: Long){
         val onCompleteListener = OnCompleteListener<Void> { result ->
             if (result.isSuccessful) {
-                dataUser.adsLeft = ads
-                savedData?.setDataObject(dataUser, Constant.referenceUser)
-                savedData?.setDataBoolean(false, Constant.adsAlreadyNote)
-                savedData?.setDataBoolean(false, Constant.adsAlreadyVideo)
-
                 val timeMin = savedData?.getDataApps()?.timeMin?:5
                 val timeMax = savedData?.getDataApps()?.timeMax?:10
                 val randomTimer = (timeMin..timeMax).random() * 60000
 
-                val date = Calendar.getInstance()
-                val time = date.timeInMillis
-                val afterAddingTenMins = Date(time + randomTimer)
-                val dateAvailable = SimpleDateFormat(Constant.timeFormat).format(afterAddingTenMins)
-                savedData?.setDataString(dateAvailable.toString(), Constant.adsTimer)
-
-                val taskManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager?
-                val backgroundService = Intent(activity, BackgroundService::class.java)
-                backgroundService.putExtra(Constant.randomTimer, randomTimer)
-                val pendingIntent = PendingIntent.getBroadcast(activity, 0, backgroundService, PendingIntent.FLAG_UPDATE_CURRENT)
-
-                taskManager?.set(AlarmManager.RTC_WAKEUP, 10000, pendingIntent)
-                object : CountDownTimer(10000, 1000) {
-                    override fun onTick(millisUntilFinished: Long) {
-
-                    }
-                    override fun onFinish() {
-                        Toast.makeText(activity, "Berhasil menambah 1 Poin", Toast.LENGTH_LONG).show()
-                        isShowLoading.value = false
-                        activity?.finish()
-                    }
-                }.start()
+                createAlarmManager(randomTimer, ads, dataUser)
             } else {
+                textStatus.visibility = View.GONE
                 isShowLoading.value = false
                 message.value = "Gagal menambah Poin"
             }
         }
 
         val onFailureListener = OnFailureListener {
+            textStatus.visibility = View.GONE
             isShowLoading.value = false
             message.value = "Gagal menambah Poin"
         }
@@ -205,5 +183,63 @@ class RewardBannerViewModel(
             , onCompleteListener
             , onFailureListener
         )
+    }
+
+    private fun createAlarmManager(randomTime: Long, ads: Long, dataUser: ModelUser){
+        createChannel()
+
+        val backgroundService = Intent(activity, BackgroundService::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(activity, 0, backgroundService, 0)
+        val taskManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager?
+
+        val timeAtButtonClick = System.currentTimeMillis()
+
+        taskManager?.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + randomTime, pendingIntent)
+
+        itsDone(randomTime, ads, dataUser)
+    }
+
+    private fun createChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val description = "Channel for ${Constant.appName}"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("notify${Constant.appName}", description, importance)
+            channel.description = description
+
+            channel.lightColor = Color.BLUE
+            channel.enableLights(true)
+            val uriSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+            channel.setSound(uriSound, Notification.AUDIO_ATTRIBUTES_DEFAULT)
+            channel.enableVibration(true)
+
+            val notificationManager = activity?.getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun itsDone(randomTimer: Long, ads: Long, dataUser: ModelUser){
+        val date = Calendar.getInstance()
+        val time = date.timeInMillis
+        val afterAddingTenMins = Date(time + randomTimer)
+        val dateAvailable = SimpleDateFormat(Constant.timeDateFormat).format(afterAddingTenMins)
+        savedData?.setDataString(dateAvailable.toString(), Constant.adsTimer)
+
+        dataUser.adsLeft = ads
+        savedData?.setDataObject(dataUser, Constant.referenceUser)
+        savedData?.setDataBoolean(false, Constant.adsAlreadyNote)
+
+        val adsRewardVideo = savedData?.getKeyInt(Constant.adsRewardVideo)?:0
+        if (adsRewardVideo <= 0){
+            savedData?.setDataBoolean(false, Constant.adsAlreadyVideo)
+        }
+        else{
+            val adsVid = adsRewardVideo - 1
+            savedData?.setDataInt(adsVid, Constant.adsRewardVideo)
+        }
+        Toast.makeText(activity, "Berhasil menambah 1 Poin", Toast.LENGTH_LONG).show()
+        isShowLoading.value = false
+        textStatus.visibility = View.GONE
+        activity?.finish()
     }
 }

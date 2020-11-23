@@ -1,6 +1,7 @@
 package com.exomatik.zcodex.utils
 
 object Constant {
+    const val appName = "ZCode"
     const val instalApp = "Dapatkan update tabligh dari ustadz favoritmu hanya di Balligh. " +
             "Install Aplikasinya sekarang juga </downloadlink>"
     const val referenceStatusApps = "statusApps"
@@ -17,6 +18,7 @@ object Constant {
     const val adsDate = "adsDate"
     const val adsLeft = "adsLeft"
     const val adsAlreadyNote = "adsAlreadyNote"
+    const val adsRewardVideo = "adsRewardVideo"
     const val adsAlreadyVideo = "adsAlreadyVideo"
     const val adsIsNotLoading = "adsIsNotLoading"
     const val adsTimer = "adsTimer"

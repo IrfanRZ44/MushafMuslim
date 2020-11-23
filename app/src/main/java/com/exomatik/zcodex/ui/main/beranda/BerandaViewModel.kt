@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.MutableLiveData
@@ -30,6 +31,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import java.text.NumberFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -74,19 +76,55 @@ class BerandaViewModel(
         val adsTimer = savedData?.getKeyString(Constant.adsTimer)
 
         val c = Calendar.getInstance()
-        val sdf = SimpleDateFormat(Constant.timeFormat)
+        val sdf = SimpleDateFormat(Constant.timeDateFormat)
         val getCurrentTime = sdf.format(c.time)
 
-        if (adsTimer != null){
-            if (getCurrentTime < adsTimer){
-                message.value = "Coba lagi pada $adsTimer"
+        if (adsTimer != null && !adsTimer.isNullOrEmpty()){
+            val date = sdf.parse(adsTimer)
+
+            if (comparingTimes(getCurrentTime, adsTimer)){
+                if (date != null){
+                    val sdfTime = SimpleDateFormat(Constant.timeFormat)
+                    val getCurrentTimer2 = sdfTime.format(date)
+
+                    message.value = "Coba lagi pada $getCurrentTimer2"
+                }
+                else{
+                    message.value = "Error, kesalahan format waktu"
+                }
             }
             else {
                 checkingCondition()
             }
         }
         else{
-            message.value = "Terjadi kesalahan yang tidak diketahui"
+            checkingCondition()
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun comparingTimes(waktuMulai: String, waktuDipilih: String) : Boolean{
+        try {
+            val time1 = SimpleDateFormat(Constant.timeDateFormat).parse(waktuMulai)
+            val d = SimpleDateFormat(Constant.timeDateFormat).parse(waktuDipilih)
+
+            val calendar1 = Calendar.getInstance()
+            val calendar3 = Calendar.getInstance()
+
+            return if (time1 != null && d != null){
+                calendar1.time = time1
+                calendar1.add(Calendar.DATE, 1)
+                calendar3.time = d
+                calendar3.add(Calendar.DATE, 1)
+
+                val x = calendar3.time
+                x.after(calendar1.time)
+            } else{
+                false
+            }
+        } catch (e: ParseException) {
+            message.value = e.message
+            return false
         }
     }
 
@@ -291,6 +329,7 @@ class BerandaViewModel(
     private fun onClickRewardedAd(){
         adCallback = object: RewardedAdCallback() {
             var isRewarded = false
+            var amount = 5
             override fun onRewardedAdOpened() {
             }
             override fun onRewardedAdClosed() {
@@ -298,9 +337,11 @@ class BerandaViewModel(
                     val intent = Intent(activity, RewardBannerActivity::class.java)
                     activity?.startActivity(intent)
                     savedData?.setDataBoolean(true, Constant.adsAlreadyVideo)
+                    savedData?.setDataInt(amount, Constant.adsRewardVideo)
                 }
             }
             override fun onUserEarnedReward(@NonNull reward: RewardItem) {
+                amount = reward.amount
                 isRewarded = true
             }
             override fun onRewardedAdFailedToShow(adError: AdError) {
