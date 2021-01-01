@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#132356</color>
-    <color name="colorPrimaryDark">#242B79</color>
-    <color name="colorAccent">#6D7FFF</color>
+    <color name="colorPrimary">#52af44</color>
+    <color name="colorPrimaryDark">#408A35</color>
+    <color name="colorAccent">#61CF51</color>
 
     <color name="blue1">#6D7FFF</color>
     <color name="blue2">#344C8D</color>
@@ -31,7 +31,10 @@
     <color name="red1">#d32f2f</color>
     <color name="red2">#B00020</color>
 
-    <color name="green1">#0CBC20</color>
+    <color name="green1">#52af44</color>
+    <color name="green2">#408A35</color>
+    <color name="green3">#61CF51</color>
+    <color name="green4">#0CBC20</color>
 
     <color name="yellow1">#FFEB3B</color>
 

@@ -5,41 +5,31 @@
     android:id="@+id/auth_nav"
     android:label="Authentication"
     tools:showIn="navigation_view"
-    app:startDestination="@id/nav_beranda">
-    <fragment
-        android:id="@+id/nav_beranda"
-        android:name="com.exomatik.zcodex.ui.main.beranda.BerandaFragment"
-        android:label="@string/beranda"
-        tools:layout="@layout/fragment_beranda" />
-    <fragment
-        android:id="@+id/nav_edit_profile"
-        android:name="com.exomatik.zcodex.ui.main.editProfile.EditProfileFragment"
-        android:label="@string/edit_profil"
-        tools:layout="@layout/fragment_edit_profile" />
+    app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/lihatFotoFragment"
-        android:name="com.exomatik.zcodex.utils.LihatFotoFragment"
+        android:name="id.exomatik.bacashirah.utils.LihatFotoFragment"
         android:label="@string/foto"
         tools:layout="@layout/fragment_lihat_foto"
         />
     <fragment
-        android:id="@+id/addNotesFragment"
-        android:name="com.exomatik.zcodex.ui.main.addNotes.AddNotesFragment"
-        android:label="@string/add_notes"
-        tools:layout="@layout/fragment_add_notes" />
+        android:id="@+id/mainFragment"
+        android:name="id.exomatik.bacashirah.ui.main.MainFragment"
+        android:label="@string/main"
+        tools:layout="@layout/fragment_main" />
     <fragment
-        android:id="@+id/editNotesFragment"
-        android:name="com.exomatik.zcodex.ui.main.editNotes.EditNotesFragment"
-        android:label="@string/edit_notes"
-        tools:layout="@layout/fragment_edit_notes" />
+        android:id="@+id/accountFragment"
+        android:name="id.exomatik.bacashirah.ui.main.account.AccountFragment"
+        android:label="@string/account"
+        tools:layout="@layout/fragment_account" />
     <fragment
-        android:id="@+id/nav_faq"
-        android:name="com.exomatik.zcodex.ui.main.faq.FaqFragment"
-        android:label="@string/faq"
-        tools:layout="@layout/fragment_faq" />
+        android:id="@+id/shirahFragment"
+        android:name="id.exomatik.bacashirah.ui.main.shirah.ShirahFragment"
+        android:label="@string/shirah_nabawi"
+        tools:layout="@layout/fragment_shirah" />
     <fragment
-        android:id="@+id/nav_info_apps"
-        android:name="com.exomatik.zcodex.ui.main.infoApps.InfoAppsFragment"
-        android:label="@string/info_aplikasi"
-        tools:layout="@layout/fragment_info_apps" />
+        android:id="@+id/detailShirahFragment"
+        android:name="id.exomatik.bacashirah.ui.main.detailShirah.DetailShirahFragment"
+        android:label="@string/detail_shirah"
+        tools:layout="@layout/fragment_detail_shirah" />
 </navigation>

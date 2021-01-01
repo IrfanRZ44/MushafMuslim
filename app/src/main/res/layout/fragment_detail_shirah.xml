@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="id.exomatik.bacashirah.ui.main.detailShirah.DetailShirahFragment"
+    >
+    <data>
+        <variable
+            name="viewModel"
+            type="id.exomatik.bacashirah.ui.main.detailShirah.DetailShirahViewModel" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:theme="@style/CustomStyle"
+        android:background="@color/white"
+        >
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                snackbar="@{viewModel.message}"
+                android:orientation="vertical"
+                >
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/imgFoto"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/radius_gray"
+                    imageBoxSrc="@{viewModel.dataShirah.urlFoto}"
+                    />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:text="@={viewModel.dataShirah.title}"
+                    android:textSize="@dimen/text_h3"
+                    android:textStyle="bold"
+                    android:layout_toEndOf="@+id/imgFoto"
+                    android:id="@+id/textTitle"
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_marginTop="@dimen/h2"
+                    android:layout_marginStart="@dimen/h2"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray3"
+                    android:text="@={viewModel.dataShirah.dateCreated}"
+                    android:textSize="@dimen/text_h1"
+                    android:layout_toEndOf="@+id/imgFoto"
+                    android:id="@+id/textTanggal"
+                    android:fontFamily="@font/roboto_regular"
+                    android:layout_marginStart="@dimen/h2"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shirahDocs"
+                    android:layout_margin="@dimen/h2"
+                    >
+                </RelativeLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+
+        <include layout="@layout/progress_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            visible="@{viewModel.isShowLoading}"
+            android:id="@+id/progress"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+</layout>

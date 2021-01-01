@@ -8,33 +8,33 @@
     app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.exomatik.zcodex.ui.auth.splash.SplashFragment"
+        android:name="id.exomatik.bacashirah.ui.auth.splash.SplashFragment"
         android:label="@string/splash_screen"
         tools:layout="@layout/fragment_splash" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.exomatik.zcodex.ui.auth.login.LoginFragment"
+        android:name="id.exomatik.bacashirah.ui.auth.login.LoginFragment"
         android:label="@string/login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/verifyRegisterFragment"
-        android:name="com.exomatik.zcodex.ui.auth.verifyRegister.VerifyRegisterFragment"
+        android:name="id.exomatik.bacashirah.ui.auth.verifyRegister.VerifyRegisterFragment"
         android:label="@string/login"
         tools:layout="@layout/fragment_verify_register" />
     <fragment
         android:id="@+id/verifyLoginFragment"
-        android:name="com.exomatik.zcodex.ui.auth.verifyLogin.VerifyLoginFragment"
+        android:name="id.exomatik.bacashirah.ui.auth.verifyLogin.VerifyLoginFragment"
         android:label="@string/login"
         tools:layout="@layout/fragment_verify_login" />
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.exomatik.zcodex.ui.auth.register.RegisterFragment"
+        android:name="id.exomatik.bacashirah.ui.auth.register.RegisterFragment"
         android:label="@string/register"
         tools:layout="@layout/fragment_register"
         />
     <fragment
         android:id="@+id/lihatFotoFragment"
-        android:name="com.exomatik.zcodex.utils.LihatFotoFragment"
+        android:name="id.exomatik.bacashirah.utils.LihatFotoFragment"
         android:label="@string/foto"
         tools:layout="@layout/fragment_lihat_foto"
         />

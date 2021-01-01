@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.exomatik.zcodex.ui.auth.login.LoginViewModel" />
+            type="id.exomatik.bacashirah.ui.auth.login.LoginViewModel" />
     </data>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

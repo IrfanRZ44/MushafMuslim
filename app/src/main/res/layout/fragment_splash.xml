@@ -2,12 +2,12 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.exomatik.zcodex.ui.auth.splash.SplashFragment"
+    tools:context="id.exomatik.bacashirah.ui.auth.splash.SplashFragment"
     >
     <data>
         <variable
             name="viewModel"
-            type="com.exomatik.zcodex.ui.auth.splash.SplashViewModel" />
+            type="id.exomatik.bacashirah.ui.auth.splash.SplashViewModel" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/all_right_reserved_zcode_2020"
+            android:text="@string/all_right_reserved"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_h2"
             android:layout_alignParentBottom="true"
