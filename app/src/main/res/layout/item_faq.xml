@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<id.exomatik.bacashirah.services.expandableLayout.ExpandableLayout
+<id.exomatik.mushafmuslim.services.expandableLayout.ExpandableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/expand_layout"
     android:layout_width="match_parent"
@@ -56,4 +56,4 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-</id.exomatik.bacashirah.services.expandableLayout.ExpandableLayout>
+</id.exomatik.mushafmuslim.services.expandableLayout.ExpandableLayout>

@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "500025209031",
-    "project_id": "bacashirah-c9c9e",
-    "storage_bucket": "bacashirah-c9c9e.appspot.com"
+    "project_number": "443334843090",
+    "project_id": "mushafmuslim",
+    "storage_bucket": "mushafmuslim.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:500025209031:android:c2de7bfde0b7c2f7bf4ee2",
+        "mobilesdk_app_id": "1:443334843090:android:1934b850540e8ee4616b0b",
         "android_client_info": {
-          "package_name": "id.exomatik.bacashirah"
+          "package_name": "id.exomatik.mushafmuslim"
         }
       },
       "oauth_client": [
         {
-          "client_id": "500025209031-ieq0h1snm1vb4hl2nb5f0kh5369rr5np.apps.googleusercontent.com",
+          "client_id": "443334843090-7cncpp24e380tqrmunim0756md6vhmgn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "id.exomatik.bacashirah",
+            "package_name": "id.exomatik.mushafmuslim",
             "certificate_hash": "bd7f1a1c80c3679e2fd4d62f8149558e37527daa"
           }
         },
         {
-          "client_id": "500025209031-ohmdvco8vtgto8k2d3l70bll14r8prsr.apps.googleusercontent.com",
+          "client_id": "443334843090-75lpco227k2hkambioadp5o4n61bttl6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBYRCYBu8aZYmGSdpnsbRRUciGuCC3tpfM"
+          "current_key": "AIzaSyCF-geev89XywBAyGPMpp05vvUV2gdfcI8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "500025209031-ohmdvco8vtgto8k2d3l70bll14r8prsr.apps.googleusercontent.com",
+              "client_id": "443334843090-75lpco227k2hkambioadp5o4n61bttl6.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

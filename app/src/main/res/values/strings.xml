@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Baca Shirah</string>
+    <string name="app_name">Mushaf Muslim</string>
 
     <string name="text_all_right_reserved">Ahlan Wa Sahlan</string>
     <string name="selamat_datang">Selamat Daang</string>
@@ -145,7 +145,7 @@
     <string name="nomor_rekening">Nomor Rekening</string>
     <string name="simpan">Simpan</string>
     <string name="nama_lengkap_sesuai_nama_di_rekening_bank">Nama Lengkap (sesuai nama di rekening Bank)</string>
-    <string name="all_right_reserved">All Right Reserved | Baca Shirah 2021</string>
+    <string name="all_right_reserved">All Right Reserved | Mushaf Muslim 2021</string>
     <string name="faq">FAQ</string>
     <string name="edit_notes">Edit Notes</string>
     <string name="link_grup">Link Grup Whatsapp</string>

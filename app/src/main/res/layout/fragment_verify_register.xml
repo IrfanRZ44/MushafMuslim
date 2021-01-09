@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="id.exomatik.bacashirah.ui.auth.verifyRegister.VerifyRegisterViewModel" />
+            type="id.exomatik.mushafmuslim.ui.auth.verifyRegister.VerifyRegisterViewModel" />
     </data>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -65,7 +65,7 @@
                 showTextStatus="@{viewModel.message}"
                 />
 
-            <id.exomatik.bacashirah.services.timer.TimerView
+            <id.exomatik.mushafmuslim.services.timer.TimerView
                 android:id="@+id/progressTimer"
                 android:layout_width="@dimen/_200"
                 android:layout_height="@dimen/_200"

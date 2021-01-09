@@ -8,28 +8,28 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/lihatFotoFragment"
-        android:name="id.exomatik.bacashirah.utils.LihatFotoFragment"
+        android:name="id.exomatik.mushafmuslim.utils.LihatFotoFragment"
         android:label="@string/foto"
         tools:layout="@layout/fragment_lihat_foto"
         />
     <fragment
         android:id="@+id/mainFragment"
-        android:name="id.exomatik.bacashirah.ui.main.MainFragment"
+        android:name="id.exomatik.mushafmuslim.ui.main.MainFragment"
         android:label="@string/main"
         tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/accountFragment"
-        android:name="id.exomatik.bacashirah.ui.main.account.AccountFragment"
+        android:name="id.exomatik.mushafmuslim.ui.main.account.AccountFragment"
         android:label="@string/account"
         tools:layout="@layout/fragment_account" />
     <fragment
         android:id="@+id/shirahFragment"
-        android:name="id.exomatik.bacashirah.ui.main.shirah.ShirahFragment"
+        android:name="id.exomatik.mushafmuslim.ui.main.shirah.ShirahFragment"
         android:label="@string/shirah_nabawi"
         tools:layout="@layout/fragment_shirah" />
     <fragment
         android:id="@+id/detailShirahFragment"
-        android:name="id.exomatik.bacashirah.ui.main.detailShirah.DetailShirahFragment"
+        android:name="id.exomatik.mushafmuslim.ui.main.detailShirah.DetailShirahFragment"
         android:label="@string/detail_shirah"
         tools:layout="@layout/fragment_detail_shirah" />
 </navigation>

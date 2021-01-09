@@ -2,12 +2,12 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="id.exomatik.bacashirah.ui.auth.splash.SplashFragment"
+    tools:context="id.exomatik.mushafmuslim.ui.auth.splash.SplashFragment"
     >
     <data>
         <variable
             name="viewModel"
-            type="id.exomatik.bacashirah.ui.auth.splash.SplashViewModel" />
+            type="id.exomatik.mushafmuslim.ui.auth.splash.SplashViewModel" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
