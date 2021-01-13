@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package id.exomatik.mushafmuslim.ui.auth.verifyLogin
 
 import android.app.Activity
@@ -5,25 +7,27 @@ import android.os.CountDownTimer
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import id.exomatik.mushafmuslim.R
-import id.exomatik.mushafmuslim.base.BaseViewModel
-import id.exomatik.mushafmuslim.model.ModelUser
-import id.exomatik.mushafmuslim.services.timer.TListener
-import id.exomatik.mushafmuslim.services.timer.TimeFormatEnum
-import id.exomatik.mushafmuslim.services.timer.TimerView
-import id.exomatik.mushafmuslim.utils.Constant
-import id.exomatik.mushafmuslim.utils.Constant.phone
-import id.exomatik.mushafmuslim.utils.Constant.referenceUser
-import id.exomatik.mushafmuslim.utils.Constant.username
-import id.exomatik.mushafmuslim.utils.DataSave
-import id.exomatik.mushafmuslim.utils.FirebaseUtils
-import id.exomatik.mushafmuslim.utils.dismissKeyboard
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.iid.InstanceIdResult
+import id.exomatik.mushafmuslim.R
+import id.exomatik.mushafmuslim.base.BaseViewModel
+import id.exomatik.mushafmuslim.model.ModelDataAccount
+import id.exomatik.mushafmuslim.model.ModelUser
+import id.exomatik.mushafmuslim.services.timer.TListener
+import id.exomatik.mushafmuslim.services.timer.TimeFormatEnum
+import id.exomatik.mushafmuslim.services.timer.TimerView
+import id.exomatik.mushafmuslim.utils.Constant
+import id.exomatik.mushafmuslim.utils.Constant.referenceUser
+import id.exomatik.mushafmuslim.utils.DataSave
+import id.exomatik.mushafmuslim.utils.FirebaseUtils
+import id.exomatik.mushafmuslim.utils.dismissKeyboard
 import java.util.concurrent.TimeUnit
 
 class VerifyLoginViewModel(
@@ -99,6 +103,7 @@ class VerifyLoginViewModel(
         etText1.requestFocus()
     }
 
+    @Suppress("DEPRECATION")
     private fun getUserToken() {
         val onCompleteListener = OnCompleteListener<InstanceIdResult> { result ->
                 if (result.isSuccessful) {
@@ -125,10 +130,7 @@ class VerifyLoginViewModel(
         val onCompleteListener =
             OnCompleteListener<Void> { result ->
                 if (result.isSuccessful) {
-                    isShowLoading.value = false
-                    message.value = "Berhasil menyimpan data user"
-
-                    navController.navigate(R.id.splashFragment)
+                    getDataAccount(userName)
                 } else {
                     isShowLoading.value = false
                     message.value = "Gagal menyimpan data user"
@@ -149,6 +151,41 @@ class VerifyLoginViewModel(
         )
     }
 
+    private fun getDataAccount(userName: String) {
+        isShowLoading.value = true
+
+        val valueEventListener = object : ValueEventListener {
+            override fun onCancelled(result: DatabaseError) {
+                isShowLoading.value = false
+                message.value = result.message
+            }
+
+            override fun onDataChange(result: DataSnapshot) {
+                if (result.exists()) {
+                    val data = result.getValue(ModelDataAccount::class.java)
+
+                    dataSave.setDataObject(data, Constant.referenceDataAccount)
+                    if (data != null && !data.validAccount){
+                        dataSave.setDataLong(Constant.timerValid, Constant.reffTimerValid)
+                    }
+                    isShowLoading.value = false
+                    message.value = "Berhasil masuk ke Akun Anda"
+
+                    navController.navigate(R.id.splashFragment)
+                } else {
+                    isShowLoading.value = false
+                    message.value = "Gagal, mengambil data Akun"
+                }
+            }
+        }
+
+        FirebaseUtils.getData1Child(
+            Constant.referenceDataAccount
+            , userName
+            , valueEventListener
+        )
+    }
+
     private fun sendCode() {
         val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -157,10 +194,6 @@ class VerifyLoginViewModel(
                     "Berhasil memverifikasi nomor " + dataUser.noHp
                 isShowLoading.value = false
                 loading.value = true
-
-                val body = HashMap<String, String?>()
-                body[phone] = dataUser.noHp
-                body[username] = dataUser.username
 
                 getUserToken()
                 isShowLoading.value = false
@@ -198,16 +231,11 @@ class VerifyLoginViewModel(
                             isShowLoading.value = false
                             loading.value = true
 
-                            message.value =
-                                "Kami sudah mengirimkan kode verifikasi ke nomor ${dataUser.noHp}"
+                            message.value = "Kami sudah mengirimkan kode verifikasi ke nomor ${dataUser.noHp}"
                             unverify = false
                             setProgress()
 
-                            try {
-                                verifyId = verificationId
-                            } catch (e: Exception) {
-                                message.value = e.message
-                            }
+                            verifyId = verificationId
                         }
                     }
                 }.start()

@@ -71,7 +71,7 @@ object FirebaseUtils {
             .addListenerForSingleValueEvent(eventListener)
     }
 
-    fun setValueUniqueTransaction(reference: String, data: ModelTransaction,
+    fun setValueUniqueTransaction(reference: String, child: String, data: ModelTransaction,
                                   onCompleteListener: OnCompleteListener<Void>
                                   , onFailureListener: OnFailureListener) {
         val ref = FirebaseDatabase.getInstance().getReference(reference)
@@ -79,6 +79,7 @@ object FirebaseUtils {
         data.idTransaction = id.key.toString()
 
         FirebaseDatabase.getInstance().getReference(reference)
+            .child(child)
             .child(data.idTransaction)
             .setValue(data)
             .addOnCompleteListener(onCompleteListener)
@@ -448,11 +449,13 @@ object FirebaseUtils {
             .addOnFailureListener(onFailureListener)
     }
 
-    fun stopRefresh() {
-        try {
+    fun stopRefresh() : Boolean {
+        return try {
             query.removeEventListener(refreshData)
+            true
         } catch (e: Exception) {
             showLog("error, method not running ${e.message} query 1")
+            false
         }
     }
 

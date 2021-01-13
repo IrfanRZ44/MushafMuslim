@@ -36,7 +36,9 @@
     <color name="green3">#61CF51</color>
     <color name="green4">#0CBC20</color>
 
-    <color name="yellow1">#FFEB3B</color>
+    <color name="yellow">#fdd835</color>
+    <color name="yellowDark">#FFEB3B</color>
+    <color name="yellowLight">#ffff6b</color>
 
     <color name="colorRouteLine">#5D6ACB</color>
 </resources>

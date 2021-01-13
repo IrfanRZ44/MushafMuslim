@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package id.exomatik.mushafmuslim.ui.auth.login
 
 import android.app.Activity
@@ -25,6 +27,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.iid.InstanceIdResult
+import id.exomatik.mushafmuslim.model.ModelDataAccount
+import id.exomatik.mushafmuslim.utils.Constant.referenceDataAccount
 
 class LoginViewModel(
     private val navController: NavController,
@@ -80,6 +84,7 @@ class LoginViewModel(
                             requestCode()
                         }
                         else{
+                            isShowLoading.value = false
                             message.value = "Maaf, Akun Anda dibekukan"
                         }
                     }
@@ -199,13 +204,7 @@ class LoginViewModel(
         val onCoCompleteListener =
             OnCompleteListener<AuthResult> { task ->
                 if (task.isSuccessful) {
-
-                    try {
-                        getUserToken()
-                    } catch (e: Exception) {
-                        isShowLoading.value = false
-                        message.value = e.message
-                    }
+                    getUserToken()
                 } else {
                     isShowLoading.value = false
                     message.value = "Gagal masuk ke Akun Anda"
@@ -215,6 +214,7 @@ class LoginViewModel(
         FirebaseUtils.signIn(credential, onCoCompleteListener)
     }
 
+    @Suppress("DEPRECATION")
     private fun getUserToken() {
         val onCompleteListener =
             OnCompleteListener<InstanceIdResult> { result ->
@@ -245,10 +245,7 @@ class LoginViewModel(
         val onCompleteListener =
             OnCompleteListener<Void> { result ->
                 if (result.isSuccessful) {
-                    isShowLoading.value = false
-                    message.value = "Berhasil masuk ke Akun Anda"
-
-                    navController.navigate(R.id.splashFragment)
+                    getDataAccount(userName)
                 } else {
                     isShowLoading.value = false
                     message.value = "Gagal menyimpan data user"
@@ -266,6 +263,42 @@ class LoginViewModel(
             , value
             , onCompleteListener
             , onFailureListener
+        )
+    }
+
+    private fun getDataAccount(userName: String) {
+        isShowLoading.value = true
+
+        val valueEventListener = object : ValueEventListener {
+            override fun onCancelled(result: DatabaseError) {
+                isShowLoading.value = false
+                message.value = result.message
+            }
+
+            override fun onDataChange(result: DataSnapshot) {
+                if (result.exists()) {
+                    val data = result.getValue(ModelDataAccount::class.java)
+
+                    savedData?.setDataObject(data, referenceDataAccount)
+                    isShowLoading.value = false
+                    message.value = "Berhasil masuk ke Akun Anda"
+
+                    if (data != null && !data.validAccount){
+                        savedData?.setDataLong(Constant.timerValid, Constant.reffTimerValid)
+                    }
+
+                    navController.navigate(R.id.splashFragment)
+                } else {
+                    isShowLoading.value = false
+                    message.value = "Gagal, mengambil data Akun"
+                }
+            }
+        }
+
+        FirebaseUtils.getData1Child(
+            referenceDataAccount
+            , userName
+            , valueEventListener
         )
     }
 }

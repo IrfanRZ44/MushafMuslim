@@ -116,13 +116,8 @@ class DataSave(private val context: Context?) {
         }
     }
 
-    fun getKeyLong(key: String): Long? {
-        return try {
-            preferences?.getLong(key, 0) ?: 0
-        }catch (e: Exception){
-            Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
-            null
-        }
+    fun getKeyLong(key: String): Long {
+        return preferences?.getLong(key, 0)?:0
     }
 
     fun getKeyBoolean(key: String): Boolean {

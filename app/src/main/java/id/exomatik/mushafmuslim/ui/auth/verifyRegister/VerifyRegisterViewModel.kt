@@ -1,38 +1,32 @@
+@file:Suppress("DEPRECATION")
+
 package id.exomatik.mushafmuslim.ui.auth.verifyRegister
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.os.Build
 import android.os.CountDownTimer
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
-import id.exomatik.mushafmuslim.R
-import id.exomatik.mushafmuslim.base.BaseViewModel
-import id.exomatik.mushafmuslim.model.ModelUser
-import id.exomatik.mushafmuslim.services.timer.TListener
-import id.exomatik.mushafmuslim.services.timer.TimeFormatEnum
-import id.exomatik.mushafmuslim.services.timer.TimerView
-import id.exomatik.mushafmuslim.utils.Constant
-import id.exomatik.mushafmuslim.utils.Constant.active
-import id.exomatik.mushafmuslim.utils.Constant.phone
-import id.exomatik.mushafmuslim.utils.Constant.referenceUser
-import id.exomatik.mushafmuslim.utils.Constant.username
-import id.exomatik.mushafmuslim.utils.DataSave
-import id.exomatik.mushafmuslim.utils.FirebaseUtils
-import id.exomatik.mushafmuslim.utils.dismissKeyboard
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.iid.InstanceIdResult
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
+import id.exomatik.mushafmuslim.R
+import id.exomatik.mushafmuslim.base.BaseViewModel
+import id.exomatik.mushafmuslim.model.ModelDataAccount
+import id.exomatik.mushafmuslim.model.ModelUser
+import id.exomatik.mushafmuslim.services.timer.TListener
+import id.exomatik.mushafmuslim.services.timer.TimeFormatEnum
+import id.exomatik.mushafmuslim.services.timer.TimerView
+import id.exomatik.mushafmuslim.utils.Constant
+import id.exomatik.mushafmuslim.utils.Constant.referenceDataAccount
+import id.exomatik.mushafmuslim.utils.Constant.referenceUser
+import id.exomatik.mushafmuslim.utils.DataSave
+import id.exomatik.mushafmuslim.utils.FirebaseUtils
+import id.exomatik.mushafmuslim.utils.dismissKeyboard
 import java.util.concurrent.TimeUnit
-import kotlin.collections.HashMap
 
 class VerifyRegisterViewModel(
     private val dataSave: DataSave,
@@ -49,15 +43,8 @@ class VerifyRegisterViewModel(
     val phoneCode = MutableLiveData<String>()
     val loading = MutableLiveData<Boolean>()
     var unverify = true
-    var auth = true
     var verifyId = ""
     lateinit var dataUser : ModelUser
-    @SuppressLint("SimpleDateFormat")
-    private val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm dd-M-yyyy"))
-    } else {
-        SimpleDateFormat("dd-M-yyyy").format(Date())
-    }
 
     fun onClick(requestEvent: Int) {
         activity?.let { dismissKeyboard(it) }
@@ -84,17 +71,9 @@ class VerifyRegisterViewModel(
             val onCoCompleteListener =
                 OnCompleteListener<AuthResult> { task ->
                     if (task.isSuccessful) {
-                        val body = HashMap<String, String?>()
-                        body[phone] = dataUser.noHp
-                        body[username] = dataUser.username
-
                         isShowLoading.value = false
-                        if (auth){
-                            addUserToFirebase(body, dataUser.username)
-                        }
-                        else{
-                            getUserToken()
-                        }
+
+                        getUserToken()
                     } else {
                         message.value = "Error, kode verifikasi salah"
                         isShowLoading.value = false
@@ -123,11 +102,52 @@ class VerifyRegisterViewModel(
         etText1.requestFocus()
     }
 
-    private fun addUserToFirebase(params: HashMap<String, String?>, userName: String) {
+    @Suppress("DEPRECATION")
+    private fun getUserToken() {
+        isShowLoading.value = true
+        val onCompleteListener =
+            OnCompleteListener<InstanceIdResult> { result ->
+                if (result.isSuccessful) {
+                    val token = result.result?.token
+
+                    if (!token.isNullOrEmpty()){
+                        dataUser.token = token
+
+                        addUserToFirebase(dataUser)
+                    }
+                    else{
+                        isShowLoading.value = false
+                        message.value = "Gagal mendapatkan token"
+                        setEmptyEditText()
+                    }
+
+                } else {
+                    isShowLoading.value = false
+                    message.value = "Gagal mendapatkan token"
+                    setEmptyEditText()
+                }
+            }
+
+        FirebaseUtils.getUserToken(
+            onCompleteListener
+        )
+    }
+
+    private fun addUserToFirebase(dataUser: ModelUser) {
         val onCompleteListener =
             OnCompleteListener<Void> { result ->
                 if (result.isSuccessful) {
-                    getUserToken()
+                    dataSave.setDataObject(
+                        dataUser, referenceUser
+                    )
+
+                    val dataAccount = ModelDataAccount(dataUser.username, "", dataUser.dateCreated,
+                        dataUser.noHp, "GOPAY", false,
+                        validAccount = false,
+                        totalPoin = 0,
+                        totalReferal = 0
+                    )
+                    addDataAccount(dataAccount, dataUser.username)
                 } else {
                     isShowLoading.value = false
                     message.value = "Gagal menyimpan data user"
@@ -142,42 +162,24 @@ class VerifyRegisterViewModel(
         }
         FirebaseUtils.setValueObject(
             referenceUser
-            , userName
-            , params
+            , dataUser.username
+            , dataUser
             , onCompleteListener
             , onFailureListener
         )
     }
 
-    private fun getUserToken() {
-        val onCompleteListener =
-            OnCompleteListener<InstanceIdResult> { result ->
-                if (result.isSuccessful) {
-                    dataUser.token = result.result?.token?:""
-
-                    saveToken(
-                        dataUser.token,
-                        dataUser.username
-                    )
-                    dataSave.setDataObject(dataUser, referenceUser)
-                } else {
-                    isShowLoading.value = false
-                    message.value = "Gagal mendapatkan token"
-                    setEmptyEditText()
-                }
-            }
-
-        FirebaseUtils.getUserToken(
-            onCompleteListener
-        )
-    }
-
-    private fun saveToken(value: String, userName: String) {
+    private fun addDataAccount(dataUser: ModelDataAccount, userName: String) {
         val onCompleteListener =
             OnCompleteListener<Void> { result ->
                 if (result.isSuccessful) {
                     isShowLoading.value = false
-                    message.value = "Berhasil menyimpan data user"
+                    message.value = "Berhasil menyimpan user"
+
+                    dataSave.setDataObject(
+                        dataUser, referenceDataAccount
+                    )
+                    dataSave.setDataLong(Constant.timerValid, Constant.reffTimerValid)
 
                     navController.navigate(R.id.splashFragment)
                 } else {
@@ -190,11 +192,10 @@ class VerifyRegisterViewModel(
             isShowLoading.value = false
             message.value = result.message
         }
-        FirebaseUtils.setValueWith2ChildString(
-            referenceUser
+        FirebaseUtils.setValueObject(
+            referenceDataAccount
             , userName
-            , Constant.referenceToken
-            , value
+            , dataUser
             , onCompleteListener
             , onFailureListener
         )
@@ -209,16 +210,7 @@ class VerifyRegisterViewModel(
                 isShowLoading.value = false
                 loading.value = true
 
-                val body = HashMap<String, String?>()
-                body[phone] = dataUser.noHp
-                body[username] = dataUser.username
-
-                if (auth){
-                    addUserToFirebase(body, dataUser.username)
-                }
-                else{
-                    getUserToken()
-                }
+                getUserToken()
                 isShowLoading.value = false
             }
 
@@ -253,21 +245,12 @@ class VerifyRegisterViewModel(
                         if (unverify) {
                             isShowLoading.value = false
                             loading.value = true
-                            val dataUser =
-                                ModelUser(
-                                    dataUser.noHp, dataUser.username, "user", dataUser.token,
-                                    tglSekarang, active
-                                )
-                            message.value =
-                                "Kami sudah mengirimkan kode verifikasi ke nomor ${dataUser.noHp}"
+
+                            message.value = "Kami sudah mengirimkan kode verifikasi ke nomor ${dataUser.noHp}"
                             unverify = false
                             setProgress()
 
-                            try {
-                                verifyId = verificationId
-                            } catch (e: Exception) {
-                                message.value = e.message
-                            }
+                            verifyId = verificationId
                         }
                     }
                 }.start()

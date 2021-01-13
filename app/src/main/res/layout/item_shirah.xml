@@ -29,7 +29,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:background="@drawable/radius_gray"
                 />
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textJudul"
@@ -44,28 +43,13 @@
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:id="@+id/textShirah"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textJudul"
-                android:text="@string/shirah_nabawi"
-                android:textSize="@dimen/text_h3"
-                android:layout_toEndOf="@+id/imgFoto"
-                android:layout_marginTop="@dimen/h2"
-                android:layout_marginStart="@dimen/h2"
-                android:maxLines="3"
-                android:lines="3"
-                android:ellipsize="end"
-                />
-
-            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textTanggal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tanggal"
                 android:textSize="@dimen/text_h3"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/textShirah"
+                android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/h2"
                 android:drawableStart="@drawable/ic_time_gray"
                 android:drawablePadding="@dimen/h2"

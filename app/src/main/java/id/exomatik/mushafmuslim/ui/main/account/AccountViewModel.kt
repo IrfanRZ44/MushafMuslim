@@ -55,6 +55,7 @@ class AccountViewModel(
             ) { _, _ ->
                 val username = savedData?.getDataUser()?.username
                 if (!username.isNullOrEmpty()){
+                    FirebaseUtils.stopRefresh()
                     removeToken(username)
                 }
             }
@@ -76,8 +77,6 @@ class AccountViewModel(
             isShowLoading.value = false
 
             if (result.isSuccessful) {
-                FirebaseUtils.stopRefresh()
-
                 Toast.makeText(context, "Berhasil Keluar", Toast.LENGTH_LONG).show()
 
                 FirebaseUtils.signOut()

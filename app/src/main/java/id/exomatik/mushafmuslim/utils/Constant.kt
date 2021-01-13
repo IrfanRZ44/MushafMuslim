@@ -7,22 +7,16 @@ object Constant {
     const val referenceShirah = "ShirahNabawiah"
     const val referenceDataAccount = "DataAccount"
     const val referenceTransaction = "Transaction"
+    const val referenceValidAccount = "validAccount"
     const val referenceNotes = "Notes"
     const val referenceTotalPoin = "totalPoin"
     const val referenceToken = "token"
 
+    const val reffTimerValid = "timerValid"
+    const val timerValid : Long = 1800000
+//    const val timerValid : Long = 60000
+
     const val referenceInfoApps = "infoApps"
-    const val referenceFotoUser = "urlFoto"
-    const val totalUser = "totalUser"
-    const val totalTransaksiIklan = "totalTransaksiIklan"
-    const val adsDate = "adsDate"
-    const val adsLeft = "adsLeft"
-    const val adsAlreadyNote = "adsAlreadyNote"
-    const val adsRewardVideo = "adsRewardVideo"
-    const val adsAlreadyVideo = "adsAlreadyVideo"
-    const val adsIsNotLoading = "adsIsNotLoading"
-    const val adsTimer = "adsTimer"
-    const val randomTimer = "randomTimer"
 
     const val codeRequestFoto = 100
     const val codeRequestGallery = 1

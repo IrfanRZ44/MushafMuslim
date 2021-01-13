@@ -22,7 +22,6 @@ class AdapterShirah (private val listKelas : ArrayList<ModelShirah>,
         @SuppressLint("SetTextI18n")
         fun bindAfiliasi(item: ModelShirah){
             viewItem.textJudul.text = item.title
-            viewItem.textShirah.text = item.shirah
             viewItem.textTanggal.text = item.dateCreated
             viewItem.imgFoto.load(item.urlFoto) {
                 crossfade(true)

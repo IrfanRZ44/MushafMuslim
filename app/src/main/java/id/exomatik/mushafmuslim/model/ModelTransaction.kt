@@ -8,5 +8,5 @@ data class ModelTransaction(
     var idTransaction: String = "",
     var date: String = "",
     var username: String = "",
-    var poin: Long = 0
+    var poin: Int = 0
     ) : Parcelable

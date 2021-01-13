@@ -42,12 +42,14 @@ class MainActivity : BaseActivity() {
 
                     when {
                         data?.token != savedData.getDataUser()?.token -> {
-                            FirebaseUtils.stopRefresh()
-                            logout("Maaf, akun Anda sedang masuk dari perangkat lain")
+                            if (FirebaseUtils.stopRefresh()){
+                                logout("Maaf, akun Anda sedang masuk dari perangkat lain")
+                            }
                         }
                         data?.active != Constant.active -> {
-                            FirebaseUtils.stopRefresh()
-                            logout("Maaf, akun Anda dibekukan")
+                            if (FirebaseUtils.stopRefresh()){
+                                logout("Maaf, akun Anda dibekukan")
+                            }
                         }
                         else -> {
                             savedData.setDataObject(data, Constant.referenceUser)

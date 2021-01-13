@@ -47,8 +47,6 @@
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
-
-        <receiver android:name="id.exomatik.mushafmuslim.utils.BackgroundService"/>
     </application>
 
 </manifest>

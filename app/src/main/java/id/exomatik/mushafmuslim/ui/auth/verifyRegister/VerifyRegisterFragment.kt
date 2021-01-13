@@ -30,18 +30,15 @@ class VerifyRegisterFragment : BaseFragmentBind<FragmentVerifyRegisterBinding>()
                     bind.etText2,
                     bind.etText3,
                     bind.etText4,
-                    bind.etText5
-                    ,
+                    bind.etText5,
                     bind.etText6,
                     findNavController()
                 )
 
             val verifyId= this.arguments?.getString("verifyId")
-            val auth= this.arguments?.getBoolean("auth")
             val dataUser= this.arguments?.getParcelable<ModelUser>("dataUser")
 
             registerViewModel.dataUser = dataUser?:throw Exception("Error, mohon login ulang")
-            registerViewModel.auth = auth?:true
             registerViewModel.verifyId = verifyId?:throw Exception("Error, mohon login ulang")
             registerViewModel.message.value = "SMS dengan kode verifikasi telah dikirim ke " + dataUser.noHp
             registerViewModel.isShowLoading.value = false

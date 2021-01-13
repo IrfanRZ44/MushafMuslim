@@ -4,8 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.navigation.fragment.findNavController
 import id.exomatik.mushafmuslim.R
-import id.exomatik.mushafmuslim.base.BaseFragmentBind
 import id.exomatik.mushafmuslim.databinding.FragmentSplashBinding
+import id.exomatik.mushafmuslim.base.BaseFragmentBind
 
 class SplashFragment : BaseFragmentBind<FragmentSplashBinding>() {
     override fun getLayoutResource(): Int = R.layout.fragment_splash

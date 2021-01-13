@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="id.exomatik.mushafmuslim.ui.main.detailShirah.DetailShirahFragment"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="id.exomatik.mushafmuslim.ui.main.detailShirah.DetailShirahFragment">
     <data>
         <variable
             name="viewModel"
@@ -14,52 +13,43 @@
         android:layout_height="match_parent"
         android:theme="@style/CustomStyle"
         android:background="@color/white"
+        snackbar="@{viewModel.message}"
         >
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <com.github.barteksc.pdfviewer.PDFView
+            android:id="@+id/pdfView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            snackbar="@{viewModel.message}"
-            android:orientation="vertical"
+            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            tools:ignore="RelativeOverlap"
             >
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_200"
-                android:layout_alignParentStart="true"
-                android:id="@+id/imgFoto"
-                android:scaleType="centerInside"
-                android:background="@drawable/radius_gray"
-                imageBoxSrc="@{viewModel.dataShirah.urlFoto}"
-                />
-
-            <androidx.appcompat.widget.AppCompatTextView
+            <io.github.krtkush.lineartimer.LinearTimerView
+                android:id="@+id/linearTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="@={viewModel.dataShirah.title}"
-                android:textSize="@dimen/text_h3"
-                android:textStyle="bold"
-                android:layout_toEndOf="@+id/imgFoto"
-                android:id="@+id/textTitle"
-                android:fontFamily="@font/roboto_regular"
-                android:layout_marginTop="@dimen/h2"
-                android:layout_marginStart="@dimen/h2"
+                app:radius="@dimen/h2"
+                app:strokeWidth="3dp"
+                app:initialColor="@color/colorPrimary"
+                app:progressColor="@color/yellow"
+                android:onClick="@{()-> viewModel.onClickPoin()}"
                 />
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/textStandardWhite"
+                android:textSize="@dimen/text_h2"
                 android:textColor="@color/gray3"
-                android:text="@={viewModel.dataShirah.dateCreated}"
-                android:textSize="@dimen/text_h1"
-                android:layout_toEndOf="@+id/imgFoto"
-                android:id="@+id/textTanggal"
-                android:fontFamily="@font/roboto_regular"
-                android:layout_marginStart="@dimen/h2"
+                android:textStyle="bold"
+                android:layout_margin="14dp"
+                android:layout_centerHorizontal="true"
+                android:textAlignment="center"
+                android:id="@+id/textVerify"
                 />
-            <com.github.barteksc.pdfviewer.PDFView
-                android:id="@+id/pdfView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </RelativeLayout>
 
         <include layout="@layout/progress_loading"
             android:layout_width="wrap_content"

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package id.exomatik.mushafmuslim.ui.auth.register
 
 import android.annotation.SuppressLint
@@ -28,6 +30,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.iid.InstanceIdResult
+import id.exomatik.mushafmuslim.model.ModelDataAccount
+import id.exomatik.mushafmuslim.utils.Constant.referenceDataAccount
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -199,6 +203,7 @@ class RegisterViewModel(
         FirebaseUtils.signIn(credential, onCoCompleteListener)
     }
 
+    @Suppress("DEPRECATION")
     private fun getUserToken(dataUser: ModelUser, userName: String) {
         val onCompleteListener =
             OnCompleteListener<InstanceIdResult> { result ->
@@ -222,12 +227,48 @@ class RegisterViewModel(
         val onCompleteListener =
             OnCompleteListener<Void> { result ->
                 if (result.isSuccessful) {
+                    dataSave?.setDataObject(
+                        dataUser, referenceUser
+                    )
+
+                    val dataAccount = ModelDataAccount(userName, "", tglSekarang,
+                        dataUser.noHp, "GOPAY",
+                        firstWithdraw = false,
+                        validAccount = false,
+                        totalPoin = 0,
+                        totalReferal = 0
+                    )
+                    addDataAccount(dataAccount, userName)
+                } else {
+                    isShowLoading.value = false
+                    message.value = "Gagal menyimpan data user"
+                }
+            }
+
+        val onFailureListener = OnFailureListener { result ->
+            isShowLoading.value = false
+            message.value = result.message
+        }
+        FirebaseUtils.setValueObject(
+            referenceUser
+            , userName
+            , dataUser
+            , onCompleteListener
+            , onFailureListener
+        )
+    }
+
+    private fun addDataAccount(dataUser: ModelDataAccount, userName: String) {
+        val onCompleteListener =
+            OnCompleteListener<Void> { result ->
+                if (result.isSuccessful) {
                     isShowLoading.value = false
                     message.value = "Berhasil menyimpan user"
 
                     dataSave?.setDataObject(
-                        dataUser, referenceUser
+                        dataUser, referenceDataAccount
                     )
+                    dataSave?.setDataLong(Constant.timerValid, Constant.reffTimerValid)
 
                     navController.navigate(R.id.splashFragment)
                 } else {
@@ -241,7 +282,7 @@ class RegisterViewModel(
             message.value = result.message
         }
         FirebaseUtils.setValueObject(
-            referenceUser
+            referenceDataAccount
             , userName
             , dataUser
             , onCompleteListener
