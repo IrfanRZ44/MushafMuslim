@@ -8,13 +8,16 @@ object Constant {
     const val referenceDataAccount = "DataAccount"
     const val referenceTransaction = "Transaction"
     const val referenceValidAccount = "validAccount"
+    const val referenceTotalReferal = "totalReferal"
+    const val referenceReff = "reff"
+    const val referenceUsernameReferal = "usernameReferal"
     const val referenceNotes = "Notes"
     const val referenceTotalPoin = "totalPoin"
     const val referenceToken = "token"
 
     const val reffTimerValid = "timerValid"
-    const val timerValid : Long = 1800000
-//    const val timerValid : Long = 60000
+//    const val timerValid : Long = 1800000
+    const val timerValid : Long = 30000
 
     const val referenceInfoApps = "infoApps"
 

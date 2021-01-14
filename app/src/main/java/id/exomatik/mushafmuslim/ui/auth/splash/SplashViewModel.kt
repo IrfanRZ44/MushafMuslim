@@ -25,7 +25,7 @@ class SplashViewModel(
     ) : BaseViewModel() {
     val isShowUpdate = MutableLiveData<Boolean>()
 
-    private fun getInfoApps() {
+    fun getInfoApps() {
         isShowLoading.value = true
 
         val valueEventListener = object : ValueEventListener {

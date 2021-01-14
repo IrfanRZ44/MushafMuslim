@@ -221,11 +221,9 @@ class DetailShirahViewModel(
         timerActivate = object : CountDownTimer(timeLeft, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 savedData?.setDataLong(millisUntilFinished, Constant.reffTimerValid)
-                message.value = savedData?.getKeyLong(Constant.reffTimerValid).toString()
             }
 
             override fun onFinish() {
-                message.value = "Finish"
                 val user = savedData?.getDataUser()?.username
 
                 if (!user.isNullOrEmpty()) {

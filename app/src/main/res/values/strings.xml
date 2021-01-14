@@ -157,7 +157,7 @@
     <string name="shirah_nabawi">Shirah Nabawi</string>
     <string name="username_referal" tools:ignore="Typos">Username Referal</string>
     <string name="poin">Poin</string>
-    <string name="harga_poin">Harga Poin</string>
+    <string name="harga_poin">Harga Per Poin</string>
     <string name="rupiah">Rupiah</string>
     <string name="titik2">:</string>
     <string name="penarikan">Penarikan</string>
@@ -168,4 +168,5 @@
     <string name="main">Main</string>
     <string name="account">Account</string>
     <string name="detail_shirah">Detail Shirah</string>
+    <string name="saldo">Saldo</string>
 </resources>

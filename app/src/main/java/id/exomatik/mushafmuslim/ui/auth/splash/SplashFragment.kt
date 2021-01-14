@@ -15,7 +15,7 @@ class SplashFragment : BaseFragmentBind<FragmentSplashBinding>() {
         bind.lifecycleOwner = this
         viewModel = SplashViewModel(findNavController(), savedData, activity)
         bind.viewModel = viewModel
-        viewModel.checkingSavedData()
+        viewModel.getInfoApps()
 
         bind.btnRate.setOnClickListener {
             activity?.startActivity(

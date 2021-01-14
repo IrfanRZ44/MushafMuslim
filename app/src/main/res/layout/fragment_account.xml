@@ -65,7 +65,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
-                            android:text="@string/rupiah"
+                            android:text="@string/saldo"
                             android:textSize="@dimen/text_h2"
                             android:layout_toEndOf="@+id/imgFoto"
                             android:layout_below="@+id/textPoin"
@@ -89,6 +89,7 @@
                             android:textColor="@color/black"
                             android:text="@string/titik2"
                             android:textSize="@dimen/text_h2"
+                            android:layout_marginTop="@dimen/h2"
                             android:layout_marginStart="@dimen/h1"
                             android:layout_toEndOf="@+id/textHargaPoin"
                             android:id="@+id/textTitik1"
@@ -122,6 +123,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
+                            android:layout_marginTop="@dimen/h2"
                             android:text="@={viewModel.textPoin}"
                             android:textSize="@dimen/text_h2"
                             android:layout_marginStart="@dimen/h1"
@@ -132,7 +134,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
-                            android:text="@={viewModel.textRupiah}"
+                            android:text="@={viewModel.textSaldo}"
                             android:textSize="@dimen/text_h2"
                             android:layout_marginStart="@dimen/h1"
                             android:layout_toEndOf="@+id/textTitik2"
@@ -188,12 +190,64 @@
                             android:onClick="@{()-> viewModel.onClickRiwayat()}"
                             disableButton="@{viewModel.isShowLoading}"
                             />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="@dimen/h3"
+                            android:layout_marginStart="@dimen/h2"
+                            android:layout_marginEnd="@dimen/h2"
+                            android:layout_below="@+id/btnRiwayat"
+                            android:background="@color/gray1"
+                            android:id="@+id/viewGarisHeader"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/h2"
+                            />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@={viewModel.textUsername}"
+                            android:textSize="@dimen/text_h2"
+                            android:layout_below="@+id/viewGarisHeader"
+                            android:layout_marginStart="@dimen/h2"
+                            android:layout_marginEnd="@dimen/h2"
+                            android:fontFamily="@font/roboto_regular"
+                            android:id="@+id/textUsername"
+                            />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@={viewModel.textPhoneNumber}"
+                            android:layout_marginStart="@dimen/h2"
+                            android:layout_marginEnd="@dimen/h2"
+                            android:textSize="@dimen/text_h2"
+                            android:layout_below="@+id/textUsername"
+                            android:fontFamily="@font/roboto_regular"
+                            android:id="@+id/textPhone"
+                            />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewModel.isValidAccount()}"
+                            android:textSize="@dimen/text_h2"
+                            android:layout_below="@+id/textPhone"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="@dimen/h1"
+                            android:layout_marginBottom="@dimen/h1"
+                            android:fontFamily="@font/roboto_regular"
+                            android:id="@+id/textValidator"
+                            />
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etUsernameReferal"
-                    style="@style/customEditText"
+                    style="@style/customEditText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/h3"
@@ -201,6 +255,7 @@
                     android:layout_marginEnd="@dimen/h2"
                     android:hint="@string/username_referal"
                     android:textColorHint="@color/gray2"
+                    android:enabled="false"
                     >
                     <com.google.android.material.textfield.TextInputEditText
                         style="@style/textStandardWhite"

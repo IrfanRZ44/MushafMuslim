@@ -28,6 +28,7 @@ class MainActivity : BaseActivity() {
         val username = savedData.getDataUser()?.username
         if (!username.isNullOrEmpty()){
             getDataUser(username)
+            getDataAccount(username)
         }
     }
 
@@ -43,11 +44,13 @@ class MainActivity : BaseActivity() {
                     when {
                         data?.token != savedData.getDataUser()?.token -> {
                             if (FirebaseUtils.stopRefresh()){
+                                FirebaseUtils.stopRefresh2()
                                 logout("Maaf, akun Anda sedang masuk dari perangkat lain")
                             }
                         }
                         data?.active != Constant.active -> {
                             if (FirebaseUtils.stopRefresh()){
+                                FirebaseUtils.stopRefresh2()
                                 logout("Maaf, akun Anda dibekukan")
                             }
                         }
@@ -59,8 +62,29 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        FirebaseUtils.refreshDataWith1ChildObject2(
+        FirebaseUtils.refreshDataWith1ChildObject1(
             Constant.referenceUser
+            , username
+            , valueEventListener
+        )
+    }
+
+    private fun getDataAccount(username: String) {
+        val valueEventListener = object : ValueEventListener {
+            override fun onCancelled(result: DatabaseError) {
+            }
+
+            override fun onDataChange(result: DataSnapshot) {
+                if (result.exists()) {
+                    val data = result.getValue(ModelDataAccount::class.java)
+
+                    savedData.setDataObject(data, Constant.referenceDataAccount)
+                }
+            }
+        }
+
+        FirebaseUtils.refreshDataWith1ChildObject2(
+            Constant.referenceDataAccount
             , username
             , valueEventListener
         )
