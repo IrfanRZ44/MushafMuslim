@@ -169,4 +169,9 @@
     <string name="account">Account</string>
     <string name="detail_shirah">Detail Shirah</string>
     <string name="saldo">Saldo</string>
+    <string name="referal">Referal</string>
+    <string name="double_poin">Double Poin</string>
+    <string name="riwayat_penarikan">Riwayat Penarikan</string>
+    <string name="wd">WD</string>
+    <string name="jumlah_penarikan">Jumlah Penarikan</string>
 </resources>

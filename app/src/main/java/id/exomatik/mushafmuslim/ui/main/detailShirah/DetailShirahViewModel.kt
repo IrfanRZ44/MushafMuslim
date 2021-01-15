@@ -62,8 +62,6 @@ class DetailShirahViewModel(
                         setProgress()
                         val isValidAccount = savedData?.getDataAccount()?.validAccount
 
-                        showLog("running $isValidAccount")
-
                         if (isValidAccount != null && !isValidAccount){
                             val timeLeft = savedData?.getKeyLong(Constant.reffTimerValid)?:Constant.timerValid
 
@@ -101,13 +99,16 @@ class DetailShirahViewModel(
                 }
 
                 override fun timerTick(tickUpdateInMillis: Long) {
-                    // long seconds = (milliseconds / 1000);
                     if (linearTimer.state == LinearTimerStates.ACTIVE){
+                        val seconds = TimeUnit.MILLISECONDS.toSeconds(tickUpdateInMillis)
                         textVerify.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
-                        textVerify.text = TimeUnit.MILLISECONDS.toSeconds(tickUpdateInMillis).toString()
-                    }
+                        textVerify.text = seconds.toString()
 
-                    pauseTimer()
+                        if (seconds.toInt() == 5 || seconds.toInt() == 10 || seconds.toInt() == 15 ||
+                            seconds.toInt() == 20 || seconds.toInt() == 25){
+                            linearTimer.pauseTimer()
+                        }
+                    }
                 }
             })
             .duration(30 * 1000.toLong())
@@ -116,20 +117,6 @@ class DetailShirahViewModel(
         if (linearTimer.state == LinearTimerStates.INITIALIZED){
             linearTimer.startTimer()
         }
-    }
-
-    private fun pauseTimer(){
-        object : CountDownTimer(2000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-            }
-
-            override fun onFinish() {
-                if (linearTimer.state == LinearTimerStates.ACTIVE){
-                    linearTimer.pauseTimer()
-                }
-            }
-        }.start()
-
     }
 
     private fun resumeTimer(){
@@ -141,7 +128,21 @@ class DetailShirahViewModel(
     fun onClickPoin(){
         val userName = savedData?.getDataUser()?.username
         if (linearTimer.state == LinearTimerStates.FINISHED && !userName.isNullOrEmpty()){
-            val poinAdded = 1
+            @SuppressLint("SimpleDateFormat")
+            val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.dateFormat1))
+            } else {
+                SimpleDateFormat(Constant.dateFormat1).format(Date())
+            }
+            val tglBoostPoin = savedData?.getKeyString(Constant.reffBoostPoin)
+
+            val poinAdded = if (tglBoostPoin == tglSekarang){
+                Constant.boostPoin2
+            }
+            else{
+                Constant.boostPoin1
+            }
+
             val poin = savedData?.getDataAccount()?.totalPoin?:0
             val resultPoin = poin + poinAdded
             isShowLoading.value = true

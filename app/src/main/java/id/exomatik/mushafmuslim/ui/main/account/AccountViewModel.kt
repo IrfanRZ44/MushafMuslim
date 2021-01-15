@@ -1,12 +1,15 @@
 package id.exomatik.mushafmuslim.ui.main.account
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
@@ -16,39 +19,40 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import id.exomatik.mushafmuslim.BuildConfig
 import id.exomatik.mushafmuslim.R
 import id.exomatik.mushafmuslim.base.BaseViewModel
 import id.exomatik.mushafmuslim.model.ModelDataAccount
+import id.exomatik.mushafmuslim.model.ModelPenarikan
 import id.exomatik.mushafmuslim.model.ModelUser
 import id.exomatik.mushafmuslim.ui.auth.AuthActivity
-import id.exomatik.mushafmuslim.utils.Constant
+import id.exomatik.mushafmuslim.utils.*
 import id.exomatik.mushafmuslim.utils.Constant.attention
-import id.exomatik.mushafmuslim.utils.DataSave
-import id.exomatik.mushafmuslim.utils.FirebaseUtils
-import id.exomatik.mushafmuslim.utils.dismissKeyboard
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class AccountViewModel(
     private val navController: NavController,
     private val savedData: DataSave?,
     private val activity: Activity?,
     private val context: Context?,
-    private val etUsername: TextInputLayout
+    private val etUsername: TextInputLayout,
+    private val btnBoost: AppCompatButton
     ) : BaseViewModel() {
     val usernameReferal = MutableLiveData<String>()
     val textPoin = MutableLiveData<String>()
+    val textReferal = MutableLiveData<String>()
     val textHargaPoin = MutableLiveData<String>()
     val textSaldo = MutableLiveData<String>()
-    val versiAplikasi = MutableLiveData<String>()
     val textUsername = MutableLiveData<String>()
     val textPhoneNumber = MutableLiveData<String>()
     val isValidAccount = MutableLiveData<String>()
 
     fun setUpData(textValidator: AppCompatTextView){
-        versiAplikasi.value = "Versi Aplikasi ${BuildConfig.VERSION_NAME}"
-
-        val format = NumberFormat.getCurrencyInstance()
+        val localeID = Locale("in", "ID")
+        val format = NumberFormat.getCurrencyInstance(localeID)
         val poin = savedData?.getDataAccount()?.totalPoin?:0
         val hargaPoin = savedData?.getDataApps()?.hargaPoin?:1
         val saldo = poin * hargaPoin
@@ -57,6 +61,7 @@ class AccountViewModel(
         textHargaPoin.value = "$hargaPoin Rupiah"
         textSaldo.value = format.format(saldo)
 
+        textReferal.value = savedData?.getDataAccount()?.totalReferal.toString()
         textUsername.value = savedData?.getDataUser()?.username
         textPhoneNumber.value = savedData?.getDataUser()?.noHp
 
@@ -64,6 +69,7 @@ class AccountViewModel(
         val ctx = context
 
         setUpValidator(textValidator, ctx)
+        setUpBoostPoin()
 
         if (!userReferal.isNullOrEmpty()){
             etUsername.isEnabled = false
@@ -72,6 +78,18 @@ class AccountViewModel(
         else{
             setUpReferal(ctx)
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun setUpBoostPoin(){
+        val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.dateFormat1))
+        } else {
+            SimpleDateFormat(Constant.dateFormat1).format(Date())
+        }
+        val tglBoost = savedData?.getKeyString(Constant.reffBoostPoin)
+
+        btnBoost.isEnabled = tglSekarang != tglBoost
     }
 
     @Suppress("DEPRECATION")
@@ -305,6 +323,118 @@ class AccountViewModel(
         )
     }
 
+    private fun firstWithdraw(dataPenarikan: ModelPenarikan){
+        isShowLoading.value = true
+
+        val onCompleteListener = OnCompleteListener<Void> { result ->
+            if (result.isSuccessful) {
+                isShowLoading.value = false
+
+                val dataAccount = savedData?.getDataAccount()
+                dataAccount?.firstWithdraw = true
+                savedData?.setDataObject(dataAccount, Constant.referenceDataAccount)
+
+                addDataPenarikan(dataPenarikan)
+            } else {
+                isShowLoading.value = false
+                message.value = "Gagal melakukan penarikan"
+            }
+        }
+
+        val onFailureListener = OnFailureListener { result ->
+            isShowLoading.value = false
+            message.value = result.message
+        }
+
+        FirebaseUtils.setValueWith2ChildObject(
+            Constant.referenceDataAccount
+            , dataPenarikan.username
+            , Constant.referenceFirstWithdraw
+            , true
+            , onCompleteListener
+            , onFailureListener
+        )
+    }
+
+    private fun addDataPenarikan(dataPenarikan: ModelPenarikan) {
+        isShowLoading.value = true
+
+        val onCompleteListener =
+            OnCompleteListener<Void> { result ->
+                if (result.isSuccessful) {
+                    isShowLoading.value = false
+
+                    val totalPoin = savedData?.getDataAccount()?.totalPoin?:0
+                    val jumlah = if (dataPenarikan.jumlah == Constant.penarikan10){
+                        Constant.saldo10
+                    }
+                    else{
+                        Constant.saldo100
+                    }
+
+                    val sisaPoin = totalPoin - jumlah
+
+                    reducePoin(dataPenarikan.username, sisaPoin)
+                } else {
+                    isShowLoading.value = false
+                    message.value = "Gagal melakukan penarikan"
+                }
+            }
+
+        val onFailureListener = OnFailureListener { result ->
+            isShowLoading.value = false
+            message.value = result.message
+        }
+
+        FirebaseUtils.setValueUniquePenarikan(
+            Constant.referencePenarikan
+            , dataPenarikan
+            , onCompleteListener
+            , onFailureListener
+        )
+    }
+
+    private fun reducePoin(username: String, sisaPoin: Long){
+        isShowLoading.value = true
+
+        val onCompleteListener = OnCompleteListener<Void> { result ->
+            if (result.isSuccessful) {
+                isShowLoading.value = false
+
+                val dataAccount = savedData?.getDataAccount()
+                dataAccount?.totalPoin = sisaPoin
+                savedData?.setDataObject(dataAccount, Constant.referenceDataAccount)
+
+                val localeID = Locale("in", "ID")
+                val format = NumberFormat.getCurrencyInstance(localeID)
+                val hargaPoin = savedData?.getDataApps()?.hargaPoin?:1
+                val saldo = sisaPoin * hargaPoin
+
+                textPoin.value = sisaPoin.toString()
+                textSaldo.value = format.format(saldo)
+
+                message.value = "Berhasil melakukan penarikan saldo"
+            } else {
+                isShowLoading.value = false
+                message.value = "Error kesalahan database"
+            }
+        }
+
+        val onFailureListener = OnFailureListener { result ->
+            isShowLoading.value = false
+            message.value = result.message
+        }
+
+        FirebaseUtils.setValueWith2ChildObject(
+            Constant.referenceDataAccount
+            , username
+            , Constant.referenceTotalPoin
+            , sisaPoin
+            , onCompleteListener
+            , onFailureListener
+        )
+    }
+
     fun onClickRating(){
         activity?.startActivity(
             Intent(
@@ -315,15 +445,144 @@ class AccountViewModel(
     }
 
     fun onClickTarik(){
-        message.value = "Tarik"
-//        activity?.let { dismissKeyboard(it) }
-//        navController.navigate(R.id.loginFragment)
+        val ctx = context
+
+        if (ctx != null){
+            val alert = AlertDialog.Builder(ctx)
+            alert.setTitle(attention)
+            alert.setMessage(Constant.alertPenarikan)
+            alert.setPositiveButton(
+                Constant.penarikan10
+            ) { dialog, _ ->
+                dialog.dismiss()
+
+                val poin = savedData?.getDataAccount()?.totalPoin?:0
+                val hargaPoin = savedData?.getDataApps()?.hargaPoin?:1
+                val saldo = poin * hargaPoin
+
+                if (saldo >= Constant.saldo10){
+                    val firstWD = savedData?.getDataAccount()?.firstWithdraw?:false
+
+                    if (!firstWD){
+                        val dataAccount = savedData?.getDataAccount()
+                        val dataUser = savedData?.getDataUser()
+
+                        @SuppressLint("SimpleDateFormat")
+                        val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.timeDateFormat))
+                        } else {
+                            SimpleDateFormat(Constant.timeDateFormat).format(Date())
+                        }
+
+                        if (dataAccount != null && dataUser != null){
+                            val dataPenarikan = ModelPenarikan("", dataAccount.username,
+                                Constant.penarikan10, "Go-Pay", dataUser.noHp, tglSekarang, Constant.wdProses)
+
+                            firstWithdraw(dataPenarikan)
+                        }
+                        else{
+                            message.value = "Error, terjadi kesalahan database"
+                        }
+                    }
+                    else{
+                        message.value = "Maaf, Anda sudah pernah melakukan pencairan ini"
+                    }
+                }
+                else{
+                    message.value = "Maaf, saldo Anda tidak mencukupi"
+                }
+            }
+            alert.setNegativeButton(Constant.penarikan100) { dialog, _ ->
+                dialog.dismiss()
+
+                val poin = savedData?.getDataAccount()?.totalPoin?:0
+                val hargaPoin = savedData?.getDataApps()?.hargaPoin?:1
+                val saldo = poin * hargaPoin
+
+                if (saldo >= Constant.saldo100){
+                    val dataAccount = savedData?.getDataAccount()
+                    @SuppressLint("SimpleDateFormat")
+                    val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.timeDateFormat))
+                    } else {
+                        SimpleDateFormat(Constant.timeDateFormat).format(Date())
+                    }
+
+                    if (dataAccount != null){
+                        val dataPenarikan = ModelPenarikan("", dataAccount.username,
+                            Constant.penarikan100, "Go-Pay", tglSekarang, "Proses")
+
+                        addDataPenarikan(dataPenarikan)
+                    }
+                    else{
+                        message.value = "Error, terjadi kesalahan database"
+                    }
+                }
+                else{
+                    message.value = "Maaf, saldo Anda tidak mencukupi"
+                }
+            }
+
+            alert.show()
+        }
+        else {
+            message.value = "Error, terjadi kesalahan yang tidak diketahui"
+        }
     }
 
     fun onClickRiwayat(){
-        message.value = "Riwayat"
-//        activity?.let { dismissKeyboard(it) }
-//        navController.navigate(R.id.loginFragment)
+        navController.navigate(R.id.riwayatFragment)
+    }
+
+    fun onClickBoost(){
+        val totalReff = savedData?.getDataAccount()?.totalReferal?:0
+        val username = savedData?.getDataUser()?.username
+        @SuppressLint("SimpleDateFormat")
+        val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.dateFormat1))
+        } else {
+            SimpleDateFormat(Constant.dateFormat1).format(Date())
+        }
+
+       if (totalReff >= 1 && !username.isNullOrEmpty()){
+            val sisaReferal = totalReff - 1
+            isShowLoading.value = true
+
+            val onCompleteListener = OnCompleteListener<Void> { result ->
+                if (result.isSuccessful) {
+                    isShowLoading.value = false
+
+                    val dataAccount = savedData?.getDataAccount()
+                    dataAccount?.totalReferal = sisaReferal
+                    savedData?.setDataObject(dataAccount, Constant.referenceDataAccount)
+                    savedData?.setDataString(tglSekarang, Constant.reffBoostPoin)
+                    textReferal.value = sisaReferal.toString()
+                    btnBoost.isEnabled = false
+
+                    message.value = "Berhasil melakukan Boost Poin"
+                } else {
+                    isShowLoading.value = false
+                    message.value = "Gagal melakukan Boost Poin"
+                }
+            }
+
+            val onFailureListener = OnFailureListener { result ->
+                isShowLoading.value = false
+                message.value = result.message
+            }
+
+            FirebaseUtils.setValueWith2ChildObject(
+                Constant.referenceDataAccount
+                , username
+                , Constant.referenceTotalReferal
+                , sisaReferal
+                , onCompleteListener
+                , onFailureListener
+            )
+        }
+        else{
+            message.value = "Boost Poin membutuhkan 1 Referal"
+        }
     }
 
     fun onClickLogout(){

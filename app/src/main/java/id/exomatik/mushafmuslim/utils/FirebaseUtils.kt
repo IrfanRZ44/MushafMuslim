@@ -22,6 +22,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import id.exomatik.mushafmuslim.model.ModelPenarikan
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,6 +82,20 @@ object FirebaseUtils {
         FirebaseDatabase.getInstance().getReference(reference)
             .child(child)
             .child(data.idTransaction)
+            .setValue(data)
+            .addOnCompleteListener(onCompleteListener)
+            .addOnFailureListener(onFailureListener)
+    }
+
+    fun setValueUniquePenarikan(reference: String, data: ModelPenarikan,
+                                  onCompleteListener: OnCompleteListener<Void>
+                                  , onFailureListener: OnFailureListener) {
+        val ref = FirebaseDatabase.getInstance().getReference(reference)
+        val id = ref.push()
+        data.idPenarikan = id.key.toString()
+
+        FirebaseDatabase.getInstance().getReference(reference)
+            .child(data.idPenarikan)
             .setValue(data)
             .addOnCompleteListener(onCompleteListener)
             .addOnFailureListener(onFailureListener)

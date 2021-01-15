@@ -2,22 +2,37 @@ package id.exomatik.mushafmuslim.utils
 
 object Constant {
     const val appName = "MushafMuslim"
+    const val mushafMuslim = "Mushaf Muslim"
     const val referenceStatusApps = "statusApps"
     const val referenceUser = "Users"
     const val referenceShirah = "ShirahNabawiah"
     const val referenceDataAccount = "DataAccount"
+    const val referencePenarikan = "Penarikan"
     const val referenceTransaction = "Transaction"
     const val referenceValidAccount = "validAccount"
     const val referenceTotalReferal = "totalReferal"
     const val referenceReff = "reff"
     const val referenceUsernameReferal = "usernameReferal"
+    const val referenceFirstWithdraw = "firstWithdraw"
     const val referenceNotes = "Notes"
     const val referenceTotalPoin = "totalPoin"
     const val referenceToken = "token"
 
+    const val reffBoostPoin = "boostPoin"
     const val reffTimerValid = "timerValid"
-//    const val timerValid : Long = 1800000
-    const val timerValid : Long = 30000
+    const val timerValid : Long = 1800000
+    const val boostPoin1 = 1
+    const val boostPoin2 = 2
+
+    const val saldo10 : Long = 10000
+    const val saldo100 : Long = 100000
+//    const val timerValid : Long = 30000
+    const val penarikan10 = "10.000 Ribu"
+    const val penarikan100 = "100.000 Ribu"
+
+    const val wdProses = "Proses"
+    const val wdDitolak = "Ditolak"
+    const val wdBerhasil = "Berhasil"
 
     const val referenceInfoApps = "infoApps"
 
@@ -53,6 +68,7 @@ object Constant {
     const val active = "active"
 
     const val personal = "Personal"
+    const val riwayatPenarikan = "Riwayat Penarikan"
 
     const val ahlanWaSahlan = "Ahlan Wa Sahlan"
     const val noMessage = "Silahkan mengirim pesan untuk memulai obrolan"
@@ -61,6 +77,7 @@ object Constant {
     const val noDataShirah = "Afwan, tidak ada data shirah yang ditemukan"
     const val noRequest = "Afwan, belum ada permintaan verifikasi"
     const val alertLogout = "Apakah Anda yakin ingin keluar dari akun?"
+    const val alertPenarikan = "\n1. Penarikan paling lama kami proses 1-7 hari \n2. Untuk Penarikan 10.000 hanya dapat dilakukan sekali \n3. Penarikan hanya dapat dilakukan melalui Go-Pay yang akan kami kirimkan melalui nomor Anda yang terdaftar \n4. Tidak biaya pemotongan"
     const val alertHapus = "Apakah Anda yakin ingin menghapus data akun anda?"
     const val batalPermintaan = "Batalkan permintaan"
     const val batalAfiliasi = "PERMINTAAN TERKIRIM / BATALKAN"

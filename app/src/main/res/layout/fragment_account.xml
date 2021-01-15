@@ -76,10 +76,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
-                            android:text="@string/harga_poin"
+                            android:text="@string/referal"
                             android:textSize="@dimen/text_h2"
                             android:layout_toEndOf="@+id/imgFoto"
                             android:layout_below="@+id/textRupiah"
+                            android:id="@+id/textReferal"
+                            android:fontFamily="@font/roboto_regular"
+                            />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@string/harga_poin"
+                            android:textSize="@dimen/text_h2"
+                            android:layout_toEndOf="@+id/imgFoto"
+                            android:layout_below="@+id/textReferal"
                             android:id="@+id/textHargaPoin"
                             android:fontFamily="@font/roboto_regular"
                             />
@@ -123,6 +134,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
+                            android:text="@string/titik2"
+                            android:textSize="@dimen/text_h2"
+                            android:layout_marginStart="@dimen/h1"
+                            android:layout_toEndOf="@+id/textHargaPoin"
+                            android:layout_below="@+id/textReferal"
+                            android:id="@+id/textTitik4"
+                            android:fontFamily="@font/roboto_regular"
+                            />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
                             android:layout_marginTop="@dimen/h2"
                             android:text="@={viewModel.textPoin}"
                             android:textSize="@dimen/text_h2"
@@ -145,11 +168,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
-                            android:text="@={viewModel.textHargaPoin}"
+                            android:text="@={viewModel.textReferal}"
                             android:textSize="@dimen/text_h2"
                             android:layout_marginStart="@dimen/h1"
                             android:layout_toEndOf="@+id/textTitik3"
                             android:layout_below="@+id/textRupiah"
+                            android:fontFamily="@font/roboto_regular"
+                            />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@={viewModel.textHargaPoin}"
+                            android:textSize="@dimen/text_h2"
+                            android:layout_marginStart="@dimen/h1"
+                            android:layout_toEndOf="@+id/textTitik4"
+                            android:layout_below="@+id/textReferal"
                             android:fontFamily="@font/roboto_regular"
                             />
 
@@ -158,12 +192,9 @@
                             style="@style/buttonStandardBlue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/textHargaPoin"
+                            android:layout_below="@+id/imgFoto"
                             android:layout_alignParentEnd="true"
-                            android:layout_marginStart="@dimen/h2"
-                            android:layout_marginEnd="@dimen/h2"
-                            android:layout_marginBottom="@dimen/h2"
-                            android:layout_marginTop="@dimen/h5"
+                            android:layout_margin="@dimen/h2"
                             android:padding="@dimen/h3"
                             android:text="@string/penarikan"
                             android:textSize="@dimen/text_h2"
@@ -173,16 +204,28 @@
                             />
 
                         <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btnRiwayat"
-                            style="@style/buttonStandardGray"
+                            android:id="@+id/btnBoost"
+                            style="@style/buttonStandardBlue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/textHargaPoin"
+                            android:layout_below="@+id/imgFoto"
                             android:layout_toStartOf="@+id/btnTarik"
-                            android:layout_marginTop="@dimen/h5"
-                            android:layout_marginStart="@dimen/h2"
-                            android:layout_marginEnd="@dimen/h2"
-                            android:layout_marginBottom="@dimen/h2"
+                            android:layout_margin="@dimen/h2"
+                            android:padding="@dimen/h3"
+                            android:text="@string/double_poin"
+                            android:textSize="@dimen/text_h2"
+                            android:textColor="@color/white"
+                            android:onClick="@{()-> viewModel.onClickBoost()}"
+                            />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnRiwayat"
+                            style="@style/buttonStandardBlue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/imgFoto"
+                            android:layout_toStartOf="@+id/btnBoost"
+                            android:layout_margin="@dimen/h2"
                             android:padding="@dimen/h3"
                             android:text="@string/riwayat"
                             android:textSize="@dimen/text_h2"
@@ -299,25 +342,6 @@
                     android:layout_below="@+id/viewGaris"
                     />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/textStandardWhite"
-                    android:textSize="@dimen/text_h2"
-                    android:layout_marginTop="@dimen/h3"
-                    android:layout_marginStart="@dimen/h2"
-                    android:layout_marginEnd="@dimen/h2"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:text="@={viewModel.versiAplikasi}"
-                    android:layout_below="@+id/textInfo"
-                    android:id="@+id/textVersi"
-                    android:drawableStart="@drawable/ic_info_gray"
-                    android:drawablePadding="@dimen/h2"
-                    android:textAllCaps="true"
-                    android:layout_marginBottom="@dimen/h1"
-                    />
-
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -331,7 +355,7 @@
                     android:drawablePadding="@dimen/h2"
                     android:layout_marginStart="@dimen/h2"
                     android:layout_marginEnd="@dimen/h2"
-                    android:layout_below="@+id/textVersi"
+                    android:layout_below="@+id/textInfo"
                     android:id="@+id/btnRate"
                     />
 

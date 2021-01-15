@@ -32,4 +32,9 @@
         android:name="id.exomatik.mushafmuslim.ui.main.detailShirah.DetailShirahFragment"
         android:label="@string/detail_shirah"
         tools:layout="@layout/fragment_detail_shirah" />
+    <fragment
+        android:id="@+id/riwayatFragment"
+        android:name="id.exomatik.mushafmuslim.ui.main.riwayatPenarikan.RiwayatFragment"
+        android:label="@string/riwayat_penarikan"
+        tools:layout="@layout/fragment_riwayat" />
 </navigation>

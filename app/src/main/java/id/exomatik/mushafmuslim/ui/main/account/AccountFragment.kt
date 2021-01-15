@@ -13,7 +13,8 @@ class AccountFragment : BaseFragmentBind<FragmentAccountBinding>() {
 
     override fun myCodeHere() {
         bind.lifecycleOwner = this
-        viewModel = AccountViewModel(findNavController(), savedData, activity, context, bind.etUsernameReferal)
+        viewModel = AccountViewModel(findNavController(), savedData, activity, context,
+            bind.etUsernameReferal, bind.btnBoost)
         bind.viewModel = viewModel
 
         viewModel.setUpData(bind.textValidator)
