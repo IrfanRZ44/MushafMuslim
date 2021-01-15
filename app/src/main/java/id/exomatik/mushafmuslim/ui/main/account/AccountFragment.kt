@@ -3,6 +3,8 @@ package id.exomatik.mushafmuslim.ui.main.account
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import id.exomatik.mushafmuslim.R
 import id.exomatik.mushafmuslim.base.BaseFragmentBind
 import id.exomatik.mushafmuslim.databinding.FragmentAccountBinding
@@ -20,6 +22,13 @@ class AccountFragment : BaseFragmentBind<FragmentAccountBinding>() {
         viewModel.setUpData(bind.textValidator)
 
         onClick()
+        setUpAdmob()
+    }
+
+    private fun setUpAdmob(){
+        MobileAds.initialize(context) {}
+        val adRequest = AdRequest.Builder().build()
+        bind.adView.loadAd(adRequest)
     }
 
     private fun onClick() {

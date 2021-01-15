@@ -46,11 +46,7 @@ object Constant {
 
     const val defaultMaxAds : Long = 20
 
-    const val idAdmob = "ca-app-pub-1776006511024568~4988030819"
-    const val idIntersitialSplash = "ca-app-pub-1776006511024568/3142813715"
-
-    const val idAdmobTesting = "ca-app-pub-3940256099942544~3347511713"
-    const val idIntersitialTesting = "ca-app-pub-3940256099942544/1033173712"
+    const val idIntersitialTesting = "ca-app-pub-1776006511024568/1193303185"
 
     const val defaultTempFoto = "https://www.google.co.id/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
     const val defaultBasePdf = "https://firebasestorage.googleapis.com/v0/b/mushafmuslim.appspot.com/o/"

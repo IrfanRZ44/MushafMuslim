@@ -6,10 +6,14 @@
 
     <!--  id admob  -->
     <string name="idAdmob">ca-app-pub-1776006511024568~4988030819</string>
-    <string name="idInterstisialSplash">ca-app-pub-1776006511024568/3142813715</string>
+    <string name="idInterstisialSplash">ca-app-pub-1776006511024568/1193303185</string>
+    <string name="idBannerShirah">ca-app-pub-1776006511024568/6254058174</string>
+    <string name="idBannerAccount">ca-app-pub-1776006511024568/8688649821</string>
 
     <string name="idAdmobTesting">ca-app-pub-3940256099942544~3347511713</string>
     <string name="idInterstisialTesting">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="idBannerTesting1">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="idBannerTesting2">ca-app-pub-3940256099942544/6300978111</string>
 
     <string name="login">Masuk</string>
     <string name="lanjut">Lanjut</string>

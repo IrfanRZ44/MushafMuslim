@@ -1,6 +1,8 @@
 package id.exomatik.mushafmuslim.ui.main.detailShirah
 
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import id.exomatik.mushafmuslim.R
 import id.exomatik.mushafmuslim.base.BaseFragmentBind
 import id.exomatik.mushafmuslim.utils.Constant
@@ -18,6 +20,13 @@ class DetailShirahFragment : BaseFragmentBind<FragmentDetailShirahBinding>() {
 
         viewModel.dataShirah.value = this.arguments?.getParcelable(Constant.referenceShirah)
         viewModel.setUpPdfView()
+        setUpAdmob()
+    }
+
+    private fun setUpAdmob(){
+        MobileAds.initialize(context) {}
+        val adRequest = AdRequest.Builder().build()
+        bind.adView.loadAd(adRequest)
     }
 
     override fun onPause() {
