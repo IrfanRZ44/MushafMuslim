@@ -10,6 +10,7 @@ class ShirahFragment : BaseFragmentBind<FragmentShirahBinding>() {
     lateinit var viewModel: ShirahViewModel
 
     override fun myCodeHere() {
+        supportActionBar?.hide()
         bind.lifecycleOwner = this
         viewModel = ShirahViewModel(findNavController(), savedData, activity, bind.rcShirah)
         bind.viewModel = viewModel

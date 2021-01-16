@@ -13,6 +13,7 @@ class DetailShirahFragment : BaseFragmentBind<FragmentDetailShirahBinding>() {
     private lateinit var viewModel: DetailShirahViewModel
 
     override fun myCodeHere() {
+        supportActionBar?.hide()
         bind.lifecycleOwner = this
         viewModel = DetailShirahViewModel(findNavController(), savedData, activity, context,
             bind.pdfView, bind.linearTimer, bind.textVerify)

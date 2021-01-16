@@ -3,8 +3,8 @@ package id.exomatik.mushafmuslim.ui.main.riwayatPenarikan
 import androidx.navigation.fragment.findNavController
 import id.exomatik.mushafmuslim.R
 import id.exomatik.mushafmuslim.base.BaseFragmentBind
-import id.exomatik.mushafmuslim.databinding.FragmentRiwayatBinding
 import id.exomatik.mushafmuslim.utils.Constant
+import id.exomatik.mushafmuslim.databinding.FragmentRiwayatBinding
 
 class RiwayatFragment : BaseFragmentBind<FragmentRiwayatBinding>() {
     override fun getLayoutResource(): Int = R.layout.fragment_riwayat
@@ -12,7 +12,7 @@ class RiwayatFragment : BaseFragmentBind<FragmentRiwayatBinding>() {
 
     override fun myCodeHere() {
         supportActionBar?.show()
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = Constant.riwayatPenarikan
 
         bind.lifecycleOwner = this

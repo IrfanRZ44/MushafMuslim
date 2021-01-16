@@ -12,6 +12,7 @@ class LoginFragment : BaseFragmentBind<FragmentLoginBinding>(){
     lateinit var viewModel: LoginViewModel
 
     override fun myCodeHere() {
+        supportActionBar?.hide()
         bind.lifecycleOwner = this
         viewModel = LoginViewModel(
             findNavController(),

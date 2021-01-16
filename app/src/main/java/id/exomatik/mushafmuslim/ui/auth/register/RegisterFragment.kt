@@ -12,6 +12,7 @@ class RegisterFragment : BaseFragmentBind<FragmentRegisterBinding>(){
     lateinit var viewModel: RegisterViewModel
 
     override fun myCodeHere() {
+        supportActionBar?.hide()
         bind.lifecycleOwner = this
         viewModel = RegisterViewModel(activity, savedData, findNavController())
         bind.viewModel = viewModel

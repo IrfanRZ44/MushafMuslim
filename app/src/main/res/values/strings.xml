@@ -10,10 +10,10 @@
     <string name="idBannerShirah">ca-app-pub-1776006511024568/6254058174</string>
     <string name="idBannerAccount">ca-app-pub-1776006511024568/8688649821</string>
 
-    <string name="idAdmobTesting">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="idInterstisialTesting">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="idBannerTesting1">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="idBannerTesting2">ca-app-pub-3940256099942544/6300978111</string>
+<!--    <string name="idAdmobTesting">ca-app-pub-3940256099942544~3347511713</string>-->
+<!--    <string name="idInterstisialTesting">ca-app-pub-3940256099942544/1033173712</string>-->
+<!--    <string name="idBannerTesting1">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="idBannerTesting2">ca-app-pub-3940256099942544/6300978111</string>-->
 
     <string name="login">Masuk</string>
     <string name="lanjut">Lanjut</string>
@@ -178,4 +178,7 @@
     <string name="riwayat_penarikan">Riwayat Penarikan</string>
     <string name="wd">WD</string>
     <string name="jumlah_penarikan">Jumlah Penarikan</string>
+    <string name="penarikan10">10.000 Ribu</string>
+    <string name="penarikan100">100.000 Ribu</string>
+    <string name="informasi_penarikan">Informasi Penarikan</string>
 </resources>

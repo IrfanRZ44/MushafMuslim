@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import id.exomatik.mushafmuslim.base.BaseViewModel
 import id.exomatik.mushafmuslim.model.ModelInfoApps
+import id.exomatik.mushafmuslim.utils.showLog
 
 class SplashViewModel(
     private val navController: NavController,
@@ -58,7 +59,7 @@ class SplashViewModel(
         MobileAds.initialize(activity) {}
 
         val mInterstitialAd = InterstitialAd(activity)
-        mInterstitialAd.adUnitId = Constant.idIntersitialTesting
+        mInterstitialAd.adUnitId = Constant.idIntersitial
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         mInterstitialAd.adListener = object: AdListener() {
@@ -69,6 +70,7 @@ class SplashViewModel(
             }
 
             override fun onAdFailedToLoad(adError: LoadAdError) {
+                showLog(adError.toString())
             }
 
             override fun onAdOpened() {

@@ -401,7 +401,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/idBannerTesting2">
+            ads:adUnitId="@string/idBannerAccount">
         </com.google.android.gms.ads.AdView>
     </RelativeLayout>
 </layout>

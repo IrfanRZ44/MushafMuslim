@@ -2,17 +2,28 @@ package id.exomatik.mushafmuslim.ui.main.account
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdCallback
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.material.textfield.TextInputLayout
@@ -435,6 +446,100 @@ class AccountViewModel(
         )
     }
 
+    private fun penarikan10(){
+        val poin = savedData?.getDataAccount()?.totalPoin?:0
+        val hargaPoin = savedData?.getDataApps()?.hargaPoin?:1
+        val saldo = poin * hargaPoin
+
+        if (saldo >= Constant.saldo10){
+            val firstWD = savedData?.getDataAccount()?.firstWithdraw?:false
+
+            if (!firstWD){
+                val dataAccount = savedData?.getDataAccount()
+                val dataUser = savedData?.getDataUser()
+
+                @SuppressLint("SimpleDateFormat")
+                val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.timeDateFormat))
+                } else {
+                    SimpleDateFormat(Constant.timeDateFormat).format(Date())
+                }
+
+                if (dataAccount != null && dataUser != null){
+                    val dataPenarikan = ModelPenarikan("", dataAccount.username,
+                        Constant.penarikan10, "Go-Pay", dataUser.noHp, tglSekarang, Constant.wdProses)
+
+                    firstWithdraw(dataPenarikan)
+                }
+                else{
+                    message.value = "Error, terjadi kesalahan database"
+                }
+            }
+            else{
+                message.value = "Maaf, Anda sudah pernah melakukan pencairan ini"
+            }
+        }
+        else{
+            message.value = "Maaf, saldo Anda tidak mencukupi"
+        }
+    }
+
+    private fun penarikan100(){
+        val poin = savedData?.getDataAccount()?.totalPoin?:0
+        val hargaPoin = savedData?.getDataApps()?.hargaPoin?:1
+        val saldo = poin * hargaPoin
+
+        if (saldo >= Constant.saldo100){
+            val dataAccount = savedData?.getDataAccount()
+            @SuppressLint("SimpleDateFormat")
+            val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.timeDateFormat))
+            } else {
+                SimpleDateFormat(Constant.timeDateFormat).format(Date())
+            }
+
+            if (dataAccount != null){
+                val dataPenarikan = ModelPenarikan("", dataAccount.username,
+                    Constant.penarikan100, "Go-Pay", tglSekarang, "Proses")
+
+                addDataPenarikan(dataPenarikan)
+            }
+            else{
+                message.value = "Error, terjadi kesalahan database"
+            }
+        }
+        else{
+            message.value = "Maaf, saldo Anda tidak mencukupi"
+        }
+    }
+
+    private fun showAds(){
+        val rewardedAd = RewardedAd(activity, Constant.idRewarded)
+
+        val adLoadCallBack = object: RewardedAdLoadCallback() {
+            override fun onRewardedAdLoaded() {
+                if (rewardedAd.isLoaded) {
+                    rewardedAd.show(activity, object: RewardedAdCallback() {
+                        override fun onRewardedAdOpened() {
+                        }
+                        override fun onRewardedAdClosed() {
+
+                        }
+                        override fun onUserEarnedReward(@NonNull reward: RewardItem) {
+                        }
+                        override fun onRewardedAdFailedToShow(adError: AdError) {
+                        }
+                    })
+                }
+            }
+            override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
+            }
+        }
+
+        rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallBack)
+
+    }
+
     fun onClickRating(){
         activity?.startActivity(
             Intent(
@@ -446,88 +551,38 @@ class AccountViewModel(
 
     fun onClickTarik(){
         val ctx = context
+        val listFaq = savedData?.getDataApps()?.data_faq
 
-        if (ctx != null){
-            val alert = AlertDialog.Builder(ctx)
-            alert.setTitle(attention)
-            alert.setMessage(Constant.alertPenarikan)
-            alert.setPositiveButton(
-                Constant.penarikan10
-            ) { dialog, _ ->
+        if (ctx != null && listFaq != null){
+            val dialog = Dialog(ctx, R.style.CustomDialogTheme)
+            dialog.setContentView(R.layout.dialog_penarikan)
+            dialog.setCancelable(true)
+            dialog.setCanceledOnTouchOutside(true)
+
+            val rcFaq = dialog.findViewById<ListView>(R.id.listView)
+            val btnTarik10 = dialog.findViewById<AppCompatTextView>(R.id.btnPenarikan10)
+            val btnTarik100 = dialog.findViewById<AppCompatTextView>(R.id.btnPenarikan10)
+
+            val adapter = ArrayAdapter(ctx, android.R.layout.simple_list_item_1, listFaq)
+            rcFaq?.adapter = adapter
+
+            btnTarik10.setOnClickListener {
                 dialog.dismiss()
-
-                val poin = savedData?.getDataAccount()?.totalPoin?:0
-                val hargaPoin = savedData?.getDataApps()?.hargaPoin?:1
-                val saldo = poin * hargaPoin
-
-                if (saldo >= Constant.saldo10){
-                    val firstWD = savedData?.getDataAccount()?.firstWithdraw?:false
-
-                    if (!firstWD){
-                        val dataAccount = savedData?.getDataAccount()
-                        val dataUser = savedData?.getDataUser()
-
-                        @SuppressLint("SimpleDateFormat")
-                        val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.timeDateFormat))
-                        } else {
-                            SimpleDateFormat(Constant.timeDateFormat).format(Date())
-                        }
-
-                        if (dataAccount != null && dataUser != null){
-                            val dataPenarikan = ModelPenarikan("", dataAccount.username,
-                                Constant.penarikan10, "Go-Pay", dataUser.noHp, tglSekarang, Constant.wdProses)
-
-                            firstWithdraw(dataPenarikan)
-                        }
-                        else{
-                            message.value = "Error, terjadi kesalahan database"
-                        }
-                    }
-                    else{
-                        message.value = "Maaf, Anda sudah pernah melakukan pencairan ini"
-                    }
-                }
-                else{
-                    message.value = "Maaf, saldo Anda tidak mencukupi"
-                }
-            }
-            alert.setNegativeButton(Constant.penarikan100) { dialog, _ ->
-                dialog.dismiss()
-
-                val poin = savedData?.getDataAccount()?.totalPoin?:0
-                val hargaPoin = savedData?.getDataApps()?.hargaPoin?:1
-                val saldo = poin * hargaPoin
-
-                if (saldo >= Constant.saldo100){
-                    val dataAccount = savedData?.getDataAccount()
-                    @SuppressLint("SimpleDateFormat")
-                    val tglSekarang = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        LocalDateTime.now().format(DateTimeFormatter.ofPattern(Constant.timeDateFormat))
-                    } else {
-                        SimpleDateFormat(Constant.timeDateFormat).format(Date())
-                    }
-
-                    if (dataAccount != null){
-                        val dataPenarikan = ModelPenarikan("", dataAccount.username,
-                            Constant.penarikan100, "Go-Pay", tglSekarang, "Proses")
-
-                        addDataPenarikan(dataPenarikan)
-                    }
-                    else{
-                        message.value = "Error, terjadi kesalahan database"
-                    }
-                }
-                else{
-                    message.value = "Maaf, saldo Anda tidak mencukupi"
-                }
+                penarikan10()
             }
 
-            alert.show()
+            btnTarik100.setOnClickListener {
+                dialog.dismiss()
+                penarikan100()
+            }
+
+            dialog.show()
         }
         else {
             message.value = "Error, terjadi kesalahan yang tidak diketahui"
         }
+
+        showAds()
     }
 
     fun onClickRiwayat(){

@@ -18,6 +18,7 @@ class VerifyRegisterFragment : BaseFragmentBind<FragmentVerifyRegisterBinding>()
     lateinit var registerViewModel: VerifyRegisterViewModel
 
     override fun myCodeHere() {
+        supportActionBar?.hide()
         bind.lifecycleOwner = this
         try {
             registerViewModel =

@@ -9,5 +9,5 @@ data class ModelInfoApps(
     var statusApps: String? = "",
     var versionApps: String? = "",
     var hargaPoin: Long = 0,
-    var data_faq: List<ModelFaq> = emptyList()
+    var data_faq: ArrayList<String>? = ArrayList()
     ) : Parcelable

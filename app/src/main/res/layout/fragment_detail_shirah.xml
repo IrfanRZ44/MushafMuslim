@@ -68,7 +68,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/idBannerTesting1">
+            ads:adUnitId="@string/idBannerShirah">
         </com.google.android.gms.ads.AdView>
     </RelativeLayout>
 </layout>

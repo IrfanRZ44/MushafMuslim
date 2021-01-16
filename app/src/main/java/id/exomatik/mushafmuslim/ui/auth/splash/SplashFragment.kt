@@ -12,6 +12,7 @@ class SplashFragment : BaseFragmentBind<FragmentSplashBinding>() {
     lateinit var viewModel: SplashViewModel
 
     override fun myCodeHere() {
+        supportActionBar?.hide()
         bind.lifecycleOwner = this
         viewModel = SplashViewModel(findNavController(), savedData, activity)
         bind.viewModel = viewModel

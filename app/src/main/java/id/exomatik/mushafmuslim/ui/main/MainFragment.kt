@@ -18,10 +18,7 @@ class MainFragment : BaseFragmentBind<FragmentMainBinding>() {
     override fun getLayoutResource(): Int = R.layout.fragment_main
 
     override fun myCodeHere() {
-        supportActionBar?.show()
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        supportActionBar?.title = appName
-
+        supportActionBar?.hide()
         init()
     }
 

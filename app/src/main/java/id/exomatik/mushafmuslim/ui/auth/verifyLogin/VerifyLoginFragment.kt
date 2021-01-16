@@ -18,6 +18,7 @@ class VerifyLoginFragment : BaseFragmentBind<FragmentVerifyLoginBinding>(){
     lateinit var viewModel: VerifyLoginViewModel
 
     override fun myCodeHere() {
+        supportActionBar?.hide()
         bind.lifecycleOwner = this
         try {
             viewModel =

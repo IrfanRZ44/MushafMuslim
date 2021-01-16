@@ -14,6 +14,7 @@ class AccountFragment : BaseFragmentBind<FragmentAccountBinding>() {
     lateinit var viewModel: AccountViewModel
 
     override fun myCodeHere() {
+        supportActionBar?.hide()
         bind.lifecycleOwner = this
         viewModel = AccountViewModel(findNavController(), savedData, activity, context,
             bind.etUsernameReferal, bind.btnBoost)

@@ -46,7 +46,10 @@ object Constant {
 
     const val defaultMaxAds : Long = 20
 
-    const val idIntersitialTesting = "ca-app-pub-1776006511024568/1193303185"
+    const val idIntersitialTesting = "ca-app-pub-3940256099942544/1033173712"
+    const val idRewardedTesting = "ca-app-pub-3940256099942544/5224354917"
+    const val idIntersitial = "ca-app-pub-1776006511024568/1193303185"
+    const val idRewarded = "ca-app-pub-1776006511024568/3143753063"
 
     const val defaultTempFoto = "https://www.google.co.id/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png"
     const val defaultBasePdf = "https://firebasestorage.googleapis.com/v0/b/mushafmuslim.appspot.com/o/"
@@ -73,7 +76,7 @@ object Constant {
     const val noDataShirah = "Afwan, tidak ada data shirah yang ditemukan"
     const val noRequest = "Afwan, belum ada permintaan verifikasi"
     const val alertLogout = "Apakah Anda yakin ingin keluar dari akun?"
-    const val alertPenarikan = "\n1. Penarikan paling lama kami proses 1-7 hari \n2. Untuk Penarikan 10.000 hanya dapat dilakukan sekali \n3. Penarikan hanya dapat dilakukan melalui Go-Pay yang akan kami kirimkan melalui nomor Anda yang terdaftar \n4. Tidak biaya pemotongan"
+    const val alertPenarikan = "\n1. "
     const val alertHapus = "Apakah Anda yakin ingin menghapus data akun anda?"
     const val batalPermintaan = "Batalkan permintaan"
     const val batalAfiliasi = "PERMINTAAN TERKIRIM / BATALKAN"
