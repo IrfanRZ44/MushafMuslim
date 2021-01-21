@@ -25,9 +25,9 @@ class DetailShirahFragment : BaseFragmentBind<FragmentDetailShirahBinding>() {
     }
 
     private fun setUpAdmob(){
-        MobileAds.initialize(context) {}
-        val adRequest = AdRequest.Builder().build()
-        bind.adView.loadAd(adRequest)
+//        MobileAds.initialize(context) {}
+//        val adRequest = AdRequest.Builder().build()
+//        bind.adView.loadAd(adRequest)
     }
 
     override fun onPause() {

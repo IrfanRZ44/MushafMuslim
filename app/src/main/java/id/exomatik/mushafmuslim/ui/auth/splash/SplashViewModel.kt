@@ -122,7 +122,7 @@ class SplashViewModel(
                 }
                 else{
                     isShowLoading.value = false
-                    setUpIntersitialAds()
+//                    setUpIntersitialAds()
                     val data = savedData?.getDataUser()
 
                     savedData?.setDataObject(data, Constant.referenceUser)

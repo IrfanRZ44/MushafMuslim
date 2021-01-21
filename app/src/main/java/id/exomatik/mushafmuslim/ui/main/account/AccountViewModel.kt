@@ -582,7 +582,7 @@ class AccountViewModel(
             message.value = "Error, terjadi kesalahan yang tidak diketahui"
         }
 
-        showAds()
+//        showAds()
     }
 
     fun onClickRiwayat(){
